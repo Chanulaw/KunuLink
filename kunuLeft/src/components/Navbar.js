@@ -1,50 +1,48 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import './Navbar.css';
 
 function Navbar() {
   const navigate = useNavigate();
-  
-  // LocalStorage එකෙන් ලොග් වුණු කෙනාගේ තොරතුරු ගන්නවා
-  const userRole = localStorage.getItem('userRole'); // 'admin' හෝ 'user'
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const userRole = localStorage.getItem('userRole'); 
 
   const handleLogout = () => {
-    localStorage.removeItem('userRole'); // දත්ත මකනවා
-    navigate('/'); // මුල් පිටුවට යවනවා
-    window.location.reload(); // පිටුව refresh කරනවා මෙනු එක අලුත් වෙන්න
+    localStorage.clear();
+    navigate('/');
+    window.location.reload();
   };
 
   return (
-    <nav style={{ 
-      backgroundColor: '#2e7d32', padding: '15px', color: 'white', 
-      display: 'flex', justifyContent: 'space-between', alignItems: 'center' 
-    }}>
-      <h2 style={{ margin: 0 }}>Smart Waste Portal</h2>
-      <ul style={{ display: 'flex', listStyle: 'none', gap: '20px', margin: 0 }}>
-        <li><Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Home</Link></li>
-        
-        {/* සාමාන්‍ය පරිශීලකයෙක් නම් පමණක් පෙනෙන මෙනු */}
-        {userRole === 'user' && (
+    <nav className="navbar-modern">
+      <div className="nav-logo">
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <h2 className="logo-text">KUNU<span>LINK</span></h2>
+        </Link>
+      </div>
+
+      <ul className="nav-links">
+        {/* User ලොග් වී සිටින විට පමණක් පෙන්වන දේ */}
+        {isLoggedIn && userRole === 'user' && (
           <>
-            <li><Link to="/request" style={{ color: 'white', textDecoration: 'none' }}>New Request</Link></li>
-            <li><Link to="/tracking" style={{ color: 'white', textDecoration: 'none' }}>Tracking</Link></li>
+            <li><Link to="/request" className="nav-item">New Request</Link></li>
+            <li><Link to="/tracking" className="nav-item">Tracking</Link></li>
           </>
         )}
 
-        {/* Admin කෙනෙක් නම් පමණක් පෙනෙන මෙනු */}
-        {userRole === 'admin' && (
-          <li><Link to="/admin" style={{ color: 'white', textDecoration: 'none' }}>Admin Dashboard</Link></li>
-        )}
-
-        {/* ලොග් වී ඇත්නම් Logout button එක පෙන්වන්න */}
-        {userRole && (
-          <li>
-            <button onClick={handleLogout} style={{ 
-              backgroundColor: '#d32f2f', color: 'white', border: 'none', 
-              padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' 
-            }}>Logout</button>
-          </li>
+        {/* Admin ලොග් වී සිටින විට පෙන්වන දේ */}
+        {isLoggedIn && userRole === 'admin' && (
+          <li><Link to="/admin" className="nav-item admin-highlight">Admin Dashboard</Link></li>
         )}
       </ul>
+
+      <div className="nav-actions">
+        {isLoggedIn && (
+          <button onClick={handleLogout} className="btn-premium logout-btn">
+            Logout
+          </button>
+        )}
+      </div>
     </nav>
   );
 }

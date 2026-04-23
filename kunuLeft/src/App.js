@@ -1,26 +1,57 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-// Components සහ Pages Import කිරීම
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import RequestForm from './pages/RequestForm';
+import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
-import Tracking from './pages/Tracking'; // අනිවාර්යයෙන් මෙය තිබිය යුතුයි
+import RequestForm from './pages/RequestForm'; // මෙතන නම නිවැරදි කළා
+import Tracking from './pages/Tracking';
+import './App.css';
 
 function App() {
+  const ProtectedRoute = ({ children, role }) => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userRole = localStorage.getItem('userRole');
+
+    if (!isLoggedIn) return <Navigate to="/" />;
+    if (role && userRole !== role) return <Navigate to="/" />;
+    return children;
+  };
+
   return (
     <Router>
-      <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#f4f4f4', minHeight: '100vh' }}>
-        <Navbar />
-        <div style={{ padding: '20px' }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/request" element={<RequestForm />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/tracking" element={<Tracking />} />
-          </Routes>
-        </div>
+      <Navbar />
+      <div className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
+
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute role="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/request" 
+            element={
+              <ProtectedRoute role="user">
+                <RequestForm /> {/* මෙතනත් නම වෙනස් කළා */}
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/tracking" 
+            element={
+              <ProtectedRoute role="user">
+                <Tracking />
+              </ProtectedRoute>
+            } 
+          />
+        </Routes>
       </div>
     </Router>
   );
