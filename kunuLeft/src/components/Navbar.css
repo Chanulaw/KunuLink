@@ -1,33 +1,74 @@
-.navbar-modern {
-  background: #1e293b; /* තද පැහැති පසුබිමක් */
-  padding: 15px 50px;
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #1e293b;
+  padding: 15px 60px;
 }
 
-.logo-text { color: #10b981; margin: 0; }
-.logo-text span { color: #ffffff; }
+.logo h2 {
+  margin: 0;
+  color: #22c55e;
+}
 
-.nav-item {
-  color: #ffffff !important; /* අකුරු සුදු පාටින් පෙනීමට */
+.logo span {
+  color: #ffffff;
+}
+
+.logo a {
   text-decoration: none;
-  font-weight: 500;
-  margin: 0 15px;
 }
 
-.admin-highlight {
-  color: #10b981 !important;
-  border: 1px solid #10b981;
-  padding: 5px 15px;
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #22c55e;
+}
+
+.admin {
+  border: 1px solid #22c55e;
+  padding: 5px 12px;
   border-radius: 5px;
 }
 
 .logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   background: #ef4444;
   color: white;
   border: none;
-  padding: 8px 20px;
-  border-radius: 5px;
+  padding: 8px 18px;
+  border-radius: 6px;
   cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+.icon {
+  font-size: 16px;
 }
