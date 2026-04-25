@@ -32,8 +32,8 @@ function Home() {
           <p className="brand-tagline">Smart Waste Management Portal</p>
         </div>
 
-        <h2 className="login-title">Login (ඇතුළු වන්න)</h2>
-        <p className="login-subtitle">පද්ධතියට ඇතුළු වීමට ඔබේ විස්තර ලබා දෙන්න</p>
+        <h2 className="login-title">Login</h2>
+        <p className="login-subtitle">Give your details to access the system</p>
 
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
@@ -64,7 +64,7 @@ function Home() {
         </form>
 
         <div className="auth-footer">
-          <span>ගිණුමක් නොමැතිද? </span>
+          <span>Don't Have an Account? </span>
           <button onClick={() => navigate('/register')} className="register-link">
             Register Here
           </button>
