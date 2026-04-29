@@ -9,8 +9,6 @@ function Home() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    
-    // සරල Login Logic එකක් (මෙය පසුව Database සමඟ සම්බන්ධ කළ හැක)
     if (username === 'admin' && password === '123') {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userRole', 'admin');
@@ -20,55 +18,37 @@ function Home() {
       localStorage.setItem('userRole', 'user');
       navigate('/request');
     } else {
-      alert("වැරදි පරිශීලක නාමයක් හෝ මුරපදයක්!");
+      alert("Invalid credentials!");
     }
   };
 
   return (
-    <div className="auth-container animate-fade-in">
-      <div className="login-card">
-        <div className="brand-header">
-          <h1 className="brand-logo">KUNULINK</h1>
-          <p className="brand-tagline">Smart Waste Management Portal</p>
-        </div>
-
-        <h2 className="login-title">Login</h2>
-        <p className="login-subtitle">Give your details to access the system</p>
-
+    <div className="auth-container full-height">
+      <div className="login-card shadow-premium animate-slide-up">
+        <h2 className="login-title">Member Login</h2>
+        <p className="login-subtitle">ඔබේ ගිණුමට ඇතුළු වන්න</p>
+        
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
             <label>Username</label>
-            <input 
-              type="text" 
-              placeholder="Enter your username" 
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required 
-            />
+            <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} required />
           </div>
-
           <div className="input-group">
             <label>Password</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required 
-            />
+            <input type="password" placeholder="••••••••" onChange={(e) => setPassword(e.target.value)} required />
           </div>
-
-          <button type="submit" className="login-submit-btn">
-            Secure Login
-          </button>
+          <button type="submit" className="login-submit-btn">Login</button>
         </form>
 
-        <div className="auth-footer">
-          <span>Don't Have an Account? </span>
-          <button onClick={() => navigate('/register')} className="register-link">
-            Register Here
+        {/* Register Page එකට යාමට ඇති ලින්ක් එක */}
+        <div className="auth-footer-text">
+          <span>ගිණුමක් නොමැතිද? </span>
+          <button className="link-btn" onClick={() => navigate('/register')}>
+            Register Now
           </button>
         </div>
+
+        <button className="back-btn" onClick={() => navigate('/')}>← Back to Home</button>
       </div>
     </div>
   );
