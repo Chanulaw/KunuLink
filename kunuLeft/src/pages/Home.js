@@ -18,37 +18,47 @@ function Home() {
       localStorage.setItem('userRole', 'user');
       navigate('/request');
     } else {
-      alert("Invalid credentials!");
+      alert("Invalid credentials / වැරදි තොරතුරු!");
     }
   };
 
   return (
-    <div className="auth-container full-height">
-      <div className="login-card shadow-premium animate-slide-up">
-        <h2 className="login-title">Member Login</h2>
-        <p className="login-subtitle">ඔබේ ගිණුමට ඇතුළු වන්න</p>
-        
-        <form onSubmit={handleLogin} className="login-form">
-          <div className="input-group">
-            <label>Username</label>
-            <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} required />
-          </div>
-          <div className="input-group">
-            <label>Password</label>
-            <input type="password" placeholder="••••••••" onChange={(e) => setPassword(e.target.value)} required />
-          </div>
-          <button type="submit" className="login-submit-btn">Login</button>
-        </form>
-
-        {/* Register Page එකට යාමට ඇති ලින්ක් එක */}
-        <div className="auth-footer-text">
-          <span>ගිණුමක් නොමැතිද? </span>
-          <button className="link-btn" onClick={() => navigate('/register')}>
-            Register Now
-          </button>
+    <div className="eco-auth-container">
+      <div className="login-glass-card animate-fade-in">
+        <div className="login-header">
+          <h2 className="eco-logo">KUNU<span>LINK</span></h2>
+          <p className="login-desc-eng">Login to your account</p>
+          <p className="login-desc-sin">ඔබේ ගිණුමට ඇතුළු වන්න</p>
         </div>
 
-        <button className="back-btn" onClick={() => navigate('/')}>← Back to Home</button>
+        <form onSubmit={handleLogin} className="eco-form">
+          <div className="eco-input-group">
+            <label>Username / පරිශීලක නාමය</label>
+            <input 
+              type="text" 
+              placeholder="Enter username" 
+              onChange={(e) => setUsername(e.target.value)} 
+              required 
+            />
+          </div>
+
+          <div className="eco-input-group">
+            <label>Password / මුරපදය</label>
+            <input 
+              type="password" 
+              placeholder="••••••••" 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+            />
+          </div>
+
+          <button type="submit" className="eco-login-btn">Secure Login</button>
+        </form>
+
+        <div className="eco-auth-footer">
+          <p>Don't have an account? <span onClick={() => navigate('/register')}>Register Now</span></p>
+          <button className="eco-back-link" onClick={() => navigate('/')}>← Back to Home Page</button>
+        </div>
       </div>
     </div>
   );

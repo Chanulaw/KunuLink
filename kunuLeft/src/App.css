@@ -833,3 +833,208 @@ body {
   .services-bar { gap: 30px; }
   .main-headlines .headline-eng { font-size: 26px; }
 }
+
+/* --- Eco Login Page Styles --- */
+.eco-auth-container {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); /* About page එකේම background එක */
+  padding: 20px;
+}
+
+.login-glass-card {
+  background: white;
+  padding: 50px;
+  border-radius: 25px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 40px rgba(22, 163, 74, 0.1);
+  border: 1px solid #bbf7d0;
+  text-align: center;
+}
+
+.eco-logo {
+  font-size: 38px;
+  font-weight: 900;
+  color: #16a34a;
+  margin-bottom: 10px;
+  letter-spacing: -1.5px;
+}
+
+.eco-logo span { color: #1e293b; }
+
+.login-desc-eng { color: #1e293b; font-weight: 600; margin: 0; }
+.login-desc-sin { color: #64748b; font-size: 14px; margin-top: 5px; margin-bottom: 30px; }
+
+/* Form Elements */
+.eco-form .eco-input-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.eco-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.eco-form input {
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  transition: 0.3s;
+  box-sizing: border-box;
+}
+
+.eco-form input:focus {
+  outline: none;
+  border-color: #16a34a;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+}
+
+.eco-login-btn {
+  width: 100%;
+  padding: 15px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 10px;
+}
+
+.eco-login-btn:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+}
+
+/* Footer & Links */
+.eco-auth-footer {
+  margin-top: 30px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 20px;
+}
+
+.eco-auth-footer p { font-size: 14px; color: #64748b; }
+.eco-auth-footer span { 
+  color: #16a34a; 
+  font-weight: 700; 
+  cursor: pointer; 
+  text-decoration: underline; 
+}
+
+.eco-back-link {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.eco-back-link:hover { color: #1e293b; }
+
+
+/* --- Creative Animated Background --- */
+/* --- Ultra-Creative Eco Background --- */
+
+.eco-auth-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  /* එකිනෙකට මුසු වන වර්ණ රටාව (Mesh Gradient) */
+  background-color: #f8fafc;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(34, 197, 94, 0.2) 0px, transparent 50%),
+    radial-gradient(at 50% 0%, rgba(187, 247, 208, 0.3) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(22, 163, 74, 0.2) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(240, 253, 244, 0.5) 0px, transparent 50%);
+  padding: 40px 20px;
+}
+
+/* පසුබිමේ පාවෙන Organic Shapes (Blob Effect) */
+.eco-auth-container::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(59, 130, 246, 0.1));
+  filter: blur(80px);
+  border-radius: 43% 57% 70% 30% / 30% 30% 70% 70%; /* අසමතුලිත හැඩය */
+  top: -10%;
+  left: -5%;
+  animation: blobRotate 25s infinite linear;
+  z-index: 0;
+}
+
+.eco-auth-container::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, rgba(187, 247, 208, 0.2), rgba(16, 185, 129, 0.1));
+  filter: blur(100px);
+  border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%;
+  bottom: -5%;
+  right: -5%;
+  animation: blobRotate 20s infinite linear reverse;
+  z-index: 0;
+}
+
+/* Blob එක කැරකෙන ඇනිමේෂන් එක */
+@keyframes blobRotate {
+  from { transform: rotate(0deg) scale(1); }
+  33% { transform: rotate(120deg) scale(1.1); }
+  66% { transform: rotate(240deg) scale(0.9); }
+  to { transform: rotate(360deg) scale(1); }
+}
+
+/* Glass Card එක තවත් Premium කරමු */
+.login-glass-card {
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.7); /* පාරදෘශ්‍ය බව වැඩියි */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  padding: 50px;
+  border-radius: 35px;
+  width: 100%;
+  max-width: 440px;
+  /* සිහින් සුදු පැහැති බෝඩරයක් (Inner Glow effect) */
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.06), 
+              inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  text-align: center;
+  animation: cardEntrance 1s ease-out;
+}
+
+/* පේජ් එක ලෝඩ් වෙද්දී කාඩ් එක එන විදිහ */
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Input Fields ටික background එකට ගැලපෙන්න Blur කරමු */
+.eco-form input {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid rgba(22, 163, 74, 0.2) !important;
+  backdrop-filter: blur(5px);
+}
