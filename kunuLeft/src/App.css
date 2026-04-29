@@ -510,3 +510,326 @@ body {
 
 .auth-footer { margin-top: 25px; font-size: 14px; color: #64748b; }
 .register-link { background: none; border: none; color: #10b981; font-weight: 700; cursor: pointer; }
+
+
+/* --- Home Page Layout (New) --- */
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  padding: 20px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1100px;
+  gap: 50px;
+  align-items: center;
+}
+
+/* Info Section Styling */
+.info-section {
+  text-align: left;
+}
+
+.main-logo {
+  font-size: 48px;
+  font-weight: 900;
+  color: #10b981;
+  margin-bottom: 20px;
+}
+
+.main-logo span { color: #0f172a; }
+
+.description-box h3 {
+  color: #0f172a;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.description-box p {
+  color: #475569;
+  line-height: 1.6;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.features-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.feature-item {
+  background: white;
+  padding: 8px 15px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Login Card Styling (Updated for Home Grid) */
+.login-card {
+  background: white;
+  padding: 50px;
+  border-radius: 30px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0;
+  animation: fadeIn 1.2s ease-out;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-slide-up { animation: slideUp 0.8s ease-out; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .home-grid { grid-template-columns: 1fr; }
+  .info-section { text-align: center; }
+  .features-list { justify-content: center; }
+}
+
+/* --- About Page Styles --- */
+.landing-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  text-align: center;
+  padding: 20px;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.main-logo-large {
+  font-size: 64px;
+  font-weight: 900;
+  color: #10b981;
+  margin-bottom: 10px;
+}
+
+.description-text {
+  font-size: 18px;
+  color: #475569;
+  line-height: 1.8;
+  margin: 30px 0;
+}
+
+.get-started-btn {
+  padding: 18px 40px;
+  background: #0f172a;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.get-started-btn:hover {
+  background: #10b981;
+  transform: scale(1.05);
+}
+
+.features-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.feature-card {
+  background: white;
+  padding: 15px 25px;
+  border-radius: 15px;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* --- Back Button --- */
+.back-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  margin-top: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.auth-footer-text {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #10b981;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0 5px;
+}
+
+.link-btn:hover {
+  color: #059669;
+}
+
+/* Register form එක ටිකක් දිග නිසා card එකේ padding අඩු කිරීම */
+.full-height {
+  padding: 40px 0;
+}
+
+/* --- Global Wrapper --- */
+.landing-wrapper {
+  background: #fdfdfd;
+  font-family: 'Inter', sans-serif;
+}
+
+/* --- Hero Section with Eco Green --- */
+.hero-eco {
+  min-height: 80vh;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); /* ලා කොළ පැහැති පසුබිම */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  border-bottom: 1px solid #bbf7d0;
+}
+
+.logo-text {
+  font-size: 56px;
+  font-weight: 900;
+  color: #16a34a; /* තද කොළ පැහැය */
+  margin-bottom: 20px;
+  letter-spacing: -2px;
+}
+
+.logo-text span { color: #1e293b; }
+
+.main-headlines .headline-eng {
+  font-size: 32px;
+  color: #1e293b;
+  margin: 0;
+  font-weight: 700;
+}
+
+.main-headlines .headline-sin {
+  font-size: 20px;
+  color: #475569;
+  font-weight: 400;
+  margin-top: 5px;
+}
+
+.description-box {
+  max-width: 700px;
+  margin: 30px auto;
+  line-height: 1.6;
+  color: #334155;
+  font-size: 16px;
+}
+
+.si-desc {
+  display: block;
+  margin-top: 15px;
+  color: #64748b;
+  font-style: italic;
+  font-size: 15px;
+}
+
+/* --- Eco Button --- */
+.primary-eco-btn {
+  padding: 16px 40px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+}
+
+.primary-eco-btn:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(22, 163, 74, 0.3);
+}
+
+/* --- Services Bar --- */
+.services-bar {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  padding: 60px 20px;
+  background: white;
+  flex-wrap: wrap;
+}
+
+.service-pill {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-align: left;
+}
+
+.icon-circle {
+  width: 50px;
+  height: 50px;
+  background: #f0fdf4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
+.service-pill strong {
+  display: block;
+  font-size: 17px;
+  color: #1e293b;
+}
+
+.service-pill p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Animations */
+.animate-fade-in {
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .services-bar { gap: 30px; }
+  .main-headlines .headline-eng { font-size: 26px; }
+}
