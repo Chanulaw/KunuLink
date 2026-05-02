@@ -1,75 +1,60 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import '../App.css';
 
-function Home() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Loading state එක
-  const navigate = useNavigate();
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setIsLoading(true); // Loading ආරම්භ කිරීම
-
-    // තත්පර 1.5 කින් පසු ක්‍රියාත්මක වීමට (Simulation)
-    setTimeout(() => {
-      if (username === 'admin' && password === 'admin123') {
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userRole', 'admin');
-        navigate('/admin');
-        window.location.reload();
-      } else if (username === 'user' && password === 'user123') {
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userRole', 'user');
-        navigate('/request');
-        window.location.reload();
-      } else {
-        alert("වැරදි පරිශීලක නාමයක් හෝ මුරපදයක්!");
-        setIsLoading(false);
-      }
-    }, 1500); 
-  };
+function Tracking() {
+  // මේවා උදාහරණ දත්ත (Sample Data). පසුව database එකෙන් මේවා ගන්න පුළුවන්.
+  const activities = [
+    { id: 'REQ-001', type: 'Plastic', date: '2024-05-01', status: 'Completed', location: 'Colombo 03' },
+    { id: 'REQ-002', type: 'Glass', date: '2024-05-10', status: 'Pending', location: 'Nugegoda' },
+    { id: 'REQ-003', type: 'Electronic', date: '2024-05-15', status: 'In Progress', location: 'Borella' },
+    { id: 'REQ-004', type: 'Paper', date: '2024-05-20', status: 'Completed', location: 'Kottawa' },
+  ];
 
   return (
-    <div className="auth-container">
-      <div className="login-card">
-        <h2 className="login-title">KUNULINK</h2>
-        <p className="login-subtitle">පද්ධතියට ඇතුළු වීමට ඔබේ විස්තර ලබා දෙන්න</p>
-        
-        <form onSubmit={handleLogin} className="login-form">
-          <div className="input-group">
-            <label>Username</label>
-            <input 
-              type="text" 
-              placeholder="e.g. admin" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
-              required 
-            />
-          </div>
-          <div className="input-group">
-            <label>Password</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
-            />
-          </div>
-          
-          <button type="submit" className="login-submit-btn" disabled={isLoading}>
-            {isLoading ? "Verifying..." : "Login to Dashboard"}
-          </button>
-        </form>
+    <div className="activity-page-wrapper">
+      <div className="container">
+        <header className="activity-header">
+          <h2>Your Activity History 📊</h2>
+          <p>ඔබ සිදුකළ සියලුම අපද්‍රව්‍ය බැහැර කිරීමේ ඉල්ලීම් මෙතැනින් පරීක්ෂා කරන්න.</p>
+        </header>
 
-        <p className="auth-footer" style={{ marginTop: '25px', color: '#94a3b8' }}>
-          ගිණුමක් නොමැතිද? <span style={{ color: '#10b981', fontWeight: '700', cursor: 'pointer' }} onClick={() => navigate('/register')}>Register Here</span>
-        </p>
+        <div className="activity-stats-row">
+          <div className="stat-box"><h3>04</h3><p>Total Requests</p></div>
+          <div className="stat-box"><h3>02</h3><p>Completed</p></div>
+          <div className="stat-box"><h3>01</h3><p>Pending</p></div>
+        </div>
+
+        <div className="activity-table-container glass-effect">
+          <table className="activity-table">
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Waste Type</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activities.map((item) => (
+                <tr key={item.id}>
+                  <td><strong>{item.id}</strong></td>
+                  <td>{item.type}</td>
+                  <td>{item.date}</td>
+                  <td>{item.location}</td>
+                  <td>
+                    <span className={`status-badge ${item.status.toLowerCase().replace(' ', '-')}`}>
+                      {item.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
 }
 
-export default Home;
+export default Tracking;
