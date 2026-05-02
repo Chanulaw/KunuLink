@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css';
 
 function Tracking() {
-  // මේවා උදාහරණ දත්ත (Sample Data). පසුව database එකෙන් මේවා ගන්න පුළුවන්.
+  // මේවා උදාහරණ දත්ත (Sample Data).
   const activities = [
     { id: 'REQ-001', type: 'Plastic', date: '2024-05-01', status: 'Completed', location: 'Colombo 03' },
     { id: 'REQ-002', type: 'Glass', date: '2024-05-10', status: 'Pending', location: 'Nugegoda' },
@@ -11,31 +11,6 @@ function Tracking() {
   ];
 
   return (
-<<<<<<< HEAD
-    <div className="activity-wrapper">
-      <div className="welcome-msg">
-        <h2>Your Activity History 📊</h2>
-        <p>ඔබ මින් පෙර සිදුකළ ඉල්ලීම් වල තොරතුරු මෙතැනින් බලන්න.</p>
-      </div>
-
-      <div className="dash-card">
-        <table className="history-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Waste Type</th>
-              <th>Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {history.map((item) => (
-              <tr key={item.id}>
-                <td>#RQ-00{item.id}</td>
-                <td>{item.type}</td>
-                <td>{item.date}</td>
-                <td><span className={`status ${item.status.toLowerCase()}`}>{item.status}</span></td>
-=======
     <div className="activity-page-wrapper">
       <div className="container">
         <header className="activity-header">
@@ -44,9 +19,18 @@ function Tracking() {
         </header>
 
         <div className="activity-stats-row">
-          <div className="stat-box"><h3>04</h3><p>Total Requests</p></div>
-          <div className="stat-box"><h3>02</h3><p>Completed</p></div>
-          <div className="stat-box"><h3>01</h3><p>Pending</p></div>
+          <div className="stat-box">
+            <h3>04</h3>
+            <p>Total Requests</p>
+          </div>
+          <div className="stat-box">
+            <h3>02</h3>
+            <p>Completed</p>
+          </div>
+          <div className="stat-box">
+            <h3>01</h3>
+            <p>Pending</p>
+          </div>
         </div>
 
         <div className="activity-table-container glass-effect">
@@ -58,7 +42,6 @@ function Tracking() {
                 <th>Date</th>
                 <th>Location</th>
                 <th>Status</th>
->>>>>>> parent of b251c18 (update dashboard)
               </tr>
             </thead>
             <tbody>
@@ -69,7 +52,7 @@ function Tracking() {
                   <td>{item.date}</td>
                   <td>{item.location}</td>
                   <td>
-                    <span className={`status-badge ${item.status.toLowerCase().replace(' ', '-')}`}>
+                    <span className={`status-badge ${item.status.toLowerCase().replace(/\s+/g, '-')}`}>
                       {item.status}
                     </span>
                   </td>
