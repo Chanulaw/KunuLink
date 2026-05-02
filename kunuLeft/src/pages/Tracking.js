@@ -11,14 +11,14 @@ function Tracking() {
     <div className="activity-wrapper">
       <div className="welcome-msg">
         <h2>Your Activity History 📊</h2>
-        <p>ඔබ මින් පෙර සිදුකළ ඉල්ලීම් සහ ඒවායේ වත්මන් තත්ත්වය.</p>
+        <p>ඔබ මින් පෙර සිදුකළ ඉල්ලීම් වල තොරතුරු මෙතැනින් බලන්න.</p>
       </div>
 
       <div className="dash-card">
         <table className="history-table">
           <thead>
             <tr>
-              <th>Request ID</th>
+              <th>ID</th>
               <th>Waste Type</th>
               <th>Date</th>
               <th>Status</th>
@@ -30,11 +30,7 @@ function Tracking() {
                 <td>#RQ-00{item.id}</td>
                 <td>{item.type}</td>
                 <td>{item.date}</td>
-                <td>
-                  <span className={`status ${item.status.toLowerCase()}`}>
-                    {item.status}
-                  </span>
-                </td>
+                <td><span className={`status ${item.status.toLowerCase()}`}>{item.status}</span></td>
               </tr>
             ))}
           </tbody>

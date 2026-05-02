@@ -9,16 +9,21 @@ function Home() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+
+    // Admin Login (Username: admin, Password: 123)
     if (username === 'admin' && password === '123') {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userRole', 'admin');
       navigate('/admin');
-    } else if (username === 'user' && password === '123') {
+    } 
+    // User Login (Username: user, Password: 123)
+    else if (username === 'user' && password === '123') {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userRole', 'user');
-      navigate('/request');
-    } else {
-      alert("Invalid credentials / වැරදි තොරතුරු!");
+      navigate('/dashboard'); // කෙලින්ම Map + Form එකට යවයි
+    } 
+    else {
+      alert("Invalid Username or Password! / දත්ත වැරදියි!");
     }
   };
 
@@ -36,8 +41,9 @@ function Home() {
             <label>Username / පරිශීලක නාමය</label>
             <input 
               type="text" 
-              placeholder="Enter username" 
-              onChange={(e) => setUsername(e.target.value)} 
+              placeholder="Enter your username" 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required 
             />
           </div>
@@ -47,16 +53,17 @@ function Home() {
             <input 
               type="password" 
               placeholder="••••••••" 
-              onChange={(e) => setPassword(e.target.value)} 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required 
             />
           </div>
 
-          <button type="submit" className="eco-login-btn">Secure Login</button>
+          <button type="submit" className="eco-login-btn">Login Now</button>
         </form>
 
         <div className="eco-auth-footer">
-          <p>Don't have an account? <span onClick={() => navigate('/register')}>Register Now</span></p>
+          <p>Don't have an account? <span onClick={() => navigate('/register')}>Register Here</span></p>
           <button className="eco-back-link" onClick={() => navigate('/')}>← Back to Home Page</button>
         </div>
       </div>

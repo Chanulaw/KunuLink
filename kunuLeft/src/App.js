@@ -1,18 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-// Components & Pages Import
+// පේජ් සහ කම්පෝනන්ට්ස් Import කිරීම
 import Navbar from './components/Navbar';
-import About from './pages/About';
-import Home from './pages/Home';         // මෙය ඔබගේ Login Page එකයි
+import About from './pages/About';       // පද්ධතියට ආපු ගමන් පේන පේජ් එක
+import Home from './pages/Home';         // Login පේජ් එක
 import Register from './pages/Register';
-import UserDashboard from './pages/UserDashboard';
-import Tracking from './pages/Tracking';
+import UserDashboard from './pages/UserDashboard'; // Map + Form පේජ් එක
+import Tracking from './pages/Tracking';           // Activity History පේජ් එක
 import AdminDashboard from './pages/AdminDashboard';
 
 import './App.css';
 
-// ආරක්ෂිතව පිටු වෙත පිවිසීම පාලනය කරන Function එක (Protected Route)
+// ආරක්ෂිතව පිටු පාලනය කරන Function එක (ProtectedRoute)
 const ProtectedRoute = ({ children, role }) => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const userRole = localStorage.getItem('userRole');
@@ -22,7 +22,7 @@ const ProtectedRoute = ({ children, role }) => {
   }
 
   if (role && userRole !== role) {
-    return <Navigate to="/" />; // වැරදි Role එකක් නම් මුල් පිටුවට යවයි
+    return <Navigate to="/" />;
   }
 
   return children;
@@ -31,20 +31,20 @@ const ProtectedRoute = ({ children, role }) => {
 function App() {
   return (
     <Router>
-      <div className="app-main-layout">
-        {/* Navbar එක සැමවිටම ඉහළින් පවතී */}
+      <div className="app-container">
+        {/* Navbar එක හැම පිටුවකම ඉහළින් පවතී */}
         <Navbar />
 
-        <div className="page-content">
+        <main className="main-content">
           <Routes>
-            {/* 1. ප්‍රධාන පිටුව (Run කළ සැනින් පෙනෙන පිටුව) */}
+            {/* 1. සයිට් එකට ආපු ගමන් පෙනෙන පිටුව (URL: /) */}
             <Route path="/" element={<About />} />
 
             {/* 2. Login සහ Register පිටු */}
             <Route path="/login" element={<Home />} />
             <Route path="/register" element={<Register />} />
 
-            {/* 3. User හට පමණක් පෙනෙන පිටු */}
+            {/* 3. User ලොග් වුණාම යන Dashboard එක (URL: /dashboard) */}
             <Route 
               path="/dashboard" 
               element={
@@ -53,6 +53,8 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+
+            {/* 4. Activity History පේජ් එක (URL: /tracking) */}
             <Route 
               path="/tracking" 
               element={
@@ -62,7 +64,7 @@ function App() {
               } 
             />
 
-            {/* 4. Admin හට පමණක් පෙනෙන පිටු */}
+            {/* 5. Admin Dashboard එක (URL: /admin) */}
             <Route 
               path="/admin" 
               element={
@@ -72,10 +74,10 @@ function App() {
               } 
             />
 
-            {/* වැරදි URL එකක් ආවොත් ස්වයංක්‍රීයව About (මුල් පිටුවට) යොමු කරයි */}
+            {/* වැරදි URL එකක් ආවොත් About එකට හරවා එවීම */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-        </div>
+        </main>
       </div>
     </Router>
   );
