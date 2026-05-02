@@ -1189,3 +1189,143 @@ body {
 @media (max-width: 768px) {
   .activity-stats-row { flex-direction: column; }
 }
+
+
+
+/* --- 1. Global Styles (මුළු සයිට් එකටම) --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+/* --- 2. Navbar Styles (හැමදාම උඩින් තියෙන කොටස) --- */
+.kunulink-navbar {
+    background-color: #1a2e35;
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-brand span { color: #10b981; }
+
+.nav-links, .nav-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-link-item, .nav-icon-link {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-logout-btn {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* --- 3. User Dashboard (Map + Form එක තියෙන පේජ් එක) --- */
+.dashboard-wrapper {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.welcome-msg { margin-bottom: 25px; text-align: left; }
+.welcome-msg h2 { font-size: 28px; }
+
+.dash-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.flex-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.map-box { flex: 1.5; min-width: 300px; }
+.form-box { flex: 1; text-align: left; min-width: 300px; }
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-btn:hover { background-color: #059669; }
+
+/* --- 4. Activity Page (History Table එක තියෙන පේජ් එක) --- */
+.activity-wrapper {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.history-table th, .history-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.history-table th { background-color: #f8fafc; color: #64748b; }
+
+/* Status Badges */
+.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.status.completed { background: #dcfce7; color: #166534; }
+.status.pending { background: #fef9c3; color: #854d0e; }
