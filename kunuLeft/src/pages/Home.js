@@ -10,17 +10,15 @@ function Home() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Admin Login (Username: admin, Password: 123)
     if (username === 'admin' && password === '123') {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userRole', 'admin');
       navigate('/admin');
     } 
-    // User Login (Username: user, Password: 123)
     else if (username === 'user' && password === '123') {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userRole', 'user');
-      navigate('/dashboard'); // කෙලින්ම Map + Form එකට යවයි
+      navigate('/dashboard');
     } 
     else {
       alert("Invalid Username or Password! / දත්ත වැරදියි!");
@@ -28,20 +26,22 @@ function Home() {
   };
 
   return (
-    <div className="eco-auth-container">
-      <div className="login-glass-card animate-fade-in">
+    /* About එකට සමාන පෙනුමක් ලබා දීමට landing-wrapper භාවිතා කර ඇත */
+    <div className="landing-wrapper"> 
+      <div className="hero-eco login-card-adjust animate-fade-in">
         <div className="login-header">
-          <h2 className="eco-logo">KUNU<span>LINK</span></h2>
-          <p className="login-desc-eng">Login to your account</p>
-          <p className="login-desc-sin">ඔබේ ගිණුමට ඇතුළු වන්න</p>
+          <h2 className="logo-text">KUNU<span>LINK</span></h2>
+          <p className="headline-eng">Welcome Back!</p>
+          <p className="headline-sin">ඔබේ ගිණුමට ඇතුළු වන්න</p>
         </div>
 
         <form onSubmit={handleLogin} className="eco-form">
           <div className="eco-input-group">
-            <label>Username / පරිශීලක නාමය</label>
+            <label className="si-desc">Username / පරිශීලක නාමය</label>
             <input 
+              className="eco-field"
               type="text" 
-              placeholder="Enter your username" 
+              placeholder="Enter username" 
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required 
@@ -49,8 +49,9 @@ function Home() {
           </div>
 
           <div className="eco-input-group">
-            <label>Password / මුරපදය</label>
+            <label className="si-desc">Password / මුරපදය</label>
             <input 
+              className="eco-field"
               type="password" 
               placeholder="••••••••" 
               value={password}
@@ -59,12 +60,16 @@ function Home() {
             />
           </div>
 
-          <button type="submit" className="eco-login-btn">Login Now</button>
+          <button type="submit" className="primary-eco-btn login-btn-wide">Login Now</button>
         </form>
 
         <div className="eco-auth-footer">
-          <p>Don't have an account? <span onClick={() => navigate('/register')}>Register Here</span></p>
-          <button className="eco-back-link" onClick={() => navigate('/')}>← Back to Home Page</button>
+          <p className="description-box" style={{fontSize: '0.95rem', margin: '20px 0'}}>
+            Don't have an account? <strong style={{color: '#16a34a', cursor: 'pointer'}} onClick={() => navigate('/register')}>Register Here</strong>
+          </p>
+          <button className="service-pill back-btn-pill" onClick={() => navigate('/')} style={{cursor: 'pointer', margin: '0 auto'}}>
+             <strong>← Back to Home Page</strong>
+          </button>
         </div>
       </div>
     </div>

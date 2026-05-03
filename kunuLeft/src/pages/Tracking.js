@@ -1,65 +1,66 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 
 function Tracking() {
-  // මේවා උදාහරණ දත්ත (Sample Data).
-  const activities = [
-    { id: 'REQ-001', type: 'Plastic', date: '2024-05-01', status: 'Completed', location: 'Colombo 03' },
-    { id: 'REQ-002', type: 'Glass', date: '2024-05-10', status: 'Pending', location: 'Nugegoda' },
-    { id: 'REQ-003', type: 'Electronic', date: '2024-05-15', status: 'In Progress', location: 'Borella' },
-    { id: 'REQ-004', type: 'Paper', date: '2024-05-20', status: 'Completed', location: 'Kottawa' },
-  ];
+  // උදාහරණ දත්ත (පසුව Firebase සමඟ සම්බන්ධ කළ හැක)
+  const [activities, setActivities] = useState([
+    { id: 'REQ001', date: '2026-05-01', type: 'Plastic', status: 'Completed', weight: '5kg' },
+    { id: 'REQ002', date: '2026-05-02', type: 'Organic', status: 'In-Progress', weight: '12kg' },
+    { id: 'REQ003', date: '2026-05-02', type: 'Paper', status: 'Pending', weight: '3kg' },
+  ]);
 
   return (
-    <div className="activity-page-wrapper">
-      <div className="container">
-        <header className="activity-header">
-          <h2>Your Activity History 📊</h2>
-          <p>ඔබ සිදුකළ සියලුම අපද්‍රව්‍ය බැහැර කිරීමේ ඉල්ලීම් මෙතැනින් පරීක්ෂා කරන්න.</p>
-        </header>
+    <div className="dashboard-padding">
+      <div className="nav-container">
+        <div className="hero-eco">
+          <h2 style={{ color: '#16a34a', marginBottom: '10px' }}>My Activity History</h2>
+          <p style={{ color: '#475569' }}>Track your waste collection requests and recycling progress.</p>
 
-        <div className="activity-stats-row">
-          <div className="stat-box">
-            <h3>04</h3>
-            <p>Total Requests</p>
+          {/* Quick Stats Summary */}
+          <div className="activity-stats-row">
+            <div className="stat-box-custom hero-eco">
+              <h3>03</h3>
+              <p>Total Requests</p>
+            </div>
+            <div className="stat-box-custom hero-eco">
+              <h3 style={{ color: '#16a34a' }}>01</h3>
+              <p>Completed</p>
+            </div>
+            <div className="stat-box-custom hero-eco">
+              <h3 style={{ color: '#ca8a04' }}>02</h3>
+              <p>Pending</p>
+            </div>
           </div>
-          <div className="stat-box">
-            <h3>02</h3>
-            <p>Completed</p>
-          </div>
-          <div className="stat-box">
-            <h3>01</h3>
-            <p>Pending</p>
-          </div>
-        </div>
 
-        <div className="activity-table-container glass-effect">
-          <table className="activity-table">
-            <thead>
-              <tr>
-                <th>Request ID</th>
-                <th>Waste Type</th>
-                <th>Date</th>
-                <th>Location</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {activities.map((item) => (
-                <tr key={item.id}>
-                  <td><strong>{item.id}</strong></td>
-                  <td>{item.type}</td>
-                  <td>{item.date}</td>
-                  <td>{item.location}</td>
-                  <td>
-                    <span className={`status-badge ${item.status.toLowerCase().replace(/\s+/g, '-')}`}>
-                      {item.status}
-                    </span>
-                  </td>
+          {/* Activity Table */}
+          <div style={{ marginTop: '30px', overflowX: 'auto' }}>
+            <table className="activity-table-new">
+              <thead>
+                <tr>
+                  <th>Request ID</th>
+                  <th>Date</th>
+                  <th>Waste Type</th>
+                  <th>Weight</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {activities.map((item) => (
+                  <tr key={item.id}>
+                    <td><strong>#{item.id}</strong></td>
+                    <td>{item.date}</td>
+                    <td>{item.type}</td>
+                    <td>{item.weight}</td>
+                    <td>
+                      <span className={`status-pill ${item.status.toLowerCase().replace(' ', '-')}`}>
+                        {item.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

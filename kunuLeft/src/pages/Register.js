@@ -21,42 +21,78 @@ function Register() {
     navigate('/login');
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
-    <div className="eco-auth-container">
-      <div className="login-glass-card animate-fade-in">
+    <div className="landing-wrapper">
+      <div className="hero-eco login-card-adjust animate-fade-in" style={{ marginTop: '20px', marginBottom: '20px' }}>
         <div className="login-header">
-          <h2 className="eco-logo">KUNU<span>LINK</span></h2>
-          <p className="login-desc-eng">Create your account</p>
-          <p className="login-desc-sin">අලුත් ගිණුමක් ආරම්භ කරන්න</p>
+          <h2 className="logo-text">KUNU<span>LINK</span></h2>
+          <p className="headline-eng">Join Today</p>
+          <p className="headline-sin">අලුත් ගිණුමක් ආරම්භ කරන්න</p>
         </div>
 
         <form onSubmit={handleRegister} className="eco-form">
           <div className="eco-input-group">
-            <label>Full Name / සම්පූර්ණ නම</label>
-            <input type="text" placeholder="Enter your name" required />
+            <label className="si-desc">Full Name / සම්පූර්ණ නම</label>
+            <input 
+              name="name"
+              className="eco-field"
+              type="text" 
+              placeholder="Enter your name" 
+              onChange={handleChange}
+              required 
+            />
           </div>
 
           <div className="eco-input-group">
-            <label>Email Address / විද්‍යුත් තැපෑල</label>
-            <input type="email" placeholder="example@mail.com" required />
+            <label className="si-desc">Email Address / විද්‍යුත් තැපෑල</label>
+            <input 
+              name="email"
+              className="eco-field"
+              type="email" 
+              placeholder="example@mail.com" 
+              onChange={handleChange}
+              required 
+            />
           </div>
 
           <div className="eco-input-group">
-            <label>Password / මුරපදය</label>
-            <input type="password" placeholder="••••••••" required />
+            <label className="si-desc">Password / මුරපදය</label>
+            <input 
+              name="password"
+              className="eco-field"
+              type="password" 
+              placeholder="••••••••" 
+              onChange={handleChange}
+              required 
+            />
           </div>
 
           <div className="eco-input-group">
-            <label>Confirm Password / මුරපදය තහවුරු කරන්න</label>
-            <input type="password" placeholder="••••••••" required />
+            <label className="si-desc">Confirm Password / මුරපදය තහවුරු කරන්න</label>
+            <input 
+              name="confirmPassword"
+              className="eco-field"
+              type="password" 
+              placeholder="••••••••" 
+              onChange={handleChange}
+              required 
+            />
           </div>
 
-          <button type="submit" className="eco-login-btn">Create Account</button>
+          <button type="submit" className="primary-eco-btn login-btn-wide">Create Account</button>
         </form>
 
         <div className="eco-auth-footer">
-          <p>Already have an account? <span onClick={() => navigate('/login')}>Login Here</span></p>
-          <button className="eco-back-link" onClick={() => navigate('/')}>← Back to Home Page</button>
+          <p className="description-box" style={{fontSize: '0.95rem', margin: '20px 0'}}>
+            Already have an account? <strong style={{color: '#16a34a', cursor: 'pointer'}} onClick={() => navigate('/login')}>Login Here</strong>
+          </p>
+          <button className="service-pill back-btn-pill" onClick={() => navigate('/')} style={{cursor: 'pointer', margin: '0 auto'}}>
+             <strong>← Back to Home Page</strong>
+          </button>
         </div>
       </div>
     </div>
