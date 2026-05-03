@@ -1,0 +1,3 @@
+# If you want your web app to be indexable by search engines, remove this file.
+User-agent: *
+Disallow:
