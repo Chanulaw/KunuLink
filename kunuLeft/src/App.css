@@ -61,14 +61,14 @@
 
 .landing-wrapper {
   /* පසුබිම තව පොඩ්ඩක් තද කොළ පැහැයට (Minty Fresh) හැරෙව්වා */
-  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  background: linear-gradient(100deg, #dcfce7 0%, #bbf7d0 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #1e293b;
-  padding: 40px 20px;
+  padding: 100px 20px;
 }
 
 /* --- Hero Section: Defined Glass --- */
@@ -461,4 +461,254 @@
 @media (max-width: 768px) {
   .activity-stats-row { grid-template-columns: 1fr; }
   .activity-table-new { font-size: 0.85rem; }
+}
+
+
+
+
+/* Navbar එකේ ප්‍රධාන සැකසුම */
+.kunulink-navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.8); /* සුදු පැහැති විනිවිද පෙනෙන ස්වභාවය */
+    backdrop-filter: blur(15px); /* පිටුපස ඇති දේ බොඳ කර පෙන්වයි */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between; /* ලෝගෝ එක වමට, මෙනු එක දකුණට */
+    align-items: center;
+    width: 90%;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* KUNULINK ලෝගෝ එක */
+.nav-brand {
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-decoration: none;
+    color: #1e293b; /* තද අළු පැහැය */
+    letter-spacing: -1px;
+}
+
+.nav-brand span {
+    color: #10b981; /* Mint Green වර්ණය */
+}
+
+/* දකුණු පැත්තේ ලින්ක්ස් */
+.nav-links, .nav-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-link-item, .nav-icon-link {
+    text-decoration: none;
+    color: #475569; /* සාමාන්‍ය අකුරු වල වර්ණය */
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.nav-link-item:hover, .nav-icon-link:hover {
+    color: #10b981; /* මවුස් එක ගෙනියද්දී කොළ පාට වේ */
+}
+
+/* Register සහ Dashboard වැනි කැපී පෙනෙන බටන්ස් */
+.nav-reg-btn, .nav-icon-link {
+    padding: 10px 22px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.nav-reg-btn {
+    background-color: #10b981; /* Green Background */
+    color: white !important;
+}
+
+.nav-reg-btn:hover {
+    background-color: #059669;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+/* Logout බටන් එක */
+.nav-logout-btn {
+    background-color: #fee2e2; /* ලා රතු පැහැය */
+    color: #ef4444; /* තද රතු අකුරු */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-logout-btn:hover {
+    background-color: #fecaca;
+}
+
+
+
+
+/* මුළු පිටුවේම පසුබිම ලා කොළ පැහැය (About page background) */
+.tracking-page-container {
+    background-color: #aaedc1; /* Light Mint Green */
+    min-height: 100vh;
+    padding-top: 100px; /* Navbar එකට ඉඩ තැබීමට */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* මැද ඇති සුදු පැහැති Glassmorphism Card එක */
+.activity-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 30px; /* පින්තූරයේ මෙන් වැඩිපුර වටකුරු කළ දාර */
+    padding: 50px;
+    width: 100%;
+    max-width: 1600px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    text-align: center;
+}
+
+/* Stat Boxes - මේවා පින්තූරයේ පහළ ඇති බෝල වැනි කොටස් වලට ගැලපෙන සේ */
+.activity-stats-row {
+    display: flex;
+    gap: 15px;
+    margin: 30px 0;
+    justify-content: center;
+}
+
+.stat-box-custom {
+    background: white;
+    padding: 15px 25px;
+    border-radius: 50px; /* පින්තූරයේ පහළ ඇති buttons වල හැඩය */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e2e8f0;
+    flex: 1;
+    max-width: 200px;
+}
+
+.stat-box-custom h3 {
+    font-size: 1.5rem;
+    color: #065f46; /* තද කොළ පැහැය */
+    margin: 0;
+}
+
+/* Table එකේ පෙනුම */
+.activity-table-new {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-top: 20px;
+}
+
+.activity-table-new th {
+    color: #64748b;
+    font-weight: 600;
+    padding: 15px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.activity-table-new td {
+    background: white;
+    padding: 15px;
+}
+
+.activity-table-new tr td:first-child { border-radius: 15px 0 0 15px; }
+.activity-table-new tr td:last-child { border-radius: 0 15px 15px 0; }
+
+
+/* Admin Page Container */
+.admin-page-container {
+    background-color: #dcfce7; /* Light Mint Green */
+    min-height: 100vh;
+    padding-top: 100px;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Modern Card for Admin */
+.modern-admin-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 30px;
+    width: 90%;
+    max-width: 1500px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    margin-bottom: 30px;
+}
+
+/* Charts Container */
+.charts-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.chart-box {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    flex: 1;
+    min-width: 300px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+/* Admin Table Styles */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.admin-table th {
+    background-color: #f0fdf4; /* Very light green */
+    color: #065f46;
+    padding: 50px;
+    text-align: left;
+    font-weight: 700;
+}
+
+.admin-table td {
+    padding: 15px 18px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+/* Premium Buttons for Admin Actions */
+.btn-premium {
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    color: white;
+}
+
+.btn-assign { background-color: #10b981; }
+.btn-collect { background-color: #3b82f6; }
+.btn-receipt { background-color: #6366f1; }
+
+.btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
