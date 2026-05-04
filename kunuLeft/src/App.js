@@ -4,12 +4,13 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
+import Login from './pages/Login'; 
+import Home from './pages/Home';   
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import RequestForm from './pages/RequestForm';
 import Tracking from './pages/Tracking';
-import UserDashboard from './pages/UserDashboard'; // <--- 1. Import this
+import UserDashboard from './pages/UserDashboard'; 
 import './App.css';
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
           console.error("Error fetching user role:", e);
         }
       } else {
-        localStorage.clear(); // Cleans up everything on logout
+        localStorage.clear(); 
       }
       setAuthReady(true);
     });
@@ -44,7 +45,7 @@ function App() {
     const userRole = localStorage.getItem('userRole');
 
     if (!authReady) return <div style={{ padding: '40px', textAlign: 'center' }}>Loading...</div>;
-    if (!isLoggedIn) return <Navigate to="/" />;
+    if (!isLoggedIn) return <Navigate to="/login" />; // login නැත්නම් login පිටුවට යවන්න
     if (role && userRole !== role) return <Navigate to="/" />;
     return children;
   };
@@ -58,10 +59,12 @@ function App() {
       <Navbar />
       <div className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} /> 
+          
+          <Route path="/login" element={<Login />} /> 
+
           <Route path="/register" element={<Register />} />
 
-          {/* Admin Route */}
           <Route
             path="/admin"
             element={
@@ -71,7 +74,6 @@ function App() {
             }
           />
 
-          {/* 2. Added Dashboard Route */}
           <Route
             path="/dashboard"
             element={
@@ -81,7 +83,6 @@ function App() {
             }
           />
 
-          {/* Keep your other routes */}
           <Route
             path="/request"
             element={
