@@ -1,17 +1,59 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { db } from '../firebase'; 
+import { collection, onSnapshot, doc, updateDoc, query, orderBy } from 'firebase/firestore';
 import jsPDF from 'jspdf'; 
 import '../App.css';
 
 function AdminDashboard() {
-  const [requests, setRequests] = useState([
-    { id: 101, user: 'Chanula', type: 'E-waste', status: 'Pending', employee: 'Not Assigned', date: '2026-04-20' },
-    { id: 102, user: 'Kethmi', type: 'Plastic', status: 'Completed', employee: 'Saman', date: '2026-04-21' },
-    { id: 103, user: 'Nimna', type: 'Plastic', status: 'Pending', employee: 'Not Assigned', date: '2026-04-22' },
-    { id: 104, user: 'Amila', type: 'Glass', status: 'Assigned', employee: 'Nimal', date: '2026-04-23' },
-  ]);
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // PDF Generation Logic (එලෙසම පවතී)
+  // 1. Real-time Firebase Listener
+  useEffect(() => {
+    const q = query(collection(db, 'requests'), orderBy('createdAt', 'desc'));
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const docs = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setRequests(docs);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // 2. Update Employee (Firestore)
+  const assignEmployee = async (id) => {
+    const empName = prompt("සේවකයාගේ නම (Employee Name):");
+    if (empName) {
+      try {
+        const docRef = doc(db, 'requests', id);
+        await updateDoc(docRef, { 
+          employee: empName, 
+          status: 'Assigned' 
+        });
+      } catch (err) {
+        alert("Error assigning employee");
+      }
+    }
+  };
+
+  // 3. Mark as Collected (Firestore)
+  const markAsCollected = async (id) => {
+    try {
+      const docRef = doc(db, 'requests', id);
+      await updateDoc(docRef, { 
+        status: 'Completed' 
+      });
+    } catch (err) {
+      alert("Error updating status");
+    }
+  };
+
+  // PDF Generation Logic
   const downloadReceipt = (req) => {
     const doc = new jsPDF();
     doc.setFillColor(16, 185, 129);
@@ -23,30 +65,26 @@ function AdminDashboard() {
     doc.setTextColor(0, 0, 0);
     doc.text('OFFICIAL WASTE COLLECTION RECEIPT', 20, 60);
     doc.setFontSize(12);
-    doc.text(`Receipt ID: #R-2026-${req.id}`, 20, 80);
-    doc.text(`Customer Name: ${req.user}`, 20, 100);
+    doc.text(`Receipt ID: #${req.id}`, 20, 80);
+    doc.text(`Customer Name: ${req.userName || req.user}`, 20, 100);
+    doc.text(`Waste Type: ${req.wasteType || req.type}`, 20, 110);
     doc.text(`Status: SUCCESSFULLY COLLECTED`, 20, 130);
     doc.save(`Receipt_${req.id}.pdf`);
   };
 
-  const assignEmployee = (id) => {
-    const empName = prompt("සේවකයාගේ නම:");
-    if (empName) setRequests(requests.map(req => req.id === id ? { ...req, employee: empName, status: 'Assigned' } : req));
-  };
-
-  const markAsCollected = (id) => {
-    setRequests(requests.map(req => req.id === id ? { ...req, status: 'Completed' } : req));
-  };
-
+  // Chart Data Logic
   const chartData = useMemo(() => {
     const counts = requests.reduce((acc, req) => {
-      acc[req.type] = (acc[req.type] || 0) + 1;
+      const type = req.wasteType || req.type || 'Other';
+      acc[type] = (acc[type] || 0) + 1;
       return acc;
     }, {});
     return Object.keys(counts).map(key => ({ name: key, count: counts[key] }));
   }, [requests]);
 
   const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'];
+
+  if (loading) return <div className="loading-spinner">Loading Database...</div>;
 
   return (
     <div className="admin-page-container">
@@ -99,22 +137,26 @@ function AdminDashboard() {
             <tbody>
               {requests.map(req => (
                 <tr key={req.id}>
-                  <td>#{req.id}</td>
-                  <td style={{ fontWeight: '600' }}>{req.user}</td>
-                  <td><span className="status-pill pending" style={{fontSize: '11px'}}>{req.type}</span></td>
-                  <td style={{ color: req.employee === 'Not Assigned' ? '#ef4444' : '#334155' }}>{req.employee}</td>
+                  <td>#{req.id.substring(0, 5)}</td>
+                  <td style={{ fontWeight: '600' }}>{req.userName || req.user}</td>
+                  <td><span className="status-pill pending" style={{fontSize: '11px'}}>{req.wasteType || req.type}</span></td>
+                  <td style={{ color: !req.employee || req.employee === 'Not Assigned' ? '#ef4444' : '#334155' }}>
+                    {req.employee || 'Not Assigned'}
+                  </td>
                   <td>
                     <span style={{ color: req.status === 'Completed' ? '#10b981' : '#f59e0b', fontWeight: 'bold' }}>
                       ● {req.status}
                     </span>
                   </td>
                   <td>
-                    {req.status === 'Pending' && (
+                    {req.status === 'pending' || req.status === 'Pending' ? (
                       <button className="btn-premium btn-assign" onClick={() => assignEmployee(req.id)}>Assign</button>
-                    )}
+                    ) : null}
+                    
                     {req.status === 'Assigned' && (
                       <button className="btn-premium btn-collect" onClick={() => markAsCollected(req.id)}>Collect</button>
                     )}
+                    
                     {req.status === 'Completed' && (
                       <button className="btn-premium btn-receipt" onClick={() => downloadReceipt(req)}>Receipt</button>
                     )}
@@ -123,6 +165,7 @@ function AdminDashboard() {
               ))}
             </tbody>
           </table>
+          {requests.length === 0 && <p style={{textAlign: 'center', padding: '20px'}}>No requests found in database.</p>}
         </div>
       </div>
     </div>

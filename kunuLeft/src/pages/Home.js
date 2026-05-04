@@ -1,32 +1,58 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase'; // ඔබේ firebase configuration එක නිවැරදිදැයි බලන්න
 import '../App.css';
 
 function Home() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError('');
 
-    if (username === 'admin' && password === '123') {
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userRole', 'admin');
-      navigate('/admin');
-    } 
-    else if (username === 'user' && password === '123') {
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userRole', 'user');
-      navigate('/dashboard');
-    } 
-    else {
-      alert("Invalid Username or Password! / දත්ත වැරදියි!");
+    try {
+      // Firebase Auth හරහා ලොග් වීම
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Firestore එකෙන් අදාළ User Role එක (Admin ද නැද්ද යන්න) ලබා ගැනීම
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const role = userData.role;
+
+        // Session එක Local Storage එකේ තබා ගැනීම
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userRole', role);
+        localStorage.setItem('uid', user.uid);
+        localStorage.setItem('username', userData.username || userData.fullName);
+
+        // Role එක අනුව Navigate කිරීම
+        if (role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard'); // හෝ ඔබ කැමති User Page එකක්
+        }
+      } else {
+        setError('User profile not found! / පරිශීලක තොරතුරු සොයාගත නොහැක.');
+      }
+    } catch (err) {
+      // වැරදි විස්තර ඇතුළත් කළහොත් පෙන්වන පණිවිඩ
+      setError('Invalid email or password! / දත්ත වැරදියි!');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    /* About එකට සමාන පෙනුමක් ලබා දීමට landing-wrapper භාවිතා කර ඇත */
     <div className="landing-wrapper"> 
       <div className="hero-eco login-card-adjust animate-fade-in">
         <div className="login-header">
@@ -35,15 +61,18 @@ function Home() {
           <p className="headline-sin">ඔබේ ගිණුමට ඇතුළු වන්න</p>
         </div>
 
+        {/* Error එකක් තිබේ නම් පෙන්වීමට */}
+        {error && <p style={{ color: 'red', textAlign: 'center', fontSize: '0.8rem' }}>{error}</p>}
+
         <form onSubmit={handleLogin} className="eco-form">
           <div className="eco-input-group">
-            <label className="si-desc">Username / පරිශීලක නාමය</label>
+            <label className="si-desc">Email Address / විද්‍යුත් තැපෑල</label>
             <input 
               className="eco-field"
-              type="text" 
-              placeholder="Enter username" 
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email" 
+              placeholder="Enter email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required 
             />
           </div>
@@ -60,7 +89,9 @@ function Home() {
             />
           </div>
 
-          <button type="submit" className="primary-eco-btn login-btn-wide">Login Now</button>
+          <button type="submit" className="primary-eco-btn login-btn-wide" disabled={isLoading}>
+            {isLoading ? 'Connecting...' : 'Login Now'}
+          </button>
         </form>
 
         <div className="eco-auth-footer">
@@ -68,7 +99,7 @@ function Home() {
             Don't have an account? <strong style={{color: '#16a34a', cursor: 'pointer'}} onClick={() => navigate('/register')}>Register Here</strong>
           </p>
           <button className="service-pill back-btn-pill" onClick={() => navigate('/')} style={{cursor: 'pointer', margin: '0 auto'}}>
-             <strong>← Back to Home Page</strong>
+              <strong>← Back to Home Page</strong>
           </button>
         </div>
       </div>
