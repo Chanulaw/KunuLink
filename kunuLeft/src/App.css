@@ -75,11 +75,13 @@ body {
 
 /* 🌿 Creative Typography */
 .logo-text {
-  font-size: 46px;
+  font-size: 60px;
   font-weight: 900;
   letter-spacing: -1.2px;
   color: var(--text-dark);
   margin-bottom: 24px;
+
+  
 }
 
 .logo-text span {
@@ -218,14 +220,14 @@ body {
   justify-content: space-between !important; /* වම සහ දකුණ කෙළවරටම තල්ලු කරයි */
   align-items: center !important;
   width: 100% !important;
-  padding: 16px 50px !important;
+  padding: 16px 150px !important;
   box-sizing: border-box !important;
   
   /* Styling */
   background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 5px solid rgba(255, 255, 255, 0.4);
   position: sticky;
   top: 0;
   z-index: 1000;
