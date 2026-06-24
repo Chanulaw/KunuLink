@@ -1,159 +1,154 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase'; 
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
 function Register() {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
+    address: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: ''
   });
+  
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(''); 
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match! / මුරපද එකිනෙකට නොගැලපේ!");
+    setError('');
+    setLoading(true);
+
+    const { name, address, email, phone, password, confirmPassword } = formData;
+
+    if (!name || !address || !email || !phone || !password) {
+      setError('කרוණාකර සියලුම විස්තර ඇතුළත් කරන්න.');
+      setLoading(false);
       return;
     }
 
-    setIsLoading(true);
-    setError('');
+    if (password !== confirmPassword) {
+      setError('Password එකිනෙකට ගැලපෙන්නේ නැත.');
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password එක සඳහා අවම වශයෙන් අකුරු/ඉලක්කම් 6ක්වත් තිබිය යුතුය.');
+      setLoading(false);
+      return;
+    }
 
     try {
-      // 1. Firebase Auth හරහා User කෙනෙක් සෑදීම
-      const userCredential = await createUserWithEmailAndPassword(
-        auth, 
-        formData.email, 
-        formData.password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Firestore එකේ විස්තර Save කිරීම
+      await updateProfile(user, { displayName: name });
+
       await setDoc(doc(db, 'users', user.uid), {
-        uid: user.uid,
-        fullName: formData.name,
-        email: formData.email,
-        role: 'user', 
-        createdAt: new Date().toISOString()
+        name: name,
+        address: address,
+        email: email,
+        phone: phone,
+        role: 'user',
+        createdAt: new Date()
       });
 
-      // 3. Session එක දැනටමත් පවත්වාගෙන යාමට LocalStorage එකට දත්ත දැමීම
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userRole', 'user');
+      localStorage.setItem('activeUserName', name);
       localStorage.setItem('uid', user.uid);
-      localStorage.setItem('username', formData.name);
 
-      alert("Account Created Successfully! / ගිණුම සාර්ථකව නිර්මාණය විය!");
-      
-      navigate('/'); 
+      navigate('/request');
 
     } catch (err) {
+      console.error("Registration Error: ", err);
       if (err.code === 'auth/email-already-in-use') {
-        setError('Email already exists! / මෙම ඊමේල් ලිපිනය දැනටමත් භාවිතයේ ඇත.');
-      } else if (err.code === 'auth/weak-password') {
-        setError('Password is too weak! / මුරපදය ප්‍රමාණවත් තරම් ශක්තිමත් නැත.');
+        setError('මෙම Email ලිපිනය දැනටමත් ලියාපදිංචි කර ඇත.');
       } else {
-        setError('Registration failed! / ලියාපදිංචි වීම අසාර්ථකයි.');
+        setError('ලියාපදිංචි වීමේදී දෝෂයක් සිදු විය: ' + err.message);
       }
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="landing-wrapper">
-      <div className="hero-eco login-card-adjust animate-fade-in" style={{ marginTop: '20px', marginBottom: '20px' }}>
-        <div className="login-header">
-          <h2 className="logo-text">KUNU<span>LINK</span></h2>
-          <p className="headline-eng">Join Today</p>
-          <p className="headline-sin">අලුත් ගිණුමක් ආරම්භ කරන්න</p>
-        </div>
+    <div className="auth-container animate-fade-in">
+      {/* 💎 Login එකට සමාන Premium Glass Card එක */}
+      <div className="register-card">
+        <h2 className="register-title">Create Account</h2>
+        <p className="register-tagline">Join KunuLink Smart Recycling Network</p>
 
         {error && (
-          <div style={{ color: '#dc2626', backgroundColor: '#fee2e2', padding: '10px', borderRadius: '8px', marginBottom: '15px', fontSize: '0.85rem', textAlign: 'center' }}>
-            {error}
+          <div className="auth-error-box">
+            ⚠️ {error}
           </div>
         )}
 
-        <form onSubmit={handleRegister} className="eco-form">
-          <div className="eco-input-group">
-            <label className="si-desc">Full Name / සම්පූර්ණ නම</label>
-            <input 
-              name="name"
-              className="eco-field"
-              type="text" 
-              placeholder="Enter your name" 
-              onChange={handleChange}
-              required 
-            />
+        <form onSubmit={handleRegister} className="register-form">
+          {/* Inputs ටික ලස්සනට පෙළගස්වන Grid Wrapper එක */}
+          <div className="form-grid">
+            
+            {/* 1. Full Name */}
+            <div className="input-group">
+              <label>Full Name</label>
+              <input type="text" name="name" placeholder="John Doe" value={formData.name} onChange={handleChange} required />
+            </div>
+
+            {/* 2. Address */}
+            <div className="input-group">
+              <label>Address</label>
+              <input type="text" name="address" placeholder="123, Galle Road, Colombo" value={formData.address} onChange={handleChange} required />
+            </div>
+
+            {/* 3. Phone Number */}
+            <div className="input-group">
+              <label>Phone Number</label>
+              <input type="tel" name="phone" placeholder="0712345678" value={formData.phone} onChange={handleChange} required />
+            </div>
+
+            {/* 4. Email Address */}
+            <div className="input-group">
+              <label>Email Address</label>
+              <input type="email" name="email" placeholder="example@mail.com" value={formData.email} onChange={handleChange} required />
+            </div>
+
+            {/* 5. Password */}
+            <div className="input-group">
+              <label>Password</label>
+              <input type="password" name="password" placeholder="••••••••" value={formData.password} onChange={handleChange} required />
+            </div>
+
+            {/* 6. Confirm Password */}
+            <div className="input-group">
+              <label>Confirm Password</label>
+              <input type="password" name="confirmPassword" placeholder="••••••••" value={formData.confirmPassword} onChange={handleChange} required />
+            </div>
+
           </div>
 
-          <div className="eco-input-group">
-            <label className="si-desc">Email Address / විද්‍යුත් තැපෑල</label>
-            <input 
-              name="email"
-              className="eco-field"
-              type="email" 
-              placeholder="example@mail.com" 
-              onChange={handleChange}
-              required 
-            />
-          </div>
-
-          <div className="eco-input-group">
-            <label className="si-desc">Password / මුරපදය</label>
-            <input 
-              name="password"
-              className="eco-field"
-              type="password" 
-              placeholder="••••••••" 
-              onChange={handleChange}
-              required 
-            />
-          </div>
-
-          <div className="eco-input-group">
-            <label className="si-desc">Confirm Password / මුරපදය තහවුරු කරන්න</label>
-            <input 
-              name="confirmPassword"
-              className="eco-field"
-              type="password" 
-              placeholder="••••••••" 
-              onChange={handleChange}
-              required 
-            />
-          </div>
-
-          <button 
-            type="submit" 
-            className="primary-eco-btn login-btn-wide"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Creating Account...' : 'Create Account'}
+          {/* Submit Button */}
+          <button type="submit" className="register-submit-btn" disabled={loading}>
+            {loading ? 'Creating Account...' : 'Register Now'}
           </button>
         </form>
 
-        <div className="eco-auth-footer">
-          <p className="description-box" style={{fontSize: '0.95rem', margin: '20px 0'}}>
-            Already have an account? <strong style={{color: '#16a34a', cursor: 'pointer'}} onClick={() => navigate('/login')}>Login Here</strong>
-          </p>
-          <button className="service-pill back-btn-pill" onClick={() => navigate('/')} style={{cursor: 'pointer', margin: '0 auto'}}>
-             <strong>← Back to Home Page</strong>
-          </button>
-        </div>
+        <p className="register-footer-text">
+          Already have an account? <span onClick={() => navigate('/login')}>Login here</span>
+        </p>
       </div>
     </div>
   );

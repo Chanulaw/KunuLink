@@ -20,35 +20,42 @@ function AdminDashboard() {
       }));
       setRequests(docs);
       setLoading(false);
+    }, (error) => {
+      console.error("Firebase Error: ", error);
+      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  // 2. Update Employee (Firestore)
+  // 2. Update Employee (Firestore එකට දත්ත Save වේ)
   const assignEmployee = async (id) => {
     const empName = prompt("සේවකයාගේ නම (Employee Name):");
-    if (empName) {
+    if (empName && empName.trim() !== "") {
       try {
         const docRef = doc(db, 'requests', id);
         await updateDoc(docRef, { 
           employee: empName, 
           status: 'Assigned' 
         });
+        alert("Employee assigned successfully!");
       } catch (err) {
+        console.error(err);
         alert("Error assigning employee");
       }
     }
   };
 
-  // 3. Mark as Collected (Firestore)
+  // 3. Mark as Collected (Firestore එක Status එක Update වේ)
   const markAsCollected = async (id) => {
     try {
       const docRef = doc(db, 'requests', id);
       await updateDoc(docRef, { 
         status: 'Completed' 
       });
+      alert("Status updated to Completed!");
     } catch (err) {
+      console.error(err);
       alert("Error updating status");
     }
   };
@@ -66,8 +73,8 @@ function AdminDashboard() {
     doc.text('OFFICIAL WASTE COLLECTION RECEIPT', 20, 60);
     doc.setFontSize(12);
     doc.text(`Receipt ID: #${req.id}`, 20, 80);
-    doc.text(`Customer Name: ${req.userName || req.user}`, 20, 100);
-    doc.text(`Waste Type: ${req.wasteType || req.type}`, 20, 110);
+    doc.text(`Customer Name: ${req.userName || req.user || 'N/A'}`, 20, 100);
+    doc.text(`Waste Type: ${req.wasteType || req.type || 'N/A'}`, 20, 110);
     doc.text(`Status: SUCCESSFULLY COLLECTED`, 20, 130);
     doc.save(`Receipt_${req.id}.pdf`);
   };
@@ -135,34 +142,37 @@ function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {requests.map(req => (
-                <tr key={req.id}>
-                  <td>#{req.id.substring(0, 5)}</td>
-                  <td style={{ fontWeight: '600' }}>{req.userName || req.user}</td>
-                  <td><span className="status-pill pending" style={{fontSize: '11px'}}>{req.wasteType || req.type}</span></td>
-                  <td style={{ color: !req.employee || req.employee === 'Not Assigned' ? '#ef4444' : '#334155' }}>
-                    {req.employee || 'Not Assigned'}
-                  </td>
-                  <td>
-                    <span style={{ color: req.status === 'Completed' ? '#10b981' : '#f59e0b', fontWeight: 'bold' }}>
-                      ● {req.status}
-                    </span>
-                  </td>
-                  <td>
-                    {req.status === 'pending' || req.status === 'Pending' ? (
-                      <button className="btn-premium btn-assign" onClick={() => assignEmployee(req.id)}>Assign</button>
-                    ) : null}
-                    
-                    {req.status === 'Assigned' && (
-                      <button className="btn-premium btn-collect" onClick={() => markAsCollected(req.id)}>Collect</button>
-                    )}
-                    
-                    {req.status === 'Completed' && (
-                      <button className="btn-premium btn-receipt" onClick={() => downloadReceipt(req)}>Receipt</button>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {requests.map(req => {
+                const currentStatus = req.status ? req.status.trim() : 'Pending';
+                return (
+                  <tr key={req.id}>
+                    <td>#{req.id.substring(0, 5)}</td>
+                    <td style={{ fontWeight: '600' }}>{req.userName || req.user || 'Anonymous'}</td>
+                    <td><span className="status-pill pending" style={{fontSize: '11px'}}>{req.wasteType || req.type || 'General'}</span></td>
+                    <td style={{ color: !req.employee || req.employee === 'Not Assigned' ? '#ef4444' : '#334155' }}>
+                      {req.employee || 'Not Assigned'}
+                    </td>
+                    <td>
+                      <span style={{ color: currentStatus === 'Completed' ? '#10b981' : currentStatus === 'Assigned' ? '#3b82f6' : '#f59e0b', fontWeight: 'bold' }}>
+                        ● {currentStatus}
+                      </span>
+                    </td>
+                    <td>
+                      {(currentStatus === 'pending' || currentStatus === 'Pending') && (
+                        <button className="btn-premium btn-assign" onClick={() => assignEmployee(req.id)}>Assign</button>
+                      )}
+                      
+                      {currentStatus === 'Assigned' && (
+                        <button className="btn-premium btn-collect" onClick={() => markAsCollected(req.id)}>Collect</button>
+                      )}
+                      
+                      {currentStatus === 'Completed' && (
+                        <button className="btn-premium btn-receipt" onClick={() => downloadReceipt(req)}>Receipt</button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
           {requests.length === 0 && <p style={{textAlign: 'center', padding: '20px'}}>No requests found in database.</p>}

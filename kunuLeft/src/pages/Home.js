@@ -2,14 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-// 1. Rename function to Home
 function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="landing-wrapper">
+    <div className="landing-wrapper animate-fade-in">
       <section className="hero-eco">
-        <div className="hero-content animate-fade-in">
+        <div className="hero-glass-card"> {/* 👈 Professional Glass Card එකක් එකතු කළා */}
           <h1 className="logo-text">KUNU<span>LINK</span></h1>
           
           <div className="main-headlines">
@@ -28,32 +27,32 @@ function Home() {
           </p>
 
           <div className="button-group">
-            {/* 2. Ensure this points to your renamed login route */}
             <button className="primary-eco-btn" onClick={() => navigate('/login')}>
-              Get Started / ආරම්භ කරන්න
+              Get Started / ආරම්භ කරන්න →
             </button>
           </div>
         </div>
       </section>
 
+      {/* 下 ⚡ Services Bar Section */}
       <section className="services-bar">
         <div className="service-pill">
           <span className="icon-circle">📍</span>
-          <div>
+          <div className="service-info">
             <strong>Live Mapping</strong>
             <p>සිතියම හරහා ස්ථානය දැක්වීම</p>
           </div>
         </div>
         <div className="service-pill">
           <span className="icon-circle">♻️</span>
-          <div>
+          <div className="service-info">
             <strong>Eco Sorting</strong>
             <p>වර්ගීකරණය කළ බැහැර කිරීම්</p>
           </div>
         </div>
         <div className="service-pill">
           <span className="icon-circle">🔔</span>
-          <div>
+          <div className="service-info">
             <strong>Quick Alerts</strong>
             <p>ඉක්මන් දැනුම්දීම්</p>
           </div>
@@ -63,5 +62,4 @@ function Home() {
   );
 }
 
-// 3. Update the export
 export default Home;
