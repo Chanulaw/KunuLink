@@ -4,11 +4,12 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import UserDashboard from './pages/UserDashboard'; // ඔයාගේ Map එක තියෙන පේජ් එක
+import UserDashboard from './pages/UserDashboard'; 
 import Activity from './pages/Activity';
 import AdminDashboard from './pages/AdminDashboard';
-import AdminUsers from './pages/AdminUsers'; // 👈 අලුතින් එක් කළ පිටුව
+import AdminUsers from './pages/AdminUsers'; // 
 import './App.css';
+import Footer from './components/Footer';
 
 // 🔒 User ආරක්ෂිත පියවර (ProtectedRoute)
 const UserProtectedRoute = ({ children }) => {
@@ -53,6 +54,8 @@ function App() {
         {/* වැරදි URL ආවොත් Home එකට හරවා යැවීම */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+
+      <Footer />
     </Router>
   );
 }
