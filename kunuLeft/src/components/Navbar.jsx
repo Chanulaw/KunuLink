@@ -77,6 +77,15 @@ function Navbar() {
           </>
         )}
 
+        {/* 8. Eco-Sorting Page */}
+        {currentPath === '/eco-sorting' && (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/home')}>Home</button>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/login')}>Login</button>
+            <button className="nav-btn nav-primary" onClick={() => navigate('/register')}>Register</button>
+          </>
+        )}
+
       </div>
     </nav>
   );

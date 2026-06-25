@@ -1,14 +1,10 @@
-/* ==========================================
-   💎 KUNULINK RICH MINT SLATE THEME (MEDIUM LIGHT)
-   ========================================== */
 :root {
-  /* 🌿 වර්ණ තව පොඩ්ඩක් තද කර සකස් කළ සුපිරි පසුබිම */
   --rich-bg: linear-gradient(135deg, #b2dfdb 0%, #cbd5e1 50%, #94a3b8 100%);
-  --aqua-sky: #0284c7;           /* Rich Sky Blue */
-  --eco-mint: #059669;           /* Deep Eco Mint Green */
-  --glass-card-rich: rgba(255, 255, 255, 0.55); /* පසුබිමට සාපේක්ෂව කැපී පෙනෙන වීදුරු කාඩ්පත */
-  --text-dark: #0f172a;          /* Rich Navy Dark Text */
-  --text-muted: #334155;         /* Deep Slate Text */
+  --aqua-sky: #0284c7;          
+  --eco-mint: #059669;           
+  --glass-card-rich: rgba(255, 255, 255, 0.55); 
+  --text-dark: #0f172a;          
+  --text-muted: #334155;        
   --glass-border: rgba(255, 255, 255, 0.6);
 }
 
@@ -28,7 +24,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ✨ Smooth Page Load Animation */
+/* Smooth Page Load Animation */
 .animate-fade-in {
   animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -38,9 +34,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================
-   🏡 HERO SECTION & LIGHT GLASS CARD
-   ========================================== */
+/* HERO SECTION & LIGHT GLASS CARD */
 .landing-wrapper {
   display: flex;
   flex-direction: column;
@@ -57,7 +51,7 @@ body {
   margin-bottom: 45px;
 }
 
-/* 💎 Premium Medium Glassmorphism Container */
+/*Premium Medium Glassmorphism Container */
 .hero-glass-card {
   background: var(--glass-card-rich);
   backdrop-filter: blur(25px) saturate(180%);
@@ -68,12 +62,10 @@ body {
   text-align: center;
   max-width: 850px;
   width: 100%;
-  /* වඩාත් කැපී පෙනෙන සෙවණැල්ලක් */
   box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12), 
               inset 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
-/* 🌿 Creative Typography */
 .logo-text {
   font-size: 60px;
   font-weight: 900;
@@ -90,7 +82,6 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* 📢 Headlines & Language Layout */
 .main-headlines {
   margin-bottom: 24px;
 }
@@ -106,11 +97,10 @@ body {
 .headline-sin {
   font-size: 17px;
   font-weight: 700;
-  color: #0369a1; /* Deeper Sky Blue */
+  color: #0369a1; 
   margin-top: 10px;
 }
 
-/* 📦 Description Paragraphs */
 .description-box {
   font-size: 15px;
   color: var(--text-muted);
@@ -127,7 +117,6 @@ body {
   font-weight: 500;
 }
 
-/* 🚀 Premium Clean Gradient Button */
 .primary-eco-btn {
   background: linear-gradient(135deg, var(--aqua-sky) 0%, var(--eco-mint) 100%);
   color: white;
@@ -147,9 +136,7 @@ body {
   filter: brightness(1.05);
 }
 
-/* ==========================================
-   ⚡ MODERN SERVICES GRID
-   ========================================== */
+ 
 .services-bar {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -200,9 +187,6 @@ body {
   color: #334155;
 }
 
-/* ==========================================
-   📱 MOBILE ADAPTABILITY
-   ========================================== */
 @media (max-width: 640px) {
   .hero-glass-card { padding: 40px 24px; border-radius: 24px; }
   .logo-text { font-size: 36px; }
@@ -211,19 +195,16 @@ body {
   .services-bar { grid-template-columns: 1fr; gap: 15px; }
 }
 
-/* ==========================================
-   🧭 ULTRA-LOCK RIGHT ALIGNED NAVBAR
-   ========================================== */
+
 .main-navbar {
   display: flex !important;
   flex-direction: row !important;
-  justify-content: space-between !important; /* වම සහ දකුණ කෙළවරටම තල්ලු කරයි */
+  justify-content: space-between !important; 
   align-items: center !important;
   width: 100% !important;
   padding: 16px 150px !important;
   box-sizing: border-box !important;
   
-  /* Styling */
   background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
@@ -234,7 +215,6 @@ body {
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
 
-/* 🏷️ Logo Alignment */
 .nav-logo {
   font-size: 24px;
   font-weight: 900;
@@ -250,16 +230,13 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* ➡️ බොත්තම් දකුණටම ලොක් කරන ප්‍රබලතම ක්‍රම 3 (3-Layer Lock) */
 .nav-links {
   display: flex !important;
   align-items: center !important;
   gap: 16px !important;
   
-  /* 1. තනිවම දකුණට තල්ලු වීම */
   margin-left: auto !important; 
   
-  /* 2. මුළු පළලම ගැනීම වැළැක්වීම */
   width: max-content !important; 
   float: right !important;
 }
@@ -267,9 +244,7 @@ body {
 
 
 
-/* ==========================================
-   🔐 KUNULINK PREMIUM LOGIN PAGE STYLES
-   ========================================== */
+
 .auth-container {
   display: flex;
   align-items: center;
@@ -278,7 +253,6 @@ body {
   padding: 30px 20px;
 }
 
-/* 💎 Login Glass Card */
 .login-card {
   background: var(--glass-card-rich);
   backdrop-filter: blur(25px) saturate(180%);
@@ -293,7 +267,6 @@ body {
   text-align: center;
 }
 
-/* 🏷️ Brand Header inside Login */
 .brand-header {
   margin-bottom: 25px;
 }
@@ -325,7 +298,6 @@ body {
   margin-bottom: 25px;
 }
 
-/* 📝 Modern Input Fields Styling */
 .login-form {
   text-align: left;
 }
@@ -356,14 +328,12 @@ body {
   transition: all 0.25s ease;
 }
 
-/* ⚡ Input Focus Effect */
 .input-group input:focus {
   background: #ffffff !important;
   border-color: var(--aqua-sky);
   box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
 }
 
-/* ⚠️ Premium Alert Box */
 .auth-error-box {
   color: #b91c1c;
   font-size: 13px;
@@ -377,7 +347,6 @@ body {
   line-height: 1.4;
 }
 
-/* 🚀 Login Button Style Matching Home CTA */
 .login-submit-btn {
   width: 100%;
   background: linear-gradient(135deg, var(--aqua-sky) 0%, var(--eco-mint) 100%);
@@ -405,7 +374,6 @@ body {
   box-shadow: none;
 }
 
-/* 🔗 Footer Section styling */
 .auth-footer {
   margin-top: 25px;
   font-size: 14px;
@@ -430,7 +398,6 @@ body {
   text-decoration: underline;
 }
 
-/* 📱 Responsive Mobile Adjustments */
 @media (max-width: 480px) {
   .login-card {
     padding: 35px 25px;
@@ -439,16 +406,9 @@ body {
   .brand-logo { font-size: 28px; }
 }
 
+/* KUNULINK REGISTER PAGE STYLES */
 
 
-
-
-
-
-/* ==========================================
-   📝 KUNULINK PREMIUM REGISTER PAGE STYLES
-   ========================================== */
-/* 💎 Register Glass Card Container */
 .register-card {
   background: var(--glass-card-rich);
   backdrop-filter: blur(25px) saturate(180%);
@@ -457,7 +417,7 @@ body {
   border-radius: 28px;
   padding: 45px 50px;
   width: 100%;
-  max-width: 680px; /* Inputs වැඩි නිසා Card එක පොඩ්ඩක් පළල් කළා */
+  max-width: 680px; 
   box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12),
               inset 0 1px 2px rgba(255, 255, 255, 0.5);
   text-align: center;
@@ -477,19 +437,17 @@ body {
   margin-bottom: 30px;
 }
 
-/* 📊 Inputs ටික 2-Column Grid එකකට හැදීම */
 .register-form {
   text-align: left;
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* කම්පියුටරයෙන් බලද්දී තීරු 2යි */
+  grid-template-columns: repeat(2, 1fr); 
   gap: 18px 24px;
   margin-bottom: 25px;
 }
 
-/* 🚀 Register Submit Button Styles */
 .register-submit-btn {
   width: 100%;
   background: linear-gradient(135deg, var(--aqua-sky) 0%, var(--eco-mint) 100%);
@@ -516,7 +474,6 @@ body {
   box-shadow: none;
 }
 
-/* 🔗 Footer Styling */
 .register-footer-text {
   margin-top: 25px;
   font-size: 14px;
@@ -537,14 +494,13 @@ body {
   text-decoration: underline;
 }
 
-/* 📱 Responsive Mobile View Adjustments */
 @media (max-width: 640px) {
   .register-card {
     padding: 35px 20px;
     border-radius: 24px;
   }
   .form-grid {
-    grid-template-columns: 1fr; /* ෆෝන් එකෙන් බලද්දී එක පෙළට සකස් වේ */
+    grid-template-columns: 1fr; 
     gap: 16px;
   }
   .register-title { font-size: 22px; }
@@ -553,16 +509,15 @@ body {
 
 
 
-/* ==========================================
-   📊 KUNULINK USER DASHBOARD PRESTIGE STYLES
-   ========================================== */
+/* KUNULINK USER DASHBOARD PRESTIGE STYLES*/
+
+
 .dashboard-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
 }
 
-/* 🌤️ Top Welcome Banner */
 .welcome-banner {
   text-align: left;
   margin-bottom: 35px;
@@ -585,19 +540,17 @@ body {
 .dash-subtitle {
   font-size: 16px;
   font-weight: 600;
-  color: #0369a1; /* Active Slate Blue */
+  color: #0369a1; 
   margin-top: 6px;
 }
 
-/* 🎛️ Responsive Dashboard Side-by-Side Grid */
 .dash-grid-layout {
   display: grid;
-  grid-template-columns: 1.4fr 1fr; /* Map එකට ඉඩ කඩ වැඩියෙන් දමා ඇත */
+  grid-template-columns: 1.4fr 1fr; 
   gap: 30px;
   align-items: start;
 }
 
-/* 💎 Shared Dashboard Glass Cards */
 .dash-glass-card {
   background: var(--glass-card-rich);
   backdrop-filter: blur(25px) saturate(180%);
@@ -617,7 +570,6 @@ body {
   letter-spacing: -0.3px;
 }
 
-/* 🗺️ Map Wrapper Styling */
 .map-wrapper {
   border-radius: 16px;
   overflow: hidden;
@@ -625,7 +577,6 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
 }
 
-/* 🔽 Form Field Elements Overrides */
 .eco-select-field, .eco-file-field {
   width: 100%;
   padding: 14px;
@@ -646,7 +597,6 @@ body {
   box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
 }
 
-/* 🚀 File input customized style */
 .eco-file-field::-webkit-file-upload-button {
   background: linear-gradient(135deg, var(--aqua-sky) 0%, var(--eco-mint) 100%);
   border: none;
@@ -658,7 +608,6 @@ body {
   margin-right: 10px;
 }
 
-/* 🔘 Submit Button Styling */
 .dash-submit-btn {
   width: 100%;
   background: linear-gradient(135deg, var(--aqua-sky) 0%, var(--eco-mint) 100%);
@@ -680,10 +629,9 @@ body {
   filter: brightness(1.03);
 }
 
-/* 📱 Mobile Responsiveness */
 @media (max-width: 900px) {
   .dash-grid-layout {
-    grid-template-columns: 1fr; /* ෆෝන් එකෙන් බලද්දී එකකට යටින් එකක් වැටේ */
+    grid-template-columns: 1fr; 
     gap: 20px;
   }
   .dash-welcome-text { font-size: 28px; }
@@ -696,9 +644,7 @@ body {
 
 
 
-/* ==========================================
-   📈 KUNULINK ACTIVITY TRACKER PRESTIGE STYLES
-   ========================================== */
+/* KUNULINK ACTIVITY TRACKER PRESTIGE STYLES*/
 
 .tracking-page-container {
   max-width: 900px;
@@ -716,7 +662,7 @@ body {
   box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
 }
 
-/* 📊 Stats Section */
+/*Stats Section */
 .activity-stats-row {
   display: flex;
   justify-content: space-between;
@@ -740,7 +686,6 @@ body {
   margin: 0;
 }
 
-/* 📋 Table Styles */
 .activity-table-new {
   width: 100%;
   border-collapse: separate;
@@ -789,9 +734,7 @@ body {
 
 
 
-/* ==========================================
-   🏢 KUNULINK ADMIN DASHBOARD PRESTIGE STYLES
-   ========================================== */
+
 .admin-page-container {
   max-width: 1200px;
   margin: 40px auto;
@@ -807,7 +750,7 @@ body {
   box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
 }
 
-/* 📈 Analytics Charts Grid */
+/*  Analytics Charts Grid */
 .charts-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -823,7 +766,7 @@ body {
   box-shadow: 0 4px 6px rgba(0,0,0,0.02);
 }
 
-/* 📋 Admin Table Styling */
+/* Admin Table Styling */
 .admin-table {
   width: 100%;
   border-collapse: separate;
@@ -844,11 +787,10 @@ body {
   background: rgba(255, 255, 255, 0.4);
 }
 
-/* Rounded Row Corners */
 .admin-table tr td:first-child { border-left: 1px solid rgba(255, 255, 255, 0.8); border-radius: 12px 0 0 12px; }
 .admin-table tr td:last-child { border-right: 1px solid rgba(255, 255, 255, 0.8); border-radius: 0 12px 12px 0; }
 
-/* 🔘 Premium Buttons */
+/* Premium Buttons */
 .btn-premium {
   border: none;
   padding: 8px 16px;
@@ -870,7 +812,6 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* 📱 Responsive */
 @media (max-width: 768px) {
   .charts-grid { grid-template-columns: 1fr; }
   .modern-admin-card { padding: 20px; }
@@ -939,7 +880,7 @@ body {
 }
 
 
-
+/* Footer */
 .footer {
   margin-top: 80px;
   padding: 60px 5% 30px;
@@ -1026,6 +967,136 @@ body {
   }
 }
 
+/* Eco-Sorting Page */
+.eco-page {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 20px;
+}
 
+.eco-header-card,
+.eco-info-card,
+.eco-card {
+  background: var(--glass-card-rich);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+}
 
+.eco-header-card {
+  text-align: center;
+  padding: 50px;
+  margin-bottom: 40px;
+}
 
+.eco-tagline {
+  color: var(--text-muted);
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+.eco-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.eco-card {
+  padding: 30px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.eco-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.eco-card h2 {
+  color: var(--text-dark);
+  margin-bottom: 20px;
+}
+
+.eco-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.eco-card li {
+  margin: 10px 0;
+  color: var(--text-muted);
+}
+
+.eco-btn {
+  margin-top: 25px;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.eco-btn:hover {
+  transform: translateY(-2px);
+}
+
+.blue-btn {
+  background: #0284c7;
+}
+
+.green-btn {
+  background: #059669;
+}
+
+.red-btn {
+  background: #ef4444;
+}
+
+.eco-info-card {
+  padding: 40px;
+  margin-bottom: 35px;
+}
+
+.eco-info-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--text-dark);
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.tips-grid div {
+  background: rgba(255,255,255,0.45);
+  padding: 20px;
+  border-radius: 18px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+@media (max-width: 768px) {
+  .eco-header-card,
+  .eco-info-card,
+  .eco-card {
+    padding: 25px;
+  }
+
+  .logo-text {
+    font-size: 38px;
+  }
+}

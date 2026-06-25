@@ -43,7 +43,9 @@ function Home() {
             <p>සිතියම හරහා ස්ථානය දැක්වීම</p>
           </div>
         </div>
-        <div className="service-pill">
+        <div className="service-pill"
+          onClick={() => navigate('/eco-sorting')}
+          style={{ cursor: 'pointer' }}>
           <span className="icon-circle">♻️</span>
           <div className="service-info">
             <strong>Eco Sorting</strong>
