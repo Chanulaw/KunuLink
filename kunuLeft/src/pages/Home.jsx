@@ -8,7 +8,7 @@ function Home() {
   return (
     <div className="landing-wrapper animate-fade-in">
       <section className="hero-eco">
-        <div className="hero-glass-card"> {/* 👈 Professional Glass Card එකක් එකතු කළා */}
+        <div className="hero-glass-card"> 
           <h1 className="logo-text">KUNU<span>LINK</span></h1>
           
           <div className="main-headlines">
@@ -33,33 +33,39 @@ function Home() {
           </div>
         </div>
       </section>
+    <section className="services-section" id="services">
+     <div className="services-grid">
 
-      {/* 下 ⚡ Services Bar Section */}
-      <section className="services-bar">
-        <div className="service-pill">
-          <span className="icon-circle">📍</span>
-          <div className="service-info">
-            <strong>Live Mapping</strong>
-            <p>සිතියම හරහා ස්ථානය දැක්වීම</p>
-          </div>
-        </div>
-        <div className="service-pill"
-          onClick={() => navigate('/eco-sorting')}
-          style={{ cursor: 'pointer' }}>
-          <span className="icon-circle">♻️</span>
-          <div className="service-info">
-            <strong>Eco Sorting</strong>
-            <p>වර්ගීකරණය කළ බැහැර කිරීම්</p>
-          </div>
-        </div>
-        <div className="service-pill">
-          <span className="icon-circle">🔔</span>
-          <div className="service-info">
-            <strong>Quick Alerts</strong>
-            <p>ඉක්මන් දැනුම්දීම්</p>
-          </div>
-        </div>
-      </section>
+      
+      <div className="service-card">
+        <div className="service-icon">📍</div>
+        <h4>Live Mapping | සජීවී සිතියම්කරණය</h4>
+        <p>Real-time location tracking for waste collection.</p>
+      </div>
+
+      
+      <div className="service-card clickable" onClick={() => navigate("/eco-guide")}>
+        <div className="service-icon">♻️</div>
+        <h4>Eco Guide | Waste Sorting Help</h4>
+        <p>
+          Learn how to separate waste correctly before submitting a request.
+        </p>
+        <span className="eco-badge">
+          Open Guide →
+        </span>
+      </div>
+
+      
+      <div className="service-card">
+        <div className="service-icon">🔔</div>
+        <h4>Quick Alerts | ක්ෂණික දැනුම්දීම්</h4>
+        <p>Instant notifications for updates and pickups. </p>
+      </div>
+
+    </div>
+    </section>
+
+    
     </div>
   );
 }

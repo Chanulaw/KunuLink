@@ -24,9 +24,10 @@ function Navbar() {
         {/* 1. Home Page */}
         {currentPath === '/' && (
           <>
+            <button className="nav-btn nav-active" onClick={() => navigate('/')}> Home</button>
             <button className="nav-btn nav-secondary" onClick={() => navigate('/login')}>Login</button>
-            <button className="nav-btn nav-primary" onClick={() => navigate('/register')}>Register</button>
-          </>
+            <button className="nav-btn nav-primary" onClick={() => navigate('/register')}> Register</button>
+        </>
         )}
 
         {/* 2. Login Page */}
@@ -77,8 +78,17 @@ function Navbar() {
           </>
         )}
 
-        {/* 8. Eco-Sorting Page */}
-        {currentPath === '/eco-sorting' && (
+        {/* 8. EcoGuide Page */}
+        {currentPath === '/eco-guide' && (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate("/home")}>Home</button>
+            <button className="nav-btn nav-secondary" onClick={() => navigate("/login")}>Login</button>
+            <button className="nav-btn nav-primary" onClick={() => navigate("/register")}>Get Started</button>          
+          </>
+        )}
+
+        {/* 9. Live Mapping Page */}
+        {currentPath === '/live-mapping' && (
           <>
             <button className="nav-btn nav-secondary" onClick={() => navigate('/home')}>Home</button>
             <button className="nav-btn nav-secondary" onClick={() => navigate('/login')}>Login</button>

@@ -8,7 +8,7 @@ import UserDashboard from './pages/UserDashboard';
 import Activity from './pages/Activity';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers'; 
-import EcoSorting from "./pages/EcoSorting"; 
+import EcoGuide from "./pages/EcoGuide"; 
 import './App.css';
 import Footer from './components/Footer';
 
@@ -55,7 +55,10 @@ function App() {
         {/* වැරදි URL ආවොත් Home එකට හරවා යැවීම */}
         <Route path="*" element={<Navigate to="/" replace />} />
 
-        <Route path="/eco-sorting" element={<EcoSorting />} />
+        <Route path="/eco-guide" element={<EcoGuide />} />
+
+
+
       </Routes>
 
       

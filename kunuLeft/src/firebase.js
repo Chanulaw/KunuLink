@@ -1,5 +1,3 @@
-// firebase.js
-
 import { initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
@@ -15,20 +13,17 @@ const firebaseConfig = {
   measurementId: "G-KN25CV0SDL"
 };
 
-// Initialize app
 const app = initializeApp(firebaseConfig);
 
-// Analytics (safe)
-let analytics;
-isSupported().then((yes) => {
-  if (yes) analytics = getAnalytics(app);
-});
-
-// Firestore DB
-const db = getFirestore(app);
+// Firestore
+export const db = getFirestore(app);
 
 // Auth
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
-// Export everything
-export { app, analytics, db, auth };
+// Analytics (safe async)
+export const analyticsPromise = isSupported().then((ok) =>
+  ok ? getAnalytics(app) : null
+);
+
+export default app;
