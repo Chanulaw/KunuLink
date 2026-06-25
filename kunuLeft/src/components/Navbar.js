@@ -1,59 +1,82 @@
 import React from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import '../App.css';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // LocalStorage එකෙන් දත්ත ලබා ගැනීම
+  const currentPath = location.pathname;
+
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const userRole = localStorage.getItem('userRole');
-  const path = location.pathname;
 
   const handleLogout = () => {
-    localStorage.clear(); // සියලු දත්ත මකා දැමීම
-    navigate('/'); // Logout වූ පසු කෙලින්ම About පිටුවට (/) යවයි
+    localStorage.clear();
+    navigate('/', { replace: true });
   };
 
   return (
-    <nav className="kunulink-navbar">
-      <div className="nav-wrapper">
-        <Link to="/" className="nav-brand">
-          KUNU<span>LINK</span>
-        </Link>
+    <nav className="main-navbar animate-fade-in">
+      <div className="nav-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+        KUNU<span>LINK</span>
+      </div>
+      <div className="nav-links">
+        
+        {/* 1. Home Page */}
+        {currentPath === '/' && (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/login')}>Login</button>
+            <button className="nav-btn nav-primary" onClick={() => navigate('/register')}>Register</button>
+          </>
+        )}
 
-        <div className="nav-links">
-          
-          {/* About, Login, Register පිටුවලදී පෙන්වන දේ */}
-          {!isLoggedIn || path === '/' || path === '/login' || path === '/register' ? (
-            <>
-              <Link to="/" className="nav-link-item">Home</Link>
-              <Link to="/login" className="nav-link-item">Login</Link>
-              <Link to="/register" className="nav-reg-btn">Register</Link>
-            </>
-          ) : (
-            <div className="nav-user-actions">
-              
-              {/* සාමාන්‍ය User කෙනෙක් නම් */}
-              {userRole === 'user' && (
-                <>
-                  <Link to="/dashboard" className="nav-link-item">Dashboard</Link>
-                  <Link to="/tracking" className="nav-icon-link">Activity</Link>
-                </>
-              )}
-              
-              {/* Admin කෙනෙක් නම් */}
-              {userRole === 'admin' && (
-                <Link to="/" className="nav-link-item">Home</Link>
-              )}
+        {/* 2. Login Page */}
+        {currentPath === '/login' && (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/register')}>Register</button>
+            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
+          </>
+        )}
 
-              <button className="nav-logout-btn" onClick={handleLogout} style={{ marginLeft: '15px' }}>
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
+        {/* 3. Register Page */}
+        {currentPath === '/register' && (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/login')}>Login</button>
+            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
+          </>
+        )}
+
+        {/* 4. User Dashboard / Map Page */}
+        {currentPath === '/request' && isLoggedIn && userRole === 'user' && (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/activity')}>Activity</button>
+            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
+          </>
+        )}
+
+        {/* 5. Activity Page (යාවත්කාලීන කරන ලදී) */}
+        {currentPath === '/activity' && isLoggedIn && userRole === 'user' && (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/request')}>Dashboard</button>
+            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
+          </>
+        )}
+
+        {/* 6. Admin Dashboard */}
+        {currentPath === '/admin' && isLoggedIn && userRole === 'admin' && (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/admin/users')}>Users Details</button>
+            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
+          </>
+        )}
+
+        {/* 7. Admin Users Page */}
+        {currentPath === '/admin/users' && (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/admin')}>Back to View</button>
+            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
+          </>
+        )}
+
       </div>
     </nav>
   );
