@@ -938,9 +938,7 @@ body {
   box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
 }
 
-/* ==========================================
-   🌿 KUNULINK PREMIUM GLASS FOOTER
-   ========================================== */
+
 
 .footer {
   margin-top: 80px;
@@ -960,7 +958,6 @@ body {
   margin: 0 auto;
 }
 
-/* 📌 Footer Sections */
 .footer-section h2,
 .footer-section h3 {
   color: var(--text-dark);
@@ -974,7 +971,6 @@ body {
   line-height: 1.6;
 }
 
-/* 🧭 Links */
 .footer-links {
   list-style: none;
   padding: 0;
@@ -997,7 +993,6 @@ body {
   padding-left: 6px;
 }
 
-/* 🌈 Logo Highlight */
 .footer-logo {
   font-size: 28px;
   font-weight: 900;
@@ -1010,7 +1005,6 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* 🔻 Bottom Bar */
 .footer-bottom {
   text-align: center;
   margin-top: 40px;
@@ -1020,7 +1014,6 @@ body {
   font-size: 13px;
 }
 
-/* 📱 Mobile Responsive */
 @media (max-width: 768px) {
   .footer-container {
     grid-template-columns: 1fr;
