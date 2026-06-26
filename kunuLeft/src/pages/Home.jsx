@@ -33,36 +33,77 @@ function Home() {
           </div>
         </div>
       </section>
-    <section className="services-section" id="services">
-     <div className="services-grid">
 
+    <section id="services" className="services-section">
+
+    <div className="section-header">
+        <h3>Our Services | අපගේ සේවාවන්</h3>
+        <p>
+          Smart waste management solutions designed for cleaner and greener communities.
+          <br />
+          පිරිසිදු හා හරිත ප්‍රජාවන් සඳහා නිර්මාණය කළ නවීන අපද්‍රව්‍ය කළමනාකරණ විසඳුම්.
+        </p>
+    </div>
+
+
+     <div className="services-grid">
       
       <div className="service-card">
-        <div className="service-icon">📍</div>
-        <h4>Live Mapping | සජීවී සිතියම්කරණය</h4>
-        <p>Real-time location tracking for waste collection.</p>
+          <div className="service-icon">📍</div>
+
+          <h4>Live Collection Tracking | සජීවී එකතු කිරීමේ නිරීක්ෂණය</h4>
+
+          <p>
+            Follow your waste collection request from pickup confirmation to successful collection with real-time location updates.
+            <br />
+            එකතු කිරීම තහවුරු වූ මොහොතේ සිට අපද්‍රව්‍ය එකතු කරන තෙක් සජීවී ස්ථාන යාවත්කාලීන සමඟ ඔබගේ ඉල්ලීම නිරීක්ෂණය කරන්න.
+          </p>
       </div>
 
       
-      <div className="service-card clickable" onClick={() => navigate("/eco-guide")}>
-        <div className="service-icon">♻️</div>
-        <h4>Eco Guide | Waste Sorting Help</h4>
-        <p>
-          Learn how to separate waste correctly before submitting a request.
-        </p>
-        <span className="eco-badge">
-          Open Guide →
-        </span>
-      </div>
+      <div
+      className="service-card clickable"
+      onClick={() => navigate("/eco-guide")}>
+      <div className="service-icon">♻️</div>
+
+      <h4>
+        Eco Guide | අපද්‍රව්‍ය වර්ගීකරණ මාර්ගෝපදේශය
+      </h4>
+
+      <p><br />
+        Learn how to identify and separate recyclable waste before submitting
+        your collection request.
+        <br />
+        අපද්‍රව්‍ය එකතු කිරීමේ ඉල්ලීමක් යොමු කිරීමට පෙර
+        ප්‍රතිචක්‍රීකරණය කළ හැකි අපද්‍රව්‍ය නිවැරදිව වර්ග කිරීම
+        ඉගෙන ගන්න.
+      </p>
+      <br />
+      <span className="eco-badge">
+         📖 Open Guide →
+      </span>
+    </div>
 
       
       <div className="service-card">
         <div className="service-icon">🔔</div>
-        <h4>Quick Alerts | ක්ෂණික දැනුම්දීම්</h4>
-        <p>Instant notifications for updates and pickups. </p>
-      </div>
+
+          <h4>
+            Smart Notifications | ක්ෂණික දැනුම්දීම්
+          </h4>
+
+          <p><br />
+            Receive instant updates when your waste collection request is accepted,
+            scheduled, or completed.
+            <br />
+            ඔබගේ අපද්‍රව්‍ය එකතු කිරීමේ ඉල්ලීම පිළිගත් විට,
+            සැලසුම් කළ විට සහ සාර්ථකව අවසන් කළ විට
+            ක්ෂණික දැනුම්දීම් ලබාගන්න.
+          </p>
+        </div>
 
     </div>
+
     </section>
 
     

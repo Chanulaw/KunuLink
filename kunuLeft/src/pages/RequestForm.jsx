@@ -52,6 +52,10 @@ function RequestForm() {
         wasteType: wasteType,
         location: { lat: position.lat, lng: position.lng },
         status: 'Pending',
+        collecterId: "",
+        collecterName: "",
+        collecterPhone: "",
+        collecterLocation: null,
         createdAt: serverTimestamp()
       });
 

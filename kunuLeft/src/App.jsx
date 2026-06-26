@@ -9,6 +9,7 @@ import Activity from './pages/Activity';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers'; 
 import EcoGuide from "./pages/EcoGuide"; 
+import CollectorDashboard from './pages/CollectorDashboard';
 import './App.css';
 import Footer from './components/Footer';
 
@@ -31,6 +32,17 @@ const AdminProtectedRoute = ({ children }) => {
   if (!isLoggedIn || userRole !== 'admin') {
     return <Navigate to="/login" replace />;
   }
+  return children;
+};
+
+const CollectorProtectedRoute = ({ children }) => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const userRole = localStorage.getItem("userRole");
+
+  if (!isLoggedIn || userRole !== "collector") {
+    return <Navigate to="/login" replace />;
+  }
+
   return children;
 };
 
@@ -58,8 +70,7 @@ function App() {
         <Route path="/eco-guide" element={<EcoGuide />} />
 
 
-
-      </Routes>
+       <Route path="/collector" element={<CollectorProtectedRoute><CollectorDashboard /></CollectorProtectedRoute>} />      </Routes>
 
       
 
