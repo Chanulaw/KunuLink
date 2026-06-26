@@ -65,6 +65,8 @@ function Navbar() {
         {/* 6. Admin Dashboard */}
         {currentPath === '/admin' && isLoggedIn && userRole === 'admin' && (
           <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/collectors/add')}>Add Collectors</button>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/collectors')}>Active Collectors</button>
             <button className="nav-btn nav-secondary" onClick={() => navigate('/admin/users')}>Users Details</button>
             <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
           </>
@@ -87,14 +89,32 @@ function Navbar() {
           </>
         )}
 
-        {/* 9. Live Mapping Page */}
-        {currentPath === '/live-mapping' && (
+        {/* 9.CollectorDashboard Page */}
+        {currentPath === '/collector' &&  (
           <>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/home')}>Home</button>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/login')}>Login</button>
-            <button className="nav-btn nav-primary" onClick={() => navigate('/register')}>Register</button>
+            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
+
           </>
         )}
+        
+         {/* 10.Collectors Page */}
+        {currentPath === '/collectors' &&  (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate("/admin")}>Back to Admin</button>
+
+          </>
+        )}
+
+        {/* 11.Add Collectors Page */}
+        {currentPath === '/collectors/add' &&  (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate("/admin")}>Back to Admin</button>
+
+          </>
+        )}
+
+
+
 
       </div>
     </nav>

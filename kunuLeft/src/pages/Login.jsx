@@ -28,17 +28,33 @@ function Login() {
         const userData = userDoc.data();
         const role = userData.role; // මෙතනින් තමයි 'admin' ද 'user' ද කියලා හඳුනා ගන්නේ
 
-        // 3. Local Storage එකේ දත්ත තැන්පත් කිරීම (App.js එකේ Protected Routes වලට අවශ්‍ය වේ)
+        // 3. Local Storage එකේ දත්ත තැන්පත් කිරීම 
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userRole', role || 'user');
         localStorage.setItem('activeUserName', userData.name || 'User');
+
+        // CollectorDashboard එකට අවශ්‍ය user object එක
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            uid: user.uid,
+            name: userData.name || 'User',
+            role: role || 'user',
+            email: user.email
+          })
+        );
         
         // 4. Role එක අනුව අදාළ Dashboard එකට යොමු කිරීම (Redirect)
         if (role === 'admin') {
           navigate('/admin', { replace: true });
-        } else {
+        }
+        else if (role === 'collector') {
+          navigate('/collector', { replace: true });
+        }
+        else {
           navigate('/request', { replace: true });
         }
+        
 
       } else {
         setError("පරිශීලක ගිණුමේ දත්ත (Role) සොයාගත නොහැක. කරුණාකර Firestore පරික්ෂා කරන්න.");

@@ -10,6 +10,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers'; 
 import EcoGuide from "./pages/EcoGuide"; 
 import CollectorDashboard from './pages/CollectorDashboard';
+import CollectorsPage from './pages/CollectorsPage';
+import AddCollector from './pages/AddCollectors';
 import './App.css';
 import Footer from './components/Footer';
 
@@ -70,8 +72,11 @@ function App() {
         <Route path="/eco-guide" element={<EcoGuide />} />
 
 
-       <Route path="/collector" element={<CollectorProtectedRoute><CollectorDashboard /></CollectorProtectedRoute>} />      </Routes>
-
+       <Route path="/collector" element={<CollectorProtectedRoute><CollectorDashboard /></CollectorProtectedRoute>} />      
+       <Route path="/collectors" element={<CollectorsPage />} />
+       <Route path="/collectors/add" element={<AddCollector />} />       
+       </Routes>
+       
       
 
       <Footer />
