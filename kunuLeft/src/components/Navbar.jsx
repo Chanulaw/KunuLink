@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import '../App.css';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -24,40 +25,26 @@ function Navbar() {
         {/* 1. Home Page */}
         {currentPath === '/' && (
           <>
-            <button className="nav-btn nav-active" onClick={() => navigate('/')}> Home</button>
+            <button className="nav-btn nav-active" onClick={() => navigate('/')}>Home</button>
             <button className="nav-btn nav-secondary" onClick={() => navigate('/login')}>Login</button>
-            <button className="nav-btn nav-primary" onClick={() => navigate('/register')}> Register</button>
-        </>
+            <button className="nav-btn nav-primary" onClick={() => navigate('/register')}>Register</button>
+          </>
         )}
 
-        {/* 2. Login Page */}
-        {currentPath === '/login' && (
+        {/* 2 & 3. Login / Register Pages */}
+        {(currentPath === '/login' || currentPath === '/register') && (
           <>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/register')}>Register</button>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/')}>Home</button>
             <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
           </>
         )}
 
-        {/* 3. Register Page */}
-        {currentPath === '/register' && (
+        {/* 4 & 5. User Dashboard / Activity / Notifications */}
+        {(currentPath === '/request' || currentPath === '/activity' || currentPath === '/notifications') && isLoggedIn && userRole === 'user' && (
           <>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/login')}>Login</button>
-            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
-          </>
-        )}
-
-        {/* 4. User Dashboard / Map Page */}
-        {currentPath === '/request' && isLoggedIn && userRole === 'user' && (
-          <>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/activity')}>Activity</button>
-            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
-          </>
-        )}
-
-        {/* 5. Activity Page (යාවත්කාලීන කරන ලදී) */}
-        {currentPath === '/activity' && isLoggedIn && userRole === 'user' && (
-          <>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/request')}>Dashboard</button>
+            {currentPath !== '/request' && <button className="nav-btn nav-secondary" onClick={() => navigate('/request')}>Dashboard</button>}
+            {currentPath !== '/activity' && <button className="nav-btn nav-secondary" onClick={() => navigate('/activity')}>Activity</button>}
+            {currentPath !== '/notifications' && <button className="nav-btn nav-secondary" onClick={() => navigate('/notifications')}>Notifications</button>}
             <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
           </>
         )}
@@ -65,6 +52,8 @@ function Navbar() {
         {/* 6. Admin Dashboard */}
         {currentPath === '/admin' && isLoggedIn && userRole === 'admin' && (
           <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/collectors/add')}>Add Collectors</button>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/collectors')}>Active Collectors</button>
             <button className="nav-btn nav-secondary" onClick={() => navigate('/admin/users')}>Users Details</button>
             <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
           </>
@@ -73,7 +62,7 @@ function Navbar() {
         {/* 7. Admin Users Page */}
         {currentPath === '/admin/users' && (
           <>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/admin')}>Back to View</button>
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/admin')}>Back</button>
             <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
           </>
         )}
@@ -81,20 +70,53 @@ function Navbar() {
         {/* 8. EcoGuide Page */}
         {currentPath === '/eco-guide' && (
           <>
-            <button className="nav-btn nav-secondary" onClick={() => navigate("/home")}>Home</button>
-            <button className="nav-btn nav-secondary" onClick={() => navigate("/login")}>Login</button>
-            <button className="nav-btn nav-primary" onClick={() => navigate("/register")}>Get Started</button>          
+            <button className="nav-btn nav-secondary" onClick={() => navigate('/')}>Home</button>
+            <button className="nav-btn nav-primary" onClick={() => navigate('/register')}>Get Started</button>          
           </>
         )}
 
-        {/* 9. Live Mapping Page */}
-        {currentPath === '/live-mapping' && (
+        
+        
+         {/* 10.Collectors Page */}
+        {currentPath === '/collectors' &&  (
           <>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/home')}>Home</button>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/login')}>Login</button>
-            <button className="nav-btn nav-primary" onClick={() => navigate('/register')}>Register</button>
+            <button className="nav-btn nav-secondary" onClick={() => navigate("/admin")}>Back to Admin</button>
+
+
+
           </>
         )}
+        
+         {/* 10.Collectors Page */}
+        {currentPath === '/collectors' &&  (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate("/admin")}>Back to Admin</button>
+
+          </>
+        )}
+
+        {/* 11.Add Collectors Page */}
+        {currentPath === '/collectors/add' &&  (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate("/admin")}>Back to Admin</button>
+
+          </>
+        )}
+
+
+
+
+        {/* 11.Add Collectors Page */}
+        {currentPath === '/collectors/add' &&  (
+          <>
+            <button className="nav-btn nav-secondary" onClick={() => navigate("/admin")}>Back to Admin</button>
+
+          </>
+        )}
+
+
+
+
 
       </div>
     </nav>
