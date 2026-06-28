@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import UserDashboard from './pages/UserDashboard'; 
 import Activity from './pages/Activity';
-import SmartNotifications from './pages/SmartNotifications'; // 1. අලුත් පිටුව Import කළා
+import SmartNotifications from './pages/SmartNotifications';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers'; 
 import EcoGuide from "./pages/EcoGuide"; 
@@ -16,35 +16,25 @@ import AddCollector from './pages/AddCollectors';
 import './App.css';
 import Footer from './components/Footer';
 
-// 🔒 User ආරක්ෂිත පියවර (ProtectedRoute)
+// 🔒 Protected Routes
 const UserProtectedRoute = ({ children }) => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const userRole = localStorage.getItem('userRole');
-  
-  if (!isLoggedIn || userRole !== 'user') {
-    return <Navigate to="/login" replace />;
-  }
+  if (!isLoggedIn || userRole !== 'user') return <Navigate to="/login" replace />;
   return children;
 };
 
-// 🔒 Admin ආරක්ෂිත පියවර (AdminProtectedRoute)
 const AdminProtectedRoute = ({ children }) => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const userRole = localStorage.getItem('userRole');
-  
-  if (!isLoggedIn || userRole !== 'admin') {
-    return <Navigate to="/login" replace />;
-  }
+  if (!isLoggedIn || userRole !== 'admin') return <Navigate to="/login" replace />;
   return children;
 };
 
 const CollectorProtectedRoute = ({ children }) => {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const userRole = localStorage.getItem("userRole");
-
-  if (!isLoggedIn || userRole !== "collector") {
-    return <Navigate to="/login" replace />;
-  }
+  if (!isLoggedIn || userRole !== "collector") return <Navigate to="/login" replace />;
   return children;
 };
 
@@ -53,41 +43,29 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        {/* පොදු පිටු (Public Routes) */}
+        {/* පොදු පිටු */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/eco-guide" element={<EcoGuide />} />
 
-        {/* පරිශීලක පිටු (User Protected Routes) */}
+        {/* පරිශීලක පිටු */}
         <Route path="/request" element={<UserProtectedRoute><UserDashboard /></UserProtectedRoute>} />
         <Route path="/activity" element={<UserProtectedRoute><Activity /></UserProtectedRoute>} />
-        <Route path="/notifications" element={<UserProtectedRoute><SmartNotifications /></UserProtectedRoute>} /> {/* 2. අලුත් Route එක ඇතුළත් කළා */}
+        <Route path="/notifications" element={<UserProtectedRoute><SmartNotifications /></UserProtectedRoute>} />
 
-        {/* ඇඩ්මින් පිටු (Admin Protected Routes) */}
+        {/* ඇඩ්මින් පිටු */}
         <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
         <Route path="/admin/users" element={<AdminProtectedRoute><AdminUsers /></AdminProtectedRoute>} />
+        <Route path="/collectors" element={<AdminProtectedRoute><CollectorsPage /></AdminProtectedRoute>} />
+        <Route path="/collectors/add" element={<AdminProtectedRoute><AddCollector /></AdminProtectedRoute>} />
 
         {/* එකතු කරන්නන්ගේ පිටු */}
         <Route path="/collector" element={<CollectorProtectedRoute><CollectorDashboard /></CollectorProtectedRoute>} />
 
-        {/* වැරදි URL ආවොත් Home එකට හරවා යැවීම */}
+        {/* වැරදි URL */}
         <Route path="*" element={<Navigate to="/" replace />} />
-<<<<<<< HEAD
       </Routes>
-=======
-
-        <Route path="/eco-guide" element={<EcoGuide />} />
-
-
-       <Route path="/collector" element={<CollectorProtectedRoute><CollectorDashboard /></CollectorProtectedRoute>} />      
-       <Route path="/collectors" element={<CollectorsPage />} />
-       <Route path="/collectors/add" element={<AddCollector />} />       
-       </Routes>
-       
-      
-
->>>>>>> dd22401abc01ac9d982dfbfe955fb59713851d36
       <Footer />
     </Router>
   );
