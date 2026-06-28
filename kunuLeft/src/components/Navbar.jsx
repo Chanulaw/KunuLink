@@ -75,6 +75,7 @@ function Navbar() {
           </>
         )}
 
+
         
         
          {/* 10.Collectors Page */}
@@ -82,6 +83,12 @@ function Navbar() {
           <>
             <button className="nav-btn nav-secondary" onClick={() => navigate("/admin")}>Back to Admin</button>
 
+
+
+        {/* 9.CollectorDashboard Page */}
+        {currentPath === '/collector' &&  (
+          <>
+            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
 
 
           </>
@@ -106,6 +113,7 @@ function Navbar() {
 
 
 
+
         {/* 11.Add Collectors Page */}
         {currentPath === '/collectors/add' &&  (
           <>
@@ -113,6 +121,7 @@ function Navbar() {
 
           </>
         )}
+
 
 
 
