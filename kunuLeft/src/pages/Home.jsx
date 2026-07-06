@@ -72,7 +72,7 @@ function Home() {
             <span className="eco-badge">📖 Open Guide →</span>
           </div>
 
-          {/* Smart Notifications - අලුතින් Clickable ලෙස සකසන ලදී */}
+          {/* Smart Notifications - බොත්තම ඉවත් කරන ලදී */}
           <div className="service-card clickable" onClick={() => navigate("/notifications")}>
             <div className="service-icon">🔔</div>
             <h4>Smart Notifications | ක්ෂණික දැනුම්දීම්</h4>
@@ -84,8 +84,7 @@ function Home() {
               සැලසුම් කළ විට සහ සාර්ථකව අවසන් කළ විට
               ක්ෂණික දැනුම්දීම් ලබාගන්න.
             </p>
-            <br />
-            <span className="eco-badge">🔔 View Notifications →</span>
+            {/* බොත්තම ඉවත් කර ඇත */}
           </div>
         </div>
       </section>
