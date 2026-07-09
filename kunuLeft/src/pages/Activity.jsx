@@ -99,21 +99,38 @@ function Activity() {
             </thead>
             <tbody>
               {activities.length > 0 ? (
-                activities.map((item) => (
-                  <tr key={item.id}>
-                    <td><strong>#{item.id.substring(0, 5).toUpperCase()}</strong></td>
-                    <td>{item.displayDate}</td>
-                    <td><span style={{ fontWeight: '600' }}>{item.wasteType || "General"}</span></td>
-                    <td>
-                      <span className={`status-pill ${item.status?.toLowerCase().replace(' ', '-') || 'pending'}`} style={{
-                        background: item.status === 'Pending' ? '#e0f2fe' : item.status === 'Assigned' ? '#fef3c7' : '#d1fae5',
-                        color: item.status === 'Pending' ? '#0369a1' : item.status === 'Assigned' ? '#b45309' : '#047857',
-                      }}>
-                        {item.status || 'Pending'}
-                      </span>
-                    </td>
-                  </tr>
-                ))
+                activities.map((item) => {
+                  const normalizedStatus = (item.status || 'pending').toLowerCase().trim();
+                  const isPending = normalizedStatus === 'pending';
+                  const isAssignedOrAccepted = normalizedStatus === 'assigned' || normalizedStatus === 'accepted';
+                  const isCompleted = normalizedStatus === 'completed';
+
+                  const statusBg =
+                    isPending ? '#e0f2fe' :
+                    isAssignedOrAccepted ? '#fef3c7' :
+                    isCompleted ? '#d1fae5' : '#e0e7ff';
+
+                  const statusColor =
+                    isPending ? '#0369a1' :
+                    isAssignedOrAccepted ? '#b45309' :
+                    isCompleted ? '#047857' : '#4338ca';
+
+                  return (
+                    <tr key={item.id}>
+                      <td><strong>#{item.id.substring(0, 5).toUpperCase()}</strong></td>
+                      <td>{item.displayDate}</td>
+                      <td><span style={{ fontWeight: '600' }}>{item.wasteType || "General"}</span></td>
+                      <td>
+                        <span className={`status-pill ${normalizedStatus.replace(' ', '-')}`} style={{
+                          background: statusBg,
+                          color: statusColor,
+                        }}>
+                          {item.status || 'Pending'}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td colSpan="4" style={{ textAlign: 'center', padding: '30px', color: '#94a3b8' }}>
