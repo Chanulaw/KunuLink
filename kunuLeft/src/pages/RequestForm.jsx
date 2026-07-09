@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { db } from '../firebase';
+import { db, auth } from '../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import '../App.css';
 
@@ -48,14 +48,15 @@ function RequestForm() {
 
     try {
       await addDoc(collection(db, 'requests'), {
+        userId: auth.currentUser?.uid || localStorage.getItem('uid') || "",
         userName: "Registered User",
         wasteType: wasteType,
         location: { lat: position.lat, lng: position.lng },
         status: 'Pending',
-        collecterId: "",
-        collecterName: "",
-        collecterPhone: "",
-        collecterLocation: null,
+        collectorId: "",
+        collectorName: "",
+        collectorPhone: "",
+        collectorLocation: null,
         createdAt: serverTimestamp()
       });
 

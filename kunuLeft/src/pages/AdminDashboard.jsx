@@ -154,7 +154,7 @@ function AdminDashboard() {
 
   // Stats Counts
   const pending = requests.filter(r => getStatus(r.status) === "pending").length;
-  const assigned = requests.filter(r => getStatus(r.status) === "assigned").length;
+  const assigned = requests.filter(r => ["assigned", "accepted"].includes(getStatus(r.status))).length;
   const onWay = requests.filter(r => getStatus(r.status) === "on the way").length;
   const arrived = requests.filter(r => getStatus(r.status) === "arrived").length;
   const completed = requests.filter(r => getStatus(r.status) === "completed").length;
@@ -235,7 +235,7 @@ function AdminDashboard() {
                 currentStatus === "completed"? "#10b981" :
                 currentStatus === "arrived"? "#16a34a" :
                 currentStatus === "on the way"? "#2563eb" :
-                currentStatus === "assigned"? "#0284c7" : "#f59e0b";
+                (currentStatus === "assigned" || currentStatus === "accepted")? "#0284c7" : "#f59e0b";
 
               return (
                 <tr key={req.id}>
@@ -247,7 +247,7 @@ function AdminDashboard() {
                   <td><span style={{ fontWeight: "bold", color: statusColor }}>● {req.status || "Pending"}</span></td>
                   <td>
                     {currentStatus === "pending" && (<button className="btn-premium btn-assign" onClick={() => assignEmployee(req.id)}>Assign</button>)}
-                    {currentStatus === "assigned" && (<button className="btn-premium btn-collect" onClick={() => updateStatus(req.id,"On the Way")}>On the Way</button>)}
+                    {(currentStatus === "assigned" || currentStatus === "accepted") && (<button className="btn-premium btn-collect" onClick={() => updateStatus(req.id,"On the Way")}>On the Way</button>)}
                     {currentStatus === "on the way" && (<button className="btn-premium btn-collect" onClick={() => updateStatus(req.id,"Arrived")}>Arrived</button>)}
                     {currentStatus === "arrived" && (<button className="btn-premium btn-collect" onClick={() => updateStatus(req.id,"Completed")}>Collected</button>)}
                     {currentStatus === "completed" && (<button className="btn-premium btn-receipt" onClick={() => downloadReceipt(req)}>Receipt</button>)}

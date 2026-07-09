@@ -43,6 +43,7 @@ function UserDashboard() {
         wasteType: wasteType,
         status: "pending",
         createdAt: serverTimestamp(),
+        location: { lat: location.lat, lng: location.lng },
         lat: location.lat,
         lng: location.lng,
       });
