@@ -22,7 +22,8 @@ function AdminDashboard() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCollectorModal, setShowCollectorModal] = useState(false);
-
+  const [assignModal, setAssignModal] = useState({ isOpen: false, reqId: null });
+  const [collectors, setCollectors] = useState([]);
   // Collector Form State
   const [collectorForm, setCollectorForm] = useState({
     name: "", email: "", phone: "", vehicle: "", area: "", password: ""
@@ -47,37 +48,38 @@ function AdminDashboard() {
     return () => unsubscribe();
   }, []);
 
-  // 2. Assign Collector
-  const assignEmployee = async (id) => {
+  // 1.5 Real-time Collectors Listener for the Assign Modal
+  useEffect(() => {
+    const q = query(collection(db, 'collectors'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setCollectors(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // 2. Assign Specific Collector
+  const assignSpecificCollector = async (collector) => {
     try {
-      const q = query(collection(db, "collectors"));
-      const snapshot = await getDocs(q);
-      const collectors = snapshot.docs.map((d) => ({ id: d.id,...d.data() }));
-
-      if (collectors.length === 0) {
-        alert("No collectors available. Please Add Collector first.");
-        return;
-      }
-
-      
-      let selected = collectors.reduce((min, c) => (c.activeJobs || 0) < (min.activeJobs || 0)? c : min, collectors[0]);
+      if (!assignModal.reqId) return;
+      const reqId = assignModal.reqId;
 
       // 1. Request update
-      await updateDoc(doc(db, "requests", id), {
-        collectorName: selected.name,
-        collectorId: selected.id, // <-- Auth UID eka
+      await updateDoc(doc(db, "requests", reqId), {
+        collectorName: collector.name || "Unknown Collector",
+        collectorId: collector.id || "Unknown ID", 
         status: "Assigned",
       });
 
       // 2. FIX: Collector activeJobs 
-      await updateDoc(doc(db, "collectors", selected.id), {
-        activeJobs: (selected.activeJobs || 0) + 1
+      await updateDoc(doc(db, "collectors", collector.id), {
+        activeJobs: (collector.activeJobs || 0) + 1
       });
 
-      alert(`Assigned to ${selected.name}`);
+      alert(`Assigned to ${collector.name || "Collector"}`);
+      setAssignModal({ isOpen: false, reqId: null });
     } catch (error) {
-      console.error(error);
-      alert("Error assigning collector");
+      console.error("Assign Employee Error:", error);
+      alert(`Error assigning collector: ${error.message}`);
     }
   };
 
@@ -279,7 +281,7 @@ function AdminDashboard() {
                   <td>{req.location? `${req.location.lat.toFixed(4)}, ${req.location.lng.toFixed(4)}` : "No Location"}</td>
                   <td><span style={{ fontWeight: "bold", color: statusColor }}>● {req.status || "Pending"}</span></td>
                   <td>
-                    {currentStatus === "pending" && (<button className="btn-premium btn-assign" onClick={() => assignEmployee(req.id)}>Assign</button>)}
+                    {currentStatus === "pending" && (<button className="btn-premium btn-assign" onClick={() => setAssignModal({ isOpen: true, reqId: req.id })}>Assign</button>)}
                     {currentStatus === "assigned" && (<button className="btn-premium btn-collect" onClick={() => updateStatus(req.id,"On the Way")}>On the Way</button>)}
                     {currentStatus === "on the way" && (<button className="btn-premium btn-collect" onClick={() => updateStatus(req.id,"Arrived")}>Arrived</button>)}
                     {currentStatus === "arrived" && (<button className="btn-premium btn-collect" onClick={() => updateStatus(req.id,"Completed")}>Collected</button>)}
@@ -312,6 +314,42 @@ function AdminDashboard() {
             <div className="modal-actions">
               <button className="btn-premium btn-cancel" onClick={() => setShowCollectorModal(false)}>Cancel</button>
               <button className="btn-premium btn-assign" onClick={saveCollector}>Save Collector</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ASSIGN COLLECTOR MODAL */}
+      {assignModal.isOpen && (
+        <div className="modal-overlay">
+          <div className="modal-box pro-modal" style={{maxWidth: '600px'}}>
+            <h2>👤 Assign a Collector</h2>
+            <p style={{color: '#64748b', marginBottom: '20px'}}>Select a collector to assign to Request #{assignModal.reqId.substring(0,5)}</p>
+            
+            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+              {collectors.length === 0 ? (
+                <p>No collectors available in the system.</p>
+              ) : (
+                <table className="admin-table">
+                  <thead><tr><th>Name</th><th>Area</th><th>Active Jobs</th><th>Action</th></tr></thead>
+                  <tbody>
+                    {collectors.map(c => (
+                      <tr key={c.id}>
+                        <td style={{fontWeight: 'bold'}}>{c.name}</td>
+                        <td>{c.area || 'N/A'}</td>
+                        <td><span className="status-pill">{c.activeJobs || 0}</span></td>
+                        <td>
+                          <button className="btn-premium btn-assign" onClick={() => assignSpecificCollector(c)} style={{padding: '5px 10px', fontSize: '12px'}}>Select</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+
+            <div className="modal-actions" style={{marginTop: '20px'}}>
+              <button className="btn-premium btn-cancel" onClick={() => setAssignModal({ isOpen: false, reqId: null })}>Cancel</button>
             </div>
           </div>
         </div>
