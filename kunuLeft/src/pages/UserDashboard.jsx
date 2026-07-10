@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { db, auth } from "../firebase";
@@ -13,6 +13,22 @@ L.Icon.Default.mergeOptions({
   iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
+
+// Map Controller for click-to-pin
+function MapController({ setLocation }) {
+  const map = useMap();
+
+  useEffect(() => {
+    map.invalidateSize();
+  }, [map]);
+
+  useMapEvents({
+    click(e) {
+      setLocation({ lat: e.latlng.lat, lng: e.latlng.lng });
+    },
+  });
+  return null;
+}
 
 function UserDashboard() {
   const [wasteType, setWasteType] = useState("Plastic");
@@ -67,10 +83,24 @@ function UserDashboard() {
       <div className="dash-grid-layout">
         {/* Map */}
         <div className="dash-glass-card map-holder">
-          <h2 className="dash-section-title">📍 Your Location (Sri Lanka)</h2>
-          <div className="map-wrapper" style={{ height: "400px", borderRadius: "15px", overflow: "hidden" }}>
-            <MapContainer center={[location.lat, location.lng]} zoom={8} style={{ height: "100%", width: "100%" }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2 className="dash-section-title">📍 Select Pickup Location</h2>
+            <button type="button" onClick={() => {
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                  (pos) => setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+                  (err) => alert("Could not get your location. Please check permissions.")
+                );
+              }
+            }} style={{ padding: '6px 12px', fontSize: '13px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', marginBottom: '15px' }}>
+              🎯 Use GPS
+            </button>
+          </div>
+          <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '15px' }}>Click anywhere on the map to accurately drop a pin at your waste location.</p>
+          <div className="map-wrapper" style={{ height: "400px", borderRadius: "15px", overflow: "hidden", border: '2px solid #e2e8f0' }}>
+            <MapContainer center={[location.lat, location.lng]} zoom={10} style={{ height: "100%", width: "100%" }}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              <MapController setLocation={setLocation} />
               <Marker position={[location.lat, location.lng]} />
             </MapContainer>
           </div>
@@ -90,8 +120,8 @@ function UserDashboard() {
               </select>
             </div>
             <div className="input-group">
-              <label>Upload Photo (Optional)</label>
-              <input type="file" className="eco-file-field" />
+              <label>Selected Location (Coordinates)</label>
+              <input type="text" className="eco-select-field" value={`${location.lat.toFixed(5)}, ${location.lng.toFixed(5)}`} readOnly style={{ background: '#f8fafc', color: '#64748b' }} />
             </div>
             <button type="submit" className="dash-submit-btn" disabled={isLoading}>
               {isLoading ? "Submitting..." : "Submit Disposal Request"}

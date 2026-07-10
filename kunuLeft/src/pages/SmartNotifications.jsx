@@ -18,11 +18,17 @@ function SmartNotifications() {
       }
       const q = query(
         collection(db, "requests"),
-        where("userId", "==", user.uid),
-        orderBy("createdAt", "desc")
+        where("userId", "==", user.uid)
       );
       const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        let data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // Add a sort time and sort descending
+        data = data.map(n => ({
+          ...n,
+          _sortTime: n.createdAt ? (n.createdAt.toMillis ? n.createdAt.toMillis() : new Date(n.createdAt).getTime()) : Date.now()
+        }));
+        data.sort((a, b) => b._sortTime - a._sortTime);
+
         setNotifications(data);
         setLoading(false);
       });

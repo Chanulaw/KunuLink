@@ -56,10 +56,56 @@ function CollectorDashboard() {
     return () => unsubAuth();
   }, [navigate, selectedJob]);
 
+  // Sync Collector Location
+  useEffect(() => {
+    if (!collector || !navigator.geolocation) return;
+    
+    const watchId = navigator.geolocation.watchPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        // Update all active jobs with new collector location
+        const activeJobsToUpdate = jobs.filter(j => {
+          const s = getStatus(j.status);
+          return s !== 'completed' && s !== 'rejected';
+        });
+
+        for (const job of activeJobsToUpdate) {
+          try {
+            await updateDoc(doc(db, "requests", job.id), {
+              collectorLocation: { lat: latitude, lng: longitude }
+            });
+          } catch (e) {}
+        }
+      },
+      (err) => console.log("Watch position error", err),
+      { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 }
+    );
+
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [collector, jobs]);
+
+  // Helper to decrement jobs
+  const decrementActiveJobs = async () => {
+    if (!collector) return;
+    try {
+      const colRef = doc(db, "collectors", collector.uid);
+      const colDoc = await getDoc(colRef);
+      if (colDoc.exists()) {
+        const currentJobs = colDoc.data().activeJobs || 0;
+        if (currentJobs > 0) {
+          await updateDoc(colRef, { activeJobs: currentJobs - 1 });
+        }
+      }
+    } catch (e) { console.error("Error decrementing active jobs", e); }
+  };
+
   const updateStatus = async (id, newStatus) => {
     try {
       await updateDoc(doc(db, "requests", id), { status: newStatus });
       alert(`Status updated to ${newStatus}`);
+      if (newStatus === "Completed") {
+        await decrementActiveJobs();
+      }
     }
     catch (err) { console.error(err); alert("Error updating status"); }
   };
@@ -76,10 +122,11 @@ function CollectorDashboard() {
     if(window.confirm("Are you sure you want to reject this job?")){
       try {
         await updateDoc(doc(db, "requests", id), {
-          status: "Assigned", 
+          status: "Pending", // Reset back to Pending so Admin can reassign
           collectorId: null,
           collectorName: null
         });
+        await decrementActiveJobs();
         alert("Job Rejected.");
       } catch (err) { console.error(err); alert("Error rejecting job"); }
     }
