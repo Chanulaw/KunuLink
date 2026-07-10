@@ -53,6 +53,9 @@ function AdminDashboard() {
     const q = query(collection(db, 'collectors'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setCollectors(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    }, (error) => {
+      console.error("Firebase Error (Collectors): ", error);
+      alert("Error loading collectors: " + error.message);
     });
     return () => unsubscribe();
   }, []);
@@ -209,6 +212,9 @@ function AdminDashboard() {
             Admin Management & Analytics
           </h2>
           <div>
+            <button onClick={() => setShowCollectorModal(true)} style={{ padding: '8px 12px', borderRadius: '8px', background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer', marginRight: '10px' }}>
+              + Add Collector
+            </button>
             <button onClick={migrateRequestsToUserId} style={{ padding: '8px 12px', borderRadius: '8px', background: '#f97316', color: '#fff', border: 'none', cursor: 'pointer' }}>
               Normalize requests
             </button>
