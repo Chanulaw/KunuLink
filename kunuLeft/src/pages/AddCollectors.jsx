@@ -48,7 +48,7 @@ function AddCollector() {
       });
       
       alert("Collector Added Successfully");
-      navigate('/admin/collectors'); 
+      navigate('/collectors'); 
       
     } catch (error) {
       console.error("Save Collector Error:", error);
@@ -99,7 +99,7 @@ function AddCollector() {
         </div>
 
         <div className="modal-actions" style={{marginTop: '30px'}}>
-          <button className="btn-premium btn-cancel" onClick={() => navigate('/admin/collectors')}>Cancel</button>
+          <button className="btn-premium btn-cancel" onClick={() => navigate('/collectors')}>Cancel</button>
           <button className="btn-premium btn-assign" onClick={saveCollector} disabled={loading}>
             {loading ? "Saving..." : "Save Collector"}
           </button>

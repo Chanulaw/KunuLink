@@ -28,28 +28,35 @@ function Activity() {
         return;
       }
 
-      // 2. Listen to the full requests collection ordered by createdAt,
-      // then filter client-side for any document that references this user.
-      const allQ = query(collection(db, 'requests'), orderBy('createdAt', 'desc'));
+      // 2. Listen to the user's requests collection
+      // We remove orderBy from the Firestore query to avoid needing a composite index,
+      // and instead sort the results in JavaScript.
+      const allQ = query(
+        collection(db, 'requests'), 
+        where('userId', '==', currentUserId)
+      );
 
       const unsubscribeSnapshot = onSnapshot(allQ, (snapshot) => {
-        const userRequests = snapshot.docs
+        let userRequests = snapshot.docs
           .map(doc => ({ id: doc.id, ...doc.data() }))
           .filter((d) => {
             const data = d || {};
-            // Accept multiple possible uid shapes
             return (
               data.userId === currentUserId ||
               data.uid === currentUserId ||
               (data.user && data.user.uid === currentUserId) ||
-              // some older items might store user info in nested objects
               (data.createdBy === currentUserId)
             );
           })
           .map((data) => ({
             ...data,
+            // Add a sortable timestamp field to handle missing/pending timestamps safely
+            _sortTime: data.createdAt ? (data.createdAt.toMillis ? data.createdAt.toMillis() : new Date(data.createdAt).getTime()) : Date.now(),
             displayDate: data.createdAt ? (data.createdAt.toDate ? data.createdAt.toDate().toLocaleDateString() : new Date(data.createdAt).toLocaleDateString()) : 'Just now'
           }));
+
+        // Sort descending by time
+        userRequests.sort((a, b) => b._sortTime - a._sortTime);
 
         setActivities(userRequests);
         setLoading(false);

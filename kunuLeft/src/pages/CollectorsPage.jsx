@@ -29,6 +29,7 @@ function CollectorsPage() {
       <div className="modern-admin-card">
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
           <h2 style={{ color: '#065f46' }}>Collectors Management</h2>
+          <button className="btn-premium btn-assign" onClick={() => navigate('/collectors/add')} style={{ padding: '10px 20px', fontSize: '14px' }}>➕ Add Collector</button>
         </div>
 
        
