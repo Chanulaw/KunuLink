@@ -151,6 +151,30 @@ function AdminDashboard() {
     }
   };
 
+  // 6. Migration helper: Normalize requests to ensure `userId` exists
+  const migrateRequestsToUserId = async () => {
+    try {
+      if (!window.confirm('This will scan all requests and set `userId` where missing. Proceed?')) return;
+      const q = query(collection(db, 'requests'));
+      const snapshot = await getDocs(q);
+      let updated = 0;
+      for (const d of snapshot.docs) {
+        const data = d.data();
+        if (!data.userId) {
+          const candidate = data.uid || (data.user && data.user.uid) || data.createdBy || null;
+          if (candidate) {
+            await updateDoc(doc(db, 'requests', d.id), { userId: candidate });
+            updated++;
+          }
+        }
+      }
+      alert(`Migration complete. Updated ${updated} documents.`);
+    } catch (err) {
+      console.error('Migration error', err);
+      alert('Error during migration: ' + err.message);
+    }
+  };
+
   // Helper: Status lowercase
   const getStatus = (s) => (s || "Pending").toLowerCase().trim();
 
@@ -178,9 +202,16 @@ function AdminDashboard() {
   return (
     <div className="admin-page-container">
       <div className="modern-admin-card">
-        <h2 style={{ color: '#065f46', textAlign: 'center', marginBottom: '30px' }}>
-          Admin Management & Analytics
-        </h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h2 style={{ color: '#065f46', textAlign: 'center', marginBottom: '30px' }}>
+            Admin Management & Analytics
+          </h2>
+          <div>
+            <button onClick={migrateRequestsToUserId} style={{ padding: '8px 12px', borderRadius: '8px', background: '#f97316', color: '#fff', border: 'none', cursor: 'pointer' }}>
+              Normalize requests
+            </button>
+          </div>
+        </div>
 
         
 

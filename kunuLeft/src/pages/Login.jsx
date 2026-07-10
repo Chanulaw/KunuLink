@@ -33,6 +33,9 @@ function Login() {
         localStorage.setItem('userRole', role || 'user');
         localStorage.setItem('activeUserName', userData.name || 'User');
 
+        // Keep a quick uid key for older code that expects it
+        localStorage.setItem('uid', user.uid);
+
         // CollectorDashboard එකට අවශ්‍ය user object එක
         localStorage.setItem(
           'user',

@@ -12,8 +12,15 @@ function Activity() {
     // Firebase Auth එක සජීවීව නිරීක්ෂණය කිරීම
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       
-      // 1. Get the current user's ID (ඔයා එවපු විදිහටම ආරක්ෂිතව UID එක ගැනීම)
-      const currentUserId = user?.uid || localStorage.getItem('uid');
+      // 1. Get the current user's ID (try auth, then localStorage 'user' object, then legacy 'uid')
+      let storedUserUid = null;
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) storedUserUid = JSON.parse(storedUser).uid;
+      } catch (e) {
+        storedUserUid = null;
+      }
+      const currentUserId = user?.uid || storedUserUid || localStorage.getItem('uid');
 
       if (!currentUserId) {
         console.log("No user ID found, waiting for login...");
@@ -21,29 +28,33 @@ function Activity() {
         return;
       }
 
-      // 2. Setup the Query (ඔයාගේ Database එකේ තියෙන 'userId' field එකෙන්ම සොයයි)
-      const q = query(
-        collection(db, 'requests'),
-        where('userId', '==', currentUserId), // 👈 ඔයාගේ කේතයේ තිබූ පරිදිම 'userId' ලෙස සකස් කළා
-        orderBy('createdAt', 'desc')
-      );
+      // 2. Listen to the full requests collection ordered by createdAt,
+      // then filter client-side for any document that references this user.
+      const allQ = query(collection(db, 'requests'), orderBy('createdAt', 'desc'));
 
-      // 3. Listen for changes
-      const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-        const userRequests = snapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
-            id: doc.id,
+      const unsubscribeSnapshot = onSnapshot(allQ, (snapshot) => {
+        const userRequests = snapshot.docs
+          .map(doc => ({ id: doc.id, ...doc.data() }))
+          .filter((d) => {
+            const data = d || {};
+            // Accept multiple possible uid shapes
+            return (
+              data.userId === currentUserId ||
+              data.uid === currentUserId ||
+              (data.user && data.user.uid === currentUserId) ||
+              // some older items might store user info in nested objects
+              (data.createdBy === currentUserId)
+            );
+          })
+          .map((data) => ({
             ...data,
-            // Convert Firebase Timestamp to a readable string safely
-            displayDate: data.createdAt ? data.createdAt.toDate().toLocaleDateString() : 'Just now'
-          };
-        });
-        
+            displayDate: data.createdAt ? (data.createdAt.toDate ? data.createdAt.toDate().toLocaleDateString() : new Date(data.createdAt).toLocaleDateString()) : 'Just now'
+          }));
+
         setActivities(userRequests);
         setLoading(false);
       }, (error) => {
-        console.error("Firestore Error:", error);
+        console.error('Firestore Error:', error);
         setLoading(false);
       });
 
