@@ -61,30 +61,23 @@ function Home() {
             <div className="service-icon">♻️</div>
             <h4>Eco Guide | අපද්‍රව්‍ය වර්ගීකරණ මාර්ගෝපදේශය</h4>
             <p><br />
-              Learn how to identify and separate recyclable waste before submitting
-              your collection request.
+              Learn how to identify and separate recyclable waste before submitting your collection request.
               <br />
-              අපද්‍රව්‍ය එකතු කිරීමේ ඉල්ලීමක් යොමු කිරීමට පෙර
-              ප්‍රතිචක්‍රීකරණය කළ හැකි අපද්‍රව්‍ය නිවැරදිව වර්ග කිරීම
-              ඉගෙන ගන්න.
+              අපද්‍රව්‍ය එකතු කිරීමේ ඉල්ලීමක් යොමු කිරීමට පෙර ප්‍රතිචක්‍රීකරණය කළ හැකි අපද්‍රව්‍ය නිවැරදිව වර්ග කිරීම ඉගෙන ගන්න.
             </p>
             <br />
             <span className="eco-badge">📖 Open Guide →</span>
           </div>
 
-          {/* Smart Notifications - බොත්තම ඉවත් කරන ලදී */}
-          <div className="service-card clickable" onClick={() => navigate("/notifications")}>
+          {/* Smart Notifications - දැන් මෙය ක්ලික් කළ නොහැක (Non-clickable) */}
+          <div className="service-card">
             <div className="service-icon">🔔</div>
             <h4>Smart Notifications | ක්ෂණික දැනුම්දීම්</h4>
             <p><br />
-              Receive instant updates when your waste collection request is accepted,
-              scheduled, or completed.
+              Receive instant updates when your waste collection request is accepted, scheduled, or completed.
               <br />
-              ඔබගේ අපද්‍රව්‍ය එකතු කිරීමේ ඉල්ලීම පිළිගත් විට,
-              සැලසුම් කළ විට සහ සාර්ථකව අවසන් කළ විට
-              ක්ෂණික දැනුම්දීම් ලබාගන්න.
+              ඔබගේ අපද්‍රව්‍ය එකතු කිරීමේ ඉල්ලීම පිළිගත් විට, සැලසුම් කළ විට සහ සාර්ථකව අවසන් කළ විට ක්ෂණික දැනුම්දීම් ලබාගන්න.
             </p>
-            {/* බොත්තම ඉවත් කර ඇත */}
           </div>
         </div>
       </section>
