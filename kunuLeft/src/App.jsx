@@ -12,7 +12,6 @@ import AdminUsers from './pages/AdminUsers';
 import EcoGuide from "./pages/EcoGuide"; 
 import CollectorDashboard from './pages/CollectorDashboard';
 import CollectorsPage from './pages/CollectorsPage';
-import AddCollector from './pages/AddCollectors';
 import './App.css';
 import Footer from './components/Footer';
 
@@ -58,7 +57,6 @@ function App() {
         <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
         <Route path="/admin/users" element={<AdminProtectedRoute><AdminUsers /></AdminProtectedRoute>} />
         <Route path="/collectors" element={<AdminProtectedRoute><CollectorsPage /></AdminProtectedRoute>} />
-        <Route path="/collectors/add" element={<AdminProtectedRoute><AddCollector /></AdminProtectedRoute>} />
 
         {/* එකතු කරන්නන්ගේ පිටු */}
         <Route path="/collector" element={<CollectorProtectedRoute><CollectorDashboard /></CollectorProtectedRoute>} />

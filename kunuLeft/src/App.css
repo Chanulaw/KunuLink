@@ -2072,3 +2072,183 @@ body {
   .table .row { grid-template-columns: 1fr; gap: 8px; }
   .table .row.header { display: none; }
 }
+
+/* ============================
+   ADMIN DASHBOARD FIXES
+============================ */
+
+/* Main Admin Table Wrapper - dakunata scroll */
+.admin-table-wrap {
+  overflow-x: auto;
+  border-radius: 15px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.3);
+  margin-top: 20px;
+  padding-bottom: 15px;
+}
+
+/* Table eka podi screen waladi eliyata yanna epa */
+.admin-table {
+  width: 100%;
+  min-width: 1200px; /* column 9k nisa widi wenna one */
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+/* Scrollbar hodata penna */
+.admin-table-wrap::-webkit-scrollbar {
+    height: 8px;
+}
+.admin-table-wrap::-webkit-scrollbar-thumb {
+    background: rgba(2, 132, 199, 0.3);
+    border-radius: 10px;
+}
+.admin-table-wrap::-webkit-scrollbar-thumb:hover {
+    background: rgba(2, 132, 199, 0.5);
+}
+/* ============================
+   ASSIGN MODAL - PRO TABLE
+============================ */
+
+.modal-box.assign-modal {
+    width: 98% !important;
+    max-width: 1500px !important;
+    padding: 40px 45px !important;
+}
+
+.modal-box.assign-modal h2 {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #0284c7 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.assign-table-wrapper {
+    overflow: visible;
+    border-radius: 18px;
+    margin-top: 25px;
+    border: 1px solid rgba(15,23,42,.08);
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+}
+
+/* ============================
+   ASSIGN MODAL - COMPACT PRO TABLE
+============================ */
+
+.modal-box.assign-modal {
+    width: 96% !important;
+    max-width: 1400px !important;
+    padding: 30px 35px !important;
+}
+
+.modal-box.assign-modal h2 {
+    font-size: 24px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #0284c7 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.modal-box.assign-modal > p {
+    font-size: 13px;
+    margin-bottom: 18px !important;
+}
+
+.assign-table-wrapper {
+    overflow: visible;
+    border-radius: 14px;
+    margin-top: 18px;
+    border: 1px solid rgba(15,23,42,.06);
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+}
+
+/* COMPACT TABLE */
+.assign-table-wrapper .admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+}
+
+/* HEADER - PODI KALA */
+.assign-table-wrapper .admin-table th {
+    padding: 12px 14px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #065f46;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1.5px solid rgba(2,132,199,0.12);
+    background: linear-gradient(135deg, rgba(2,132,199,0.06), rgba(5,150,105,0.06));
+}
+.assign-table-wrapper .admin-table th:first-child { border-radius: 14px 0 0 0; }
+.assign-table-wrapper .admin-table th:last-child { border-radius: 0 14px 0 0; }
+
+/* ROWS - PODI KALA */
+.assign-table-wrapper .admin-table tbody tr {
+    background: rgba(255,255,255,0.8);
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(15,23,42,0.04);
+}
+.assign-table-wrapper .admin-table tbody tr:hover {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(2,132,199,0.06);
+}
+.assign-table-wrapper .admin-table td {
+    padding: 12px 14px;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* ACTIVE JOBS BADGE - PODI */
+.assign-table-wrapper .status-pill {
+    background: #e0f2fe;
+    color: #0284c7;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 800;
+    border: 1px solid rgba(2,132,199,0.15);
+    min-width: 28px;
+}
+
+/* SELECT BUTTON - PODI */
+.assign-table-wrapper .btn-assign {
+    background: linear-gradient(135deg, #0284c7 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 7px 14px !important;
+    border-radius: 8px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 8px rgba(2,132,199,0.2);
+}
+.assign-table-wrapper .btn-assign:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(5,150,105,0.3);
+}
+
+/* CANCEL BUTTON - PODI */
+.modal-actions .btn-cancel {
+    width: 100%;
+    background: #ef4444;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 800;
+    border: none;
+    margin-top: 18px;
+    cursor: pointer;
+}

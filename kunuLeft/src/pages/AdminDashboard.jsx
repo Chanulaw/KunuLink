@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { db, auth } from '../firebase';
@@ -24,7 +22,7 @@ function AdminDashboard() {
   const [showCollectorModal, setShowCollectorModal] = useState(false);
   const [assignModal, setAssignModal] = useState({ isOpen: false, reqId: null });
   const [collectors, setCollectors] = useState([]);
-  // Collector Form State
+  
   const [collectorForm, setCollectorForm] = useState({
     name: "", email: "", phone: "", vehicle: "", area: "", password: ""
   });
@@ -32,23 +30,18 @@ function AdminDashboard() {
   // 1. Real-time Firebase Listener
   useEffect(() => {
     const q = query(collection(db, 'requests'), orderBy('createdAt', 'desc'));
-
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const docs = snapshot.docs.map(doc => ({
-        id: doc.id,
-       ...doc.data()
-      }));
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setRequests(docs);
       setLoading(false);
     }, (error) => {
       console.error("Firebase Error: ", error);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  // 1.5 Real-time Collectors Listener for the Assign Modal
+  // 1.5 Real-time Collectors Listener
   useEffect(() => {
     const q = query(collection(db, 'collectors'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -66,14 +59,12 @@ function AdminDashboard() {
       if (!assignModal.reqId) return;
       const reqId = assignModal.reqId;
 
-      // 1. Request update
       await updateDoc(doc(db, "requests", reqId), {
         collectorName: collector.name || "Unknown Collector",
         collectorId: collector.id || "Unknown ID", 
         status: "Assigned",
       });
 
-      // 2. FIX: Collector activeJobs 
       await updateDoc(doc(db, "collectors", collector.id), {
         activeJobs: (collector.activeJobs || 0) + 1
       });
@@ -124,11 +115,9 @@ function AdminDashboard() {
         alert("Name, Email and Password required");
         return;
       }
-      // 1. Firebase Auth eke account hadanawa
       const userCredential = await createUserWithEmailAndPassword(auth, collectorForm.email, collectorForm.password);
       const uid = userCredential.user.uid;
 
-      // 2. 'users' collection ekata role
       await setDoc(doc(db, "users", uid), {
         name: collectorForm.name,
         email: collectorForm.email,
@@ -136,7 +125,6 @@ function AdminDashboard() {
         createdAt: serverTimestamp(),
       });
 
-      // 3. 'collectors' collection ekata save 
       await setDoc(doc(db, "collectors", uid), {
         name: collectorForm.name,
         email: collectorForm.email,
@@ -156,7 +144,7 @@ function AdminDashboard() {
     }
   };
 
-  // 6. Migration helper: Normalize requests to ensure `userId` exists
+  // 6. Migration helper
   const migrateRequestsToUserId = async () => {
     try {
       if (!window.confirm('This will scan all requests and set `userId` where missing. Proceed?')) return;
@@ -180,17 +168,14 @@ function AdminDashboard() {
     }
   };
 
-  // Helper: Status lowercase
   const getStatus = (s) => (s || "Pending").toLowerCase().trim();
 
-  // Stats Counts
   const pending = requests.filter(r => getStatus(r.status) === "pending").length;
   const assigned = requests.filter(r => getStatus(r.status) === "assigned").length;
   const onWay = requests.filter(r => getStatus(r.status) === "on the way").length;
   const arrived = requests.filter(r => getStatus(r.status) === "arrived").length;
   const completed = requests.filter(r => getStatus(r.status) === "completed").length;
 
-  // Chart Data
   const chartData = useMemo(() => {
     const counts = requests.reduce((acc, req) => {
       const type = req.wasteType || req.type || 'Other';
@@ -212,16 +197,14 @@ function AdminDashboard() {
             Admin Management & Analytics
           </h2>
           <div>
-            <button onClick={() => setShowCollectorModal(true)} style={{ padding: '8px 12px', borderRadius: '8px', background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer', marginRight: '10px' }}>
+            <button onClick={() => setShowCollectorModal(true)} className="btn-premium btn-assign" style={{marginRight: '10px'}}>
               + Add Collector
             </button>
-            <button onClick={migrateRequestsToUserId} style={{ padding: '8px 12px', borderRadius: '8px', background: '#f97316', color: '#fff', border: 'none', cursor: 'pointer' }}>
+            <button onClick={migrateRequestsToUserId} className="btn-premium btn-pdf">
               Normalize requests
             </button>
           </div>
         </div>
-
-        
 
         <div className="stats-grid">
           <div className="stat-card"><h3>{pending}</h3><p>Pending</p></div>
@@ -259,8 +242,8 @@ function AdminDashboard() {
           </div>
         </div>
 
-        {/* Table */}
-        <div style={{ overflowX: 'auto', borderRadius: '15px', border: '1px solid #f1f5f9' }}>
+        {/* Main Table */}
+        <div className="main-table-wrapper">
           <table className="admin-table">
             <thead>
               <tr>
@@ -304,7 +287,7 @@ function AdminDashboard() {
         </div>
       </div>
 
-      {/* PRO GLASS MODAL */}
+      {/* ADD COLLECTOR MODAL */}
       {showCollectorModal && (
         <div className="modal-overlay">
           <div className="modal-box pro-modal">
@@ -325,27 +308,33 @@ function AdminDashboard() {
         </div>
       )}
 
-      {/* ASSIGN COLLECTOR MODAL */}
+      {/* ASSIGN COLLECTOR MODAL - FIXED WITH SCROLL */}
       {assignModal.isOpen && (
         <div className="modal-overlay">
-          <div className="modal-box pro-modal" style={{maxWidth: '600px'}}>
+          <div className="modal-box pro-modal assign-modal">
             <h2>👤 Assign a Collector</h2>
             <p style={{color: '#64748b', marginBottom: '20px'}}>Select a collector to assign to Request #{assignModal.reqId.substring(0,5)}</p>
             
-            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+            <div className="assign-table-wrapper">
               {collectors.length === 0 ? (
                 <p>No collectors available in the system.</p>
               ) : (
                 <table className="admin-table">
-                  <thead><tr><th>Name</th><th>Area</th><th>Active Jobs</th><th>Action</th></tr></thead>
+                  <thead>
+                    <tr>
+                      <th>Name</th><th>Email</th><th>Area</th><th>Vehicle</th><th>Active Jobs</th><th>Action</th>
+                    </tr>
+                  </thead>
                   <tbody>
                     {collectors.map(c => (
                       <tr key={c.id}>
                         <td style={{fontWeight: 'bold'}}>{c.name}</td>
+                        <td>{c.email}</td>
                         <td>{c.area || 'N/A'}</td>
+                        <td>{c.vehicle || 'N/A'}</td>
                         <td><span className="status-pill">{c.activeJobs || 0}</span></td>
                         <td>
-                          <button className="btn-premium btn-assign" onClick={() => assignSpecificCollector(c)} style={{padding: '5px 10px', fontSize: '12px'}}>Select</button>
+                          <button className="btn-premium btn-assign" onClick={() => assignSpecificCollector(c)} style={{padding: '8px 16px', fontSize: '12px'}}>Select</button>
                         </td>
                       </tr>
                     ))}

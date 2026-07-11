@@ -1,0 +1,248 @@
+/* =====================================
+   COLLECTORS PAGE - GLASS ADMIN UI
+===================================== */
+.admin-page-container{
+    max-width:1500px;
+    margin:40px auto;
+    padding:20px;
+}
+
+/* MAIN CARD */
+.modern-admin-card{
+    background:var(--glass-card-rich, rgba(255,255,255,.55));
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+    border:1px solid rgba(255,255,255,.6);
+    border-radius:28px;
+    padding:40px;
+    box-shadow: 0 20px 50px rgba(15,23,42,.08);
+}
+
+/* HEADER */
+.modern-admin-card h2{
+    font-size:28px;
+    font-weight:900;
+    color:#065f46;
+}
+
+/* SEARCH */
+.search-box{
+    width:100%;
+    margin:25px 0;
+    padding:15px 18px;
+    border-radius:14px;
+    border:1px solid rgba(15,23,42,.15);
+    background:white;
+    font-size:15px;
+    outline:none;
+}
+.search-box:focus{
+    border-color:#0284c7;
+    box-shadow: 0 0 0 4px rgba(2,132,199,.15);
+}
+
+/* BUTTON COMMON */
+.btn-premium{
+    border:none;
+    padding:10px 14px; /* podi kala - eliyata yana eka nawathanna */
+    border-radius:10px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.3s;
+    font-size:13px;
+    white-space: nowrap; /* text break wenne nathi */
+}
+.btn-premium:hover{
+    transform:translateY(-2px);
+}
+
+/* ADD / SAVE BUTTON */
+.btn-assign{
+    background: linear-gradient(135deg, #0284c7, #059669);
+    color:white;
+}
+
+/* EDIT BUTTON */
+.btn-collect{
+    background:#0284c7;
+    color:white;
+}
+
+/* PDF BUTTON */
+.btn-pdf{
+    background: linear-gradient(135deg, #7c3aed, #059669);
+    color:white;
+}
+
+/* DELETE BUTTON */
+.btn-cancel{
+    background:#ef4444;
+    color:white;
+}
+
+/* TABLE */
+.admin-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0 12px;
+    table-layout: auto;
+}
+.admin-table thead th{
+    padding:15px;
+    text-align:left;
+    color:#64748b;
+    font-size:12px;
+    text-transform:uppercase;
+}
+.admin-table tbody tr{
+    background:white;
+    box-shadow: 0 5px 15px rgba(15,23,42,.05);
+}
+.admin-table td{
+    padding:16px;
+    font-weight:600;
+    color:#0f172a;
+    vertical-align: middle;
+}
+.admin-table tr td:first-child{
+    border-radius:14px 0 0 14px;
+}
+.admin-table tr td:last-child{
+    border-radius:0 14px 14px 0;
+}
+
+/* ACTIONS COLUMN - BUTTONS EKAMA LINE EKATA */
+.admin-table td:last-child {
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    min-width: 220px; /* button 3ta space denna */
+}
+
+.admin-table tbody tr:hover{
+    transform:scale(1.01);
+    transition:.25s;
+}
+
+/* JOB STATUS */
+.status-pill{
+    background:#dbeafe;
+    color:#1d4ed8;
+    padding:7px 15px;
+    border-radius:50px;
+    font-size:13px;
+    font-weight:800;
+}
+
+/* COMPLETED STATUS */
+.status-pill-completed {
+    background:#d1fae5;
+    color:#7bdabf;
+    padding:7px 15px;
+    border-radius:50px;
+    font-size:13px;
+    font-weight:800;
+}
+
+/* ==========================
+     MODAL
+========================== */
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background: rgba(15,23,42,.45);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:3000;
+}
+.modal-box.pro-modal{
+    width:650px;
+    max-width:90%;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,.8);
+    border-radius:28px;
+    padding:40px;
+    box-shadow: 0 30px 70px rgba(15,23,42,.25);
+}
+.modal-box h2{
+    text-align:center;
+    font-size:26px;
+    font-weight:900;
+    color:#065f46;
+    margin-bottom:30px;
+}
+
+/* FORM */
+.form-grid-2col{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:18px;
+}
+.form-grid-2col input{
+    width:100%;
+    padding:14px 16px;
+    border-radius:12px;
+    border: 1.5px solid #cbd5e1;
+    background:white;
+    font-size:14px;
+    font-weight:600;
+    outline:none;
+}
+.form-grid-2col input:focus{
+    border-color:#0284c7;
+    box-shadow: 0 0 0 4px rgba(2,132,199,.15);
+}
+
+/* MODAL BUTTONS */
+.modal-actions{
+    display:flex;
+    gap:15px;
+    margin-top:30px;
+    padding-top:20px;
+    border-top: 1px solid rgba(15,23,42,.1);
+}
+.modal-actions button{
+    flex:1;
+    padding:14px;
+    font-size:15px;
+}
+
+/* LOADING */
+.loading-spinner{
+    height:300px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:800;
+    color:#065f46;
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .admin-table td:last-child {
+      min-width: 180px; /* tablet wala podi kala */
+  }
+}
+
+@media(max-width:900px){
+  .modern-admin-card{ padding:20px; }
+  .form-grid-2col{ grid-template-columns:1fr; }
+  .admin-table{ display:block; overflow-x:auto; }
+  
+  /* mobile wala button yata yata */
+  .admin-table td:last-child {
+      flex-direction: column;
+      gap: 6px;
+      min-width: 120px;
+  }
+  .btn-premium {
+      width: 100%;
+  }
+}

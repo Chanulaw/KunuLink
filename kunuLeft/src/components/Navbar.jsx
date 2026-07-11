@@ -52,7 +52,6 @@ function Navbar() {
         {/* 6. Admin Dashboard */}
         {currentPath === '/admin' && isLoggedIn && userRole === 'admin' && (
           <>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/collectors/add')}>Add Collectors</button>
             <button className="nav-btn nav-secondary" onClick={() => navigate('/collectors')}>Active Collectors</button>
             <button className="nav-btn nav-secondary" onClick={() => navigate('/admin/users')}>Users Details</button>
             <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
