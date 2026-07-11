@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
 function AdminUsers() {
   const [usersList, setUsersList] = useState([]);
@@ -9,84 +10,55 @@ function AdminUsers() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Firestore හි 'users' collection එකෙන් සජීවීව දත්ත ලබා ගැනීම
     const q = query(collection(db, 'users'));
-
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const usersData = [];
-      snapshot.forEach((doc) => {
-        usersData.push({ id: doc.id, ...doc.data() });
-      });
-      setUsersList(usersData);
-      setLoading(false);
-    }, (error) => {
-      console.error("Error fetching users: ", error);
+      setUsersList(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  // 🔴 Logout වීමේ ක්‍රියාවලිය
   const handleLogout = () => {
-    localStorage.clear(); // Login දත්ත මකා දැමීම
-    navigate('/', { replace: true }); // Home පිටුවට හරවා යැවීම
+    localStorage.clear();
+    navigate('/', { replace: true });
   };
 
   return (
-    <div className="tracking-page-container animate-fade-in">
-      <div className="activity-card" style={{ maxWidth: '1000px' }}>
-        
-        {/* Header Section */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '15px' }}>
-          <div>
-            <h2 style={{ color: '#10b981', margin: '0 0 5px 0', fontSize: '24px', fontWeight: '800' }}>Registered Users Details</h2>
-            <p style={{ color: '#64748b', margin: 0, fontSize: '14px' }}>පද්ධතියේ ලියාපදිංචි වී සිටින සියලුම පරිශීලකයන් සහ ඔවුන්ගේ විස්තර</p>
-          </div>
-          
-          {/* Action Buttons (Back to Requests සහ Logout) */}
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button className="nav-btn nav-secondary" onClick={() => navigate('/admin')}>
-              ← Back to Requests
-            </button>
-            <button className="nav-btn nav-danger" onClick={handleLogout}>
-              Logout
-            </button>
-          </div>
+    <div className="admin-page-container">
+      {/* Topic Section */}
+      <div className="admin-topic-section">
+        <h2 className="admin-topic-title">Registered Users</h2>
+        <p className="admin-topic-subtitle">පද්ධතියේ ලියාපදිංචි වී සිටින සියලුම පරිශීලකයන්ගේ විස්තර</p>
+      </div>
+
+      {/* Main Card */}
+      <div className="activity-card admin-width-fix">
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px', gap: '10px' }}>
+         
         </div>
 
         {loading ? (
-          <div className="loading-spinner" style={{ textAlign: 'center', padding: '20px', color: '#64748b' }}>
-            පරිශීලක දත්ත පූරණය වෙමින් පවතී...
-          </div>
-        ) : usersList.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
-            📭 පද්ධතියේ කිසිදු පරිශීලකයෙකු ලියාපදිංචි වී නොමැත.
-          </div>
+          <div className="loading-spinner">Loading Users...</div>
         ) : (
-          /* 📋 Registered Users Table */
-          <div style={{ overflowX: 'auto' }}>
-            <table className="activity-table-new">
+          <div className="main-table-wrapper">
+            <table className="admin-table">
               <thead>
                 <tr>
-                  <th>User ID</th>
+                  <th>ID</th>
                   <th>Full Name</th>
                   <th>Email Address</th>
-                  <th>Role (තත්ත්වය)</th>
+                  <th>Role</th>
                 </tr>
               </thead>
               <tbody>
-                {usersList.map((userItem) => (
-                  <tr key={userItem.id}>
-                    <td><strong>#{userItem.id.substring(0, 6).toUpperCase()}</strong></td>
-                    <td style={{ fontWeight: '600', color: '#0f172a' }}>{userItem.name || 'N/A'}</td>
-                    <td style={{ color: '#475569' }}>{userItem.email || 'N/A'}</td>
+                {usersList.map((user) => (
+                  <tr key={user.id}>
+                    <td>#{user.id.substring(0, 5).toUpperCase()}</td>
+                    <td style={{ fontWeight: "600" }}>{user.name || "N/A"}</td>
+                    <td>{user.email || "N/A"}</td>
                     <td>
-                      <span className={`status-pill ${userItem.role === 'admin' ? 'completed' : 'pending'}`} style={{
-                        background: userItem.role === 'admin' ? '#d1fae5' : '#f1f5f9',
-                        color: userItem.role === 'admin' ? '#047857' : '#475569',
-                      }}>
-                        {userItem.role || 'user'}
+                      <span className={`status-pill ${user.role === 'admin' ? 'admin' : user.role === 'collector' ? 'collector' : 'user'}`}>
+                        {user.role || 'user'}
                       </span>
                     </td>
                   </tr>
@@ -95,7 +67,6 @@ function AdminUsers() {
             </table>
           </div>
         )}
-
       </div>
     </div>
   );

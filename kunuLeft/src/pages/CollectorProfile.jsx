@@ -61,26 +61,20 @@ function CollectorProfile() {
         <div className="profile-avatar">👤</div>
         <h2>{isEditing ? "Edit Profile" : "My Profile"}</h2>
         
-        {/* Name Field (Position 1) */}
+        {/* Name Field */}
         <div className="profile-field">
           <label>Full Name</label>
           {isEditing ? (
-            <input 
-              type="text" 
-              name="name" 
-              value={profile.name || ''} 
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px', background: 'white', border: '1px solid #bae6fd', borderRadius: '8px', marginTop: '5px' }}
-            />
+            <input type="text" name="name" value={profile.name || ''} onChange={handleChange} />
           ) : (
             <p>{profile.name || "N/A"}</p>
           )}
         </div>
 
-        {/* Email Field (Position 2) */}
+        {/* Email Field - විශේෂිත පෙනුම සඳහා class එකක් සහිතව */}
         <div className="profile-field">
           <label>Email (Account)</label>
-          <p style={{ color: '#64748b' }}>{profile.email || "N/A"}</p>
+          <p className="email-field-special">{profile.email || "N/A"}</p>
         </div>
 
         {/* Remaining Editable Fields */}
@@ -88,26 +82,18 @@ function CollectorProfile() {
           <div className="profile-field" key={field}>
             <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
             {isEditing ? (
-              <input 
-                type="text" 
-                name={field} 
-                value={profile[field] || ''} 
-                onChange={handleChange}
-                style={{ width: '100%', padding: '8px', background: 'white', border: '1px solid #bae6fd', borderRadius: '8px', marginTop: '5px' }}
-              />
+              <input type="text" name={field} value={profile[field] || ''} onChange={handleChange} />
             ) : (
               <p>{profile[field] || "N/A"}</p>
             )}
           </div>
         ))}
 
-        <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
+        <div className="profile-actions">
           {isEditing ? (
             <>
-              <button className="back-btn" onClick={handleUpdate} disabled={saving}>
-                {saving ? "Saving..." : "Save Changes"}
-              </button>
-              <button className="back-btn" style={{background: '#94a3b8', border: 'none'}} onClick={() => setIsEditing(false)}>Cancel</button>
+              <button className="back-btn" onClick={handleUpdate} disabled={saving}>{saving ? "Saving..." : "Save Changes"}</button>
+              <button className="back-btn cancel-btn" onClick={() => setIsEditing(false)}>Cancel</button>
             </>
           ) : (
             <button className="back-btn" onClick={() => setIsEditing(true)}>Edit Profile</button>
@@ -115,9 +101,7 @@ function CollectorProfile() {
         </div>
 
         {!isEditing && (
-          <button className="back-btn" style={{marginTop: '15px', background: 'transparent', color: '#64748b', border: 'none'}} onClick={() => navigate('/collector')}>
-            ← Back to Dashboard
-          </button>
+          <button className="back-btn-ghost" onClick={() => navigate('/collector')}>← Back to Dashboard</button>
         )}
       </div>
     </div>
