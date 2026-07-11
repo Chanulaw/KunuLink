@@ -75,9 +75,21 @@ function Navbar() {
           </>
         )}
 
-        {/* 9. Collector Dashboard */}
-        {currentPath === '/collector' && (
-          <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
+        {/* 9. Collector Dashboard & Profile Pages */}
+        {(currentPath === '/collector' || currentPath === '/collector/profile') && (
+          <>
+            {currentPath !== '/collector/profile' && (
+              <button className="nav-btn nav-secondary" onClick={() => navigate('/collector/profile')}>
+                Profile
+              </button>
+            )}
+            {currentPath !== '/collector' && (
+              <button className="nav-btn nav-secondary" onClick={() => navigate('/collector')}>
+                Dashboard
+              </button>
+            )}
+            <button className="nav-btn nav-danger" onClick={handleLogout}>Logout</button>
+          </>
         )}
 
         {/* 10. Collectors Page */}
