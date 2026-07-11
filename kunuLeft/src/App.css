@@ -2072,3 +2072,100 @@ body {
   .table .row { grid-template-columns: 1fr; gap: 8px; }
   .table .row.header { display: none; }
 }
+
+
+
+
+
+
+/* 1. Page Wrapper */
+.profile-page-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center; /* මැදට පෙළගැස්වීම */
+  padding: 20px;
+}
+
+/* 2. Compact Profile Card: තරමක් කුඩා සහ අලංකාර කාඩ් එක */
+.profile-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 30px; /* කොන් තරමක් වටකුරු කිරීම */
+  padding: 40px;
+  width: 100%;
+  max-width: 500px; /* පළල 500px දක්වා අඩු කළා (Compact) */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* 3. Avatar: තරමක් කුඩා කිරීම */
+.profile-avatar {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  margin: 0 auto 20px auto;
+  color: white;
+  box-shadow: 0 8px 15px rgba(14, 165, 233, 0.2);
+}
+
+/* 4. Stats: පේළියට සැකසීම */
+.stats-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 12px;
+  border-radius: 15px;
+  flex: 1;
+}
+
+.stat-box label { font-size: 10px; color: #64748b; text-transform: uppercase; }
+.stat-box p { font-size: 18px; font-weight: 700; color: #0ea5e9; margin: 2px 0 0 0; }
+
+/* 5. Profile Fields: තොරතුරු පේළි වඩාත් සංයුක්ත කිරීම */
+.profile-field {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 12px 20px;
+  border-radius: 15px;
+  margin-bottom: 12px;
+  text-align: left;
+  border-left: 4px solid #0ea5e9;
+}
+
+.profile-field label { font-size: 11px; color: #475569; font-weight: 600; margin-bottom: 2px; }
+.profile-field p, .profile-field input { 
+  font-size: 14px; /* අකුරු ප්‍රමාණය තරමක් අඩු කිරීම */
+  font-weight: 600; 
+  color: #1e293b;
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+}
+
+/* 6. Buttons */
+.back-btn {
+  margin-top: 20px;
+  background: #0ea5e9;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.back-btn:hover { background: #0284c7; transform: translateY(-2px); }
