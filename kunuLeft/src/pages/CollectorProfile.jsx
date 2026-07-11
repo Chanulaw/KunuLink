@@ -59,7 +59,7 @@ function CollectorProfile() {
     <div className="profile-page-wrapper">
       <div className="profile-card">
         <div className="profile-avatar">👤</div>
-        <h2>{isEditing ? "Edit Profile" : "Collector Profile"}</h2>
+        <h2>{isEditing ? "Edit Profile" : "My Profile"}</h2>
         
         {/* Name Field (Position 1) */}
         <div className="profile-field">
