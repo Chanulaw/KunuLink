@@ -1389,3 +1389,68 @@ body {
   border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
+
+/* Collector Activity Page සඳහා විශේෂිත CSS */
+.collector-page-container {
+  padding: 40px 20px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.collector-width-fix {
+  max-width: 1000px; /* මෙම පිටුවට ගැළපෙන පරිදි */
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.collector-table-wrapper {
+  overflow-x: auto;
+}
+
+/* Status Pill වර්ණ ගැන්වීම (Collector's specific status) */
+.status-pill.pending { background: #fef3c7; color: #92400e; }
+.status-pill.assigned { background: #dbeafe; color: #1e40af; }
+.status-pill.accepted { background: #d1fae5; color: #065f46; }
+.status-pill.completed { background: #d1fae5; color: #065f46; }
+
+
+
+
+/* Table එකෙහි පරතරය අඩු කිරීම */
+.admin-table th, 
+.admin-table td {
+  padding: 22px 20px !important; /* Padding එක අඩු කරන ලදී */
+}
+
+/* Card එකෙහි අභ්‍යන්තර පරතරය අඩු කිරීම */
+.admin-width-fix {
+  padding: 20px !important;
+}
+
+/* Stats පෙට්ටි සඳහා තවදුරටත් පරතරය */
+.activity-stats-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.activity-stats-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4500px; /* මෙහි අගය වැඩි කිරීමෙන් පෙට්ටි අතර පරතරය වැඩි වේ (උදා: 60px හෝ 80px) */
+  margin-bottom: 40px;
+  flex-wrap: wrap; /* තිරය කුඩා වූ විට පෙට්ටි පහළට යාමට උදව් වේ */
+}
+
+/* ඔබට අවශ්‍ය නම් පෙට්ටිවල ප්‍රමාණයත් තරමක් වැඩි කළ හැක */
+.stat-box-custom {
+  padding: 20px 40px; /* පැතිවලින් පරතරය වැඩි කිරීමෙන් පෙට්ටිය ලොකු වේ */
+  background: #ffffff;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}

@@ -39,57 +39,51 @@ function Activity() {
   if (loading) return <div className="loading-spinner">Loading...</div>;
 
   return (
-    <div className="tracking-page-container">
-      <h2 className="centered-title">Activity History</h2>
-      
-      <div className="activity-stats-row">
-        <div className="stat-box-custom">
-          <h3>{String(stats.total).padStart(2, '0')}</h3>
-          <p>Total</p>
-        </div>
-        <div className="stat-box-custom">
-          <h3>{String(stats.completed).padStart(2, '0')}</h3>
-          <p>Completed</p>
-        </div>
-        <div className="stat-box-custom">
-          <h3>{String(stats.active).padStart(2, '0')}</h3>
-          <p>In-Progress</p>
-        </div>
+    <div className="admin-page-container">
+      <div className="admin-topic-section">
+        <h2 className="admin-topic-title">Activity History</h2>
+        <p className="admin-topic-subtitle">ඔබගේ ඉල්ලීම් වල තත්ත්වය පරීක්ෂා කරන්න</p>
       </div>
 
-      <div className="activity-card">
-        <table className="activity-table-new">
-          <thead>
-            <tr>
-              <th>REQ ID</th>
-              <th>DATE</th>
-              <th>TYPE</th>
-              <th>STATUS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {activities.length > 0 ? (
-              activities.map((item) => {
-                // Status එක lowercase කර class එකක් ලෙස භාවිතා කිරීම
-                const statusClass = (item.status || 'pending').toLowerCase();
-                return (
+      {/* Stats Section with increased gap */}
+      <div className="activity-stats-row" style={{ gap: '40px', marginBottom: '30px', display: 'flex', justifyContent: 'center' }}>
+        <div className="stat-box-custom"><h3>{String(stats.total).padStart(2, '0')}</h3><p>Total</p></div>
+        <div className="stat-box-custom"><h3>{String(stats.completed).padStart(2, '0')}</h3><p>Completed</p></div>
+        <div className="stat-box-custom"><h3>{String(stats.active).padStart(2, '0')}</h3><p>In-Progress</p></div>
+      </div>
+
+      {/* Table Section with reduced padding/white space */}
+      <div className="activity-card admin-width-fix" style={{ padding: '20px' }}>
+        <div className="main-table-wrapper">
+          <table className="admin-table" style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <thead>
+              <tr>
+                <th style={{ padding: '12px 15px' }}>REQ ID</th>
+                <th style={{ padding: '12px 15px' }}>DATE</th>
+                <th style={{ padding: '12px 15px' }}>TYPE</th>
+                <th style={{ padding: '12px 15px' }}>STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activities.length > 0 ? (
+                activities.map((item) => (
                   <tr key={item.id}>
-                    <td><strong>#{item.id.substring(0, 5).toUpperCase()}</strong></td>
-                    <td>{item.displayDate}</td>
-                    <td>{item.wasteType || "General"}</td>
-                    <td>
-                      <span className={`status-pill ${statusClass}`}>
+                    <td style={{ padding: '12px 15px' }}><strong>#{item.id.substring(0, 5).toUpperCase()}</strong></td>
+                    <td style={{ padding: '12px 15px' }}>{item.displayDate}</td>
+                    <td style={{ padding: '12px 15px' }}>{item.wasteType || "General"}</td>
+                    <td style={{ padding: '12px 15px' }}>
+                      <span className={`status-pill ${(item.status || 'pending').toLowerCase()}`}>
                         {item.status || 'Pending'}
                       </span>
                     </td>
                   </tr>
-                );
-              })
-            ) : (
-              <tr><td colSpan="4" style={{ textAlign: 'center' }}>No requests found.</td></tr>
-            )}
-          </tbody>
-        </table>
+                ))
+              ) : (
+                <tr><td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>No requests found.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
