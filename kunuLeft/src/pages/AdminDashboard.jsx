@@ -8,7 +8,6 @@ import {
   updateDoc,
   query,
   orderBy,
-  getDocs,
   setDoc,
   serverTimestamp
 } from 'firebase/firestore';
@@ -22,12 +21,12 @@ function AdminDashboard() {
   const [showCollectorModal, setShowCollectorModal] = useState(false);
   const [assignModal, setAssignModal] = useState({ isOpen: false, reqId: null });
   const [collectors, setCollectors] = useState([]);
+  const [search, setSearch] = useState("");
   
   const [collectorForm, setCollectorForm] = useState({
     name: "", email: "", phone: "", vehicle: "", area: "", password: ""
   });
 
-  // Real-time Requests
   useEffect(() => {
     const q = query(collection(db, 'requests'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -38,7 +37,6 @@ function AdminDashboard() {
     return () => unsubscribe();
   }, []);
 
-  // Real-time Collectors
   useEffect(() => {
     const q = query(collection(db, 'collectors'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -47,7 +45,6 @@ function AdminDashboard() {
     return () => unsubscribe();
   }, []);
 
-  // Assign Collector
   const assignSpecificCollector = async (collector) => {
     try {
       if (!assignModal.reqId) return;
@@ -70,7 +67,6 @@ function AdminDashboard() {
     }
   };
 
-  // Download PDF
   const downloadReceipt = (req) => {
     const docPdf = new jsPDF();
     docPdf.setFillColor(16, 185, 129);
@@ -90,7 +86,6 @@ function AdminDashboard() {
     docPdf.save(`Receipt_${req.id}.pdf`);
   };
 
-  // Add Collector
   const saveCollector = async () => {
     try {
       if(!collectorForm.email ||!collectorForm.password ||!collectorForm.name){
@@ -126,6 +121,7 @@ function AdminDashboard() {
   const arrived = requests.filter(r => getStatus(r.status) === "arrived").length;
   const completed = requests.filter(r => getStatus(r.status) === "completed").length;
 
+  // CHART DATA
   const chartData = useMemo(() => {
     const counts = requests.reduce((acc, req) => {
       const type = req.wasteType || 'Other';
@@ -136,6 +132,11 @@ function AdminDashboard() {
   }, [requests]);
 
   const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
+
+  const filteredCollectors = collectors.filter(c => 
+    c.name?.toLowerCase().includes(search.toLowerCase()) ||
+    c.area?.toLowerCase().includes(search.toLowerCase())
+  );
 
   if (loading) return <div className="loading-spinner">Loading Database...</div>;
 
@@ -151,6 +152,7 @@ function AdminDashboard() {
           </button>
         </div>
 
+        {/* STATS */}
         <div className="stats-grid">
           <div className="stat-card"><h3>{pending}</h3><p>Pending</p></div>
           <div className="stat-card"><h3>{assigned}</h3><p>Assigned</p></div>
@@ -160,6 +162,35 @@ function AdminDashboard() {
           <div className="stat-card"><h3>{completed}</h3><p>Completed</p></div>
         </div>
 
+        {/* CHARTS - ADDED BACK */}
+        <div className="charts-grid">
+          <div className="chart-box">
+            <h4 style={{ textAlign: 'center', color: '#64748b', marginBottom: '15px' }}>Waste Distribution</h4>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="name" />
+                <YAxis allowDecimals={false} />
+                <Tooltip />
+                <Bar dataKey="count" fill="#10b981" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="chart-box">
+            <h4 style={{ textAlign: 'center', color: '#64748b', marginBottom: '15px' }}>Contribution Overview</h4>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie data={chartData} dataKey="count" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                  {chartData.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
+                </Pie>
+                <Tooltip /><Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* TABLE */}
         <div className="main-table-wrapper">
           <table className="admin-table">
             <thead>
@@ -187,26 +218,21 @@ function AdminDashboard() {
                   <td>{req.collectorName || "Not Assigned"}</td>
                   <td>{req.location? `${req.location.lat.toFixed(4)}, ${req.location.lng.toFixed(4)}` : "No Location"}</td>
                   <td><span style={{ fontWeight: "bold", color: statusColor }}>● {req.status || "Pending"}</span></td>
-                  
                   <td>
-                    {/* ADMIN CAN ONLY ASSIGN WHEN PENDING */}
                     {currentStatus === "pending" && (
                       <button className="btn-premium btn-assign" onClick={() => setAssignModal({ isOpen: true, reqId: req.id })}>
                         Assign
                       </button>
                     )}
-
                     {currentStatus === "completed" && (
                       <button className="btn-premium btn-receipt" onClick={() => downloadReceipt(req)}>
                         Receipt
                       </button>
                     )}
-                    
                     {["assigned","accepted","on the way","arrived"].includes(currentStatus) && (
                       <span style={{color: '#64748b', fontSize: '12px'}}>Waiting for Collector</span>
                     )}
                   </td>
-
                   <td>{req.collectorLocation? `${req.collectorLocation.lat.toFixed(4)}, ${req.collectorLocation.lng.toFixed(4)}` : "Not Sharing"}</td>
                   <td>{req.createdAt? new Date(req.createdAt.seconds*1000).toLocaleString() : "-"}</td>
                 </tr>
@@ -238,34 +264,67 @@ function AdminDashboard() {
         </div>
       )}
 
-      {/* ASSIGN COLLECTOR MODAL */}
+      {/* ASSIGN COLLECTOR MODAL - FIXED */}
       {assignModal.isOpen && (
         <div className="modal-overlay">
           <div className="modal-box pro-modal assign-modal">
             <h2>👤 Assign a Collector</h2>
-            <p style={{color: '#64748b', marginBottom: '20px'}}>Select a collector for Request #{assignModal.reqId.substring(0,5)}</p>
+            <p style={{color: '#64748b', marginBottom: '15px'}}>Select a collector for Request #{assignModal.reqId.substring(0,5)}</p>
+            
+            <input 
+              type="text"
+              placeholder="Search by Name or Area..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="modal-search"
+            />
+
             <div className="assign-table-wrapper">
-              {collectors.length === 0 ? (
-                <p>No collectors available.</p>
+              {filteredCollectors.length === 0 ? (
+                <p>No collectors found.</p>
               ) : (
                 <table className="admin-table">
-                  <thead><tr><th>Name</th><th>Email</th><th>Area</th><th>Active Jobs</th><th>Action</th></tr></thead>
+                  <thead>
+                    <tr>
+                      <th>NAME</th><th>EMAIL</th><th>PHONE</th><th>AREA</th><th>VEHICLE</th><th>ACTIVE JOBS</th><th>ACTION</th>
+                    </tr>
+                  </thead>
                   <tbody>
-                    {collectors.map(c => (
-                      <tr key={c.id}>
-                        <td style={{fontWeight: 'bold'}}>{c.name}</td>
-                        <td>{c.email}</td>
-                        <td>{c.area || 'N/A'}</td>
-                        <td><span className="status-pill">{c.activeJobs || 0}</span></td>
-                        <td><button className="btn-premium btn-assign" onClick={() => assignSpecificCollector(c)}>Select</button></td>
-                      </tr>
-                    ))}
+                    {filteredCollectors.map(c => {
+                      const isFull = (c.activeJobs || 0) >= 3;
+                      return (
+                        <tr key={c.id} className={isFull ? 'full-row' : ''}>
+                          <td style={{fontWeight: 'bold'}}>{c.name}</td>
+                          <td>{c.email}</td>
+                          <td>{c.phone || 'N/A'}</td>
+                          <td>{c.area || 'N/A'}</td>
+                          <td>{c.vehicle || 'N/A'}</td>
+                          <td>
+                            <span className="status-pill" style={{
+                              background: isFull ? '#fee2e2' : '#eff6ff',
+                              color: isFull ? '#ef4444' : '#2563eb'
+                            }}>
+                              {c.activeJobs || 0}
+                            </span>
+                          </td>
+                          <td>
+                            <button 
+                              className="btn-premium btn-assign" 
+                              disabled={isFull}
+                              onClick={() => assignSpecificCollector(c)}
+                            >
+                              {isFull ? 'FULL' : 'SELECT'}
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               )}
             </div>
             <div className="modal-actions" style={{marginTop: '20px'}}>
-              <button className="btn-premium btn-cancel" onClick={() => setAssignModal({ isOpen: false, reqId: null })}>Cancel</button>
+              <button className="btn-premium btn-cancel" onClick={() => {setAssignModal({ isOpen: false, reqId: null }); setSearch("");}}>Cancel</button>
             </div>
           </div>
         </div>
