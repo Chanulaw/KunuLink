@@ -75,12 +75,18 @@ function Navbar() {
           </>
         )}
 
-        {/* 9. Collector Dashboard & Profile Pages */}
-        {(currentPath === '/collector' || currentPath === '/collector/profile') && (
+        {/* 9. Collector Dashboard, Profile & Activity Pages */}
+        {(currentPath === '/collector' || currentPath === '/collector/profile' || currentPath === '/collector-activity') && (
           <>
             {currentPath !== '/collector/profile' && (
               <button className="nav-btn nav-secondary" onClick={() => navigate('/collector/profile')}>
                 Profile
+              </button>
+            )}
+            {/* Collector Activity Button added here */}
+            {currentPath !== '/collector-activity' && (
+              <button className="nav-btn nav-secondary" onClick={() => navigate('/collector-activity')}>
+                Activity
               </button>
             )}
             {currentPath !== '/collector' && (
@@ -92,13 +98,8 @@ function Navbar() {
           </>
         )}
 
-        {/* 10. Collectors Page */}
-        {currentPath === '/collectors' && (
-          <button className="nav-btn nav-secondary" onClick={() => navigate("/admin")}>Back to Admin</button>
-        )}
-
-        {/* 11. Add Collectors Page */}
-        {currentPath === '/collectors/add' && (
+        {/* 10 & 11. Admin Sub-pages */}
+        {(currentPath === '/collectors' || currentPath === '/collectors/add') && (
           <button className="nav-btn nav-secondary" onClick={() => navigate("/admin")}>Back to Admin</button>
         )}
 

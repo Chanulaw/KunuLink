@@ -11,7 +11,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers'; 
 import EcoGuide from "./pages/EcoGuide"; 
 import CollectorDashboard from './pages/CollectorDashboard';
-import CollectorProfile from './pages/CollectorProfile'; // අලුතින් එකතු කළ පිටුව
+import CollectorProfile from './pages/CollectorProfile';
+import CollectorActivity from './pages/CollectorActivity'; // 1. අලුත් පිටුව Import කරන්න
 import CollectorsPage from './pages/CollectorsPage';
 import AddCollector from './pages/AddCollectors';
 import './App.css';
@@ -64,6 +65,7 @@ function App() {
         {/* එකතු කරන්නන්ගේ පිටු */}
         <Route path="/collector" element={<CollectorProtectedRoute><CollectorDashboard /></CollectorProtectedRoute>} />
         <Route path="/collector/profile" element={<CollectorProtectedRoute><CollectorProfile /></CollectorProtectedRoute>} />
+        <Route path="/collector-activity" element={<CollectorProtectedRoute><CollectorActivity /></CollectorProtectedRoute>} /> {/* 2. නව Route එක */}
 
         {/* වැරදි URL */}
         <Route path="*" element={<Navigate to="/" replace />} />
