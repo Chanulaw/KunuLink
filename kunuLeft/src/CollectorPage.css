@@ -1,6 +1,4 @@
-/* =====================================
-   COLLECTORS PAGE - GLASS ADMIN UI
-===================================== */
+/* COLLECTORS PAGE  */
 .admin-page-container{
     max-width:1500px;
     margin:40px auto;
@@ -44,13 +42,13 @@
 /* BUTTON COMMON */
 .btn-premium{
     border:none;
-    padding:10px 14px; /* podi kala - eliyata yana eka nawathanna */
+    padding:10px 14px; 
     border-radius:10px;
     font-weight:800;
     cursor:pointer;
     transition:.3s;
     font-size:13px;
-    white-space: nowrap; /* text break wenne nathi */
+    white-space: nowrap; 
 }
 .btn-premium:hover{
     transform:translateY(-2px);
@@ -111,14 +109,14 @@
     border-radius:0 14px 14px 0;
 }
 
-/* ACTIONS COLUMN - BUTTONS EKAMA LINE EKATA */
+/* ACTIONS COLUMN */
 .admin-table td:last-child {
     display: flex;
     gap: 8px;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
-    min-width: 220px; /* button 3ta space denna */
+    min-width: 220px; 
 }
 
 .admin-table tbody tr:hover{
@@ -146,9 +144,7 @@
     font-weight:800;
 }
 
-/* ==========================
-     MODAL
-========================== */
+/* MODAL */
 .modal-overlay{
     position:fixed;
     inset:0;
@@ -227,7 +223,7 @@
 /* RESPONSIVE */
 @media(max-width:1100px){
   .admin-table td:last-child {
-      min-width: 180px; /* tablet wala podi kala */
+      min-width: 180px; 
   }
 }
 
@@ -236,7 +232,6 @@
   .form-grid-2col{ grid-template-columns:1fr; }
   .admin-table{ display:block; overflow-x:auto; }
   
-  /* mobile wala button yata yata */
   .admin-table td:last-child {
       flex-direction: column;
       gap: 6px;

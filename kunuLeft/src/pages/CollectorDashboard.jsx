@@ -36,25 +36,20 @@ import "../App.css";
 // Leaflet Icon Fix
 delete L.Icon.Default.prototype._getIconUrl;
 
-// Custom Icons
 const userIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-  iconSize:[35,35],
-  iconAnchor: [17, 35]
+  iconSize:[35,35], iconAnchor: [17, 35]
 });
 
 const collectorIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/3202/3202926.png",
-  iconSize:[40,40],
-  iconAnchor: [20, 40]
+  iconSize:[40,40], iconAnchor: [20, 40]
 });
 
 function ChangeMapView({ coords }) {
   const map = useMap();
   useEffect(() => {
-    if (coords) {
-      map.setView([coords.lat, coords.lng], 14);
-    }
+    if (coords) map.setView([coords.lat, coords.lng], 14);
   }, [coords, map]);
   return null;
 }
@@ -68,34 +63,24 @@ function CollectorDashboard() {
   const [collectorLocation, setCollectorLocation] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ===============================
-  // AUTH + LOAD ALL PENDING JOBS TOO
-  // ===============================
+  // AUTH + LOAD JOBS
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        navigate("/login");
-        return;
-      }
+      if (!user) { navigate("/login"); return; }
       setCollector(user);
       const userSnap = await getDoc(doc(db, "users", user.uid));
-
       if (!userSnap.exists() || userSnap.data().role!== "collector") {
-        alert("Access denied");
-        navigate("/login");
-        return;
+        alert("Access denied"); navigate("/login"); return;
       }
       setCollectorName(userSnap.data().name || "Collector");
 
-      // FIX: Admin assign කරලා නැතුවත් pending jobs පේන්න
       const q1 = query(collection(db, "requests"), where("collectorId", "==", user.uid));
       const q2 = query(collection(db, "requests"), where("status", "==", "Pending"));
 
       const unsub1 = onSnapshot(q1, (snapshot) => {
         const myJobs = snapshot.docs.map(doc => ({ id: doc.id,...doc.data() }));
         setJobs(prev => {
-          const otherJobs = prev.filter(j =>!j.collectorId || j.collectorId === user.uid);
-          const all = [...myJobs,...otherJobs.filter(j =>!myJobs.find(m => m.id === j.id))];
+          const all = [...myJobs,...prev.filter(j =>!j.collectorId || j.collectorId === user.uid).filter(j =>!myJobs.find(m => m.id === j.id))];
           if (all.length > 0 &&!selectedJob) setSelectedJob(all[0]);
           return all;
         });
@@ -107,7 +92,6 @@ function CollectorDashboard() {
         setJobs(prev => {
           const myJobs = prev.filter(j => j.collectorId === user.uid);
           const all = [...myJobs,...pendingJobs.filter(j =>!myJobs.find(m => m.id === j.id))];
-          if (all.length > 0 &&!selectedJob) setSelectedJob(all[0]);
           return all;
         });
       });
@@ -119,8 +103,7 @@ function CollectorDashboard() {
 
   // LIVE LOCATION
   useEffect(() => {
-    if (!collector) return;
-    if (!navigator.geolocation) return;
+    if (!collector || !navigator.geolocation) return;
 
     const watch = navigator.geolocation.watchPosition(
       async (position) => {
@@ -128,32 +111,29 @@ function CollectorDashboard() {
         const lng = position.coords.longitude;
         setCollectorLocation({ lat, lng });
 
-        await setDoc(
-          doc(db, "collectors", collector.uid),
-          {
-            currentLocation: { lat, lng },
-            isOnline: true,
-            updatedAt: serverTimestamp()
-          },
-          { merge: true }
-        );
-      },
-      (err) => { console.log(err); },
+        await setDoc(doc(db, "collectors", collector.uid), {
+          currentLocation: { lat, lng }, isOnline: true, updatedAt: serverTimestamp()
+        }, { merge: true });
+
+        // Active jobs update
+        const myActiveJobs = jobs.filter(j => j.collectorId === collector.uid);
+        myActiveJobs.forEach(async (job) => {
+          await updateDoc(doc(db, "requests", job.id), {
+            collectorLocation: { lat, lng }, collectorLastUpdate: serverTimestamp()
+          });
+        });
+
+      }, (err) => { console.log(err); },
       { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
     );
 
     return () => {
       navigator.geolocation.clearWatch(watch);
-      setDoc(doc(db, "collectors", collector.uid), {
-        isOnline: false,
-        updatedAt: serverTimestamp()
-      }, { merge: true });
+      if(collector) setDoc(doc(db, "collectors", collector.uid), { isOnline: false }, { merge: true });
     };
-  }, [collector]);
+  }, [collector, jobs]);
 
-  const getStatus = (status) => {
-    return (status || "Pending").toLowerCase().replace(/_/g, " ").trim();
-  };
+  const getStatus = (status) => (status || "Pending").toLowerCase().trim();
 
   const updateStatus = async (jobId, status) => {
     try {
@@ -161,22 +141,21 @@ function CollectorDashboard() {
       setJobs(prev => prev.map(job => job.id === jobId? {...job, status } : job));
       if (selectedJob?.id === jobId) setSelectedJob(prev => ({...prev, status }));
       alert("Status Updated");
-    } catch (err) { console.log(err); alert("Update Failed"); }
+    } catch (err) { alert("Update Failed"); }
   };
 
+  // 1. ACCEPT
   const acceptJob = async (jobId) => {
     try {
       await updateDoc(doc(db, "requests", jobId), {
         status: "Accepted",
-        collectorId: collector.uid,
-        collectorName: collectorName,
         acceptedAt: serverTimestamp()
       });
-      setJobs(prev => prev.map(job => job.id === jobId? {...job, status: "Accepted", collectorId: collector.uid } : job));
-      if (selectedJob?.id === jobId) setSelectedJob(prev => ({...prev, status: "Accepted", collectorId: collector.uid }));
-    } catch (err) { console.log(err); alert("Accept Failed"); }
+      alert("Job Accepted");
+    } catch (err) { alert("Accept Failed"); }
   };
 
+  // 2. REJECT
   const rejectJob = async (jobId) => {
     const ok = window.confirm("Reject this job?");
     if (!ok) return;
@@ -185,23 +164,26 @@ function CollectorDashboard() {
         status: "Pending",
         collectorId: null,
         collectorName: null,
+        collectorLocation: null,
         rejectedAt: serverTimestamp()
       });
       alert("Job Rejected");
     } catch (err) { console.log(err); }
   };
 
+  // 3. COMPLETE
   const completeJob = async (jobId) => {
     try {
       await updateDoc(doc(db, "requests", jobId), {
         status: "Completed",
+        collectorLocation: null,
         completedAt: serverTimestamp()
       });
       const collectorRef = doc(db, "collectors", collector.uid);
       const snap = await getDoc(collectorRef);
       if (snap.exists()) {
         const current = snap.data().activeJobs || 0;
-        await updateDoc(collectorRef, { activeJobs: current > 0? current - 1 : 0 });
+        await updateDoc(collectorRef, { activeJobs: Math.max(0, current - 1) });
       }
       alert("Collection Completed");
     } catch (err) { console.log(err); }
@@ -240,23 +222,15 @@ function CollectorDashboard() {
       </section>
 
       <div className="dash-grid-layout">
-        {/* MAP SECTION */}
         <div className="dash-glass-card map-holder">
           <h2 className="dash-section-title">📍 Collection Map</h2>
           <div className="map-wrapper" style={{ height:"450px", borderRadius:"20px", overflow:"hidden" }}>
             <MapContainer center={[7.8731,80.7718]} zoom={8} style={{ width:"100%", height:"100%" }}>
               <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
               {selectedJob?.location && <ChangeMapView coords={selectedJob.location}/>}
-
-              {/* USER LOCATION */}
               {jobs.map(job => (
                 job.location && (
-                  <Marker
-                    key={job.id}
-                    position={[job.location.lat, job.location.lng]}
-                    icon={userIcon}
-                    eventHandlers={{ click:() => setSelectedJob(job) }}
-                  >
+                  <Marker key={job.id} position={[job.location.lat, job.location.lng]} icon={userIcon} eventHandlers={{ click:() => setSelectedJob(job) }}>
                     <Popup>
                       <h4>👤 Citizen Location</h4>
                       Name: {job.userName || "Anonymous"} <br/>
@@ -267,36 +241,18 @@ function CollectorDashboard() {
                   </Marker>
                 )
               ))}
-
-              {/* COLLECTOR LIVE LOCATION */}
               {collectorLocation && (
-                <Marker
-                  position={[collectorLocation.lat, collectorLocation.lng]}
-                  icon={collectorIcon}
-                >
-                  <Popup>
-                    🚛 Collector Current Location <br/>
-                    Lat: {collectorLocation.lat.toFixed(5)} <br/>
-                    Lng: {collectorLocation.lng.toFixed(5)}
-                  </Popup>
+                <Marker position={[collectorLocation.lat, collectorLocation.lng]} icon={collectorIcon}>
+                  <Popup>🚛 Your Location</Popup>
                 </Marker>
               )}
-
-              {/* ROUTE */}
               {collectorLocation && selectedJob?.location && (
-                <Polyline
-                  positions={[
-                    [collectorLocation.lat, collectorLocation.lng],
-                    [selectedJob.location.lat, selectedJob.location.lng]
-                  ]}
-                  pathOptions={{ color: "#059669", weight: 4, dashArray: "10, 10" }}
-                />
+                <Polyline positions={[[collectorLocation.lat, collectorLocation.lng], [selectedJob.location.lat, selectedJob.location.lng]]} pathOptions={{ color: "#059669", weight: 4, dashArray: "10, 10" }} />
               )}
             </MapContainer>
           </div>
         </div>
 
-        {/* CURRENT JOB */}
         <div className="dash-glass-card form-holder">
           <h2 className="dash-section-title">📋 Current Job</h2>
           {selectedJob? (
@@ -304,30 +260,28 @@ function CollectorDashboard() {
               <div className="input-group"><label>Citizen</label><p>{selectedJob.userName || "Anonymous"}</p></div>
               <div className="input-group"><label>Waste Type</label><p>{selectedJob.wasteType || "General"}</p></div>
               <div className="input-group"><label>Status</label><p><span className="status-pill">{selectedJob.status}</span></p></div>
-              <div className="input-group">
-                <label>Location</label>
-                <p>{selectedJob.location? `${selectedJob.location.lat.toFixed(5)}, ${selectedJob.location.lng.toFixed(5)}` : "No Location"}</p>
-              </div>
+              <div className="input-group"><label>Location</label><p>{selectedJob.location? `${selectedJob.location.lat.toFixed(5)}, ${selectedJob.location.lng.toFixed(5)}` : "No Location"}</p></div>
 
               <div className="modal-actions">
-                {getStatus(selectedJob.status)==="pending" && (
-                  <button className="btn-premium btn-assign" onClick={() => acceptJob(selectedJob.id)}>✅ Accept Job</button>
-                )}
+                {/* ASSIGNED -> Accept or Reject */}
                 {getStatus(selectedJob.status)==="assigned" && (
                   <>
                     <button className="btn-premium btn-assign" onClick={() => acceptJob(selectedJob.id)}>✅ Accept</button>
                     <button className="btn-premium btn-cancel" onClick={() => rejectJob(selectedJob.id)}>❌ Reject</button>
                   </>
                 )}
+                {/* ACCEPTED -> Start Collection */}
                 {getStatus(selectedJob.status)==="accepted" && (
                   <button className="btn-premium btn-assign" onClick={() => updateStatus(selectedJob.id, "On the Way")}>🚚 Start Collection</button>
                 )}
+                {/* ON THE WAY -> Arrived */}
                 {getStatus(selectedJob.status)==="on the way" && (
                   <>
                     <button className="btn-premium btn-collect" onClick={() => window.open(`https://maps.google.com?q=${selectedJob.location.lat},${selectedJob.location.lng}`)}>📍 Navigate</button>
                     <button className="btn-premium btn-assign" onClick={() => updateStatus(selectedJob.id, "Arrived")}>📍 Arrived</button>
                   </>
                 )}
+                {/* ARRIVED -> Complete */}
                 {getStatus(selectedJob.status)==="arrived" && (
                   <button className="btn-premium btn-assign" onClick={() => completeJob(selectedJob.id)}>✅ Complete Collection</button>
                 )}
