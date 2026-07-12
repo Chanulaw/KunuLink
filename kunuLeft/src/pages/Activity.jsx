@@ -46,13 +46,13 @@ function Activity() {
       </div>
 
       {/* Stats Section with increased gap */}
-      <div className="activity-stats-row" style={{ gap: '40px', marginBottom: '30px', display: 'flex', justifyContent: 'center' }}>
+      <div className="activity-stats-row" style={{ gap: '60px', marginBottom: '40px', display: 'flex', justifyContent: 'center' }}>
         <div className="stat-box-custom"><h3>{String(stats.total).padStart(2, '0')}</h3><p>Total</p></div>
         <div className="stat-box-custom"><h3>{String(stats.completed).padStart(2, '0')}</h3><p>Completed</p></div>
         <div className="stat-box-custom"><h3>{String(stats.active).padStart(2, '0')}</h3><p>In-Progress</p></div>
       </div>
 
-      {/* Table Section with reduced padding/white space */}
+      {/* Table Section with Collector column after Status */}
       <div className="activity-card admin-width-fix" style={{ padding: '20px' }}>
         <div className="main-table-wrapper">
           <table className="admin-table" style={{ borderCollapse: 'collapse', width: '100%' }}>
@@ -62,6 +62,7 @@ function Activity() {
                 <th style={{ padding: '12px 15px' }}>DATE</th>
                 <th style={{ padding: '12px 15px' }}>TYPE</th>
                 <th style={{ padding: '12px 15px' }}>STATUS</th>
+                <th style={{ padding: '12px 15px' }}>COLLECTOR</th>
               </tr>
             </thead>
             <tbody>
@@ -76,10 +77,13 @@ function Activity() {
                         {item.status || 'Pending'}
                       </span>
                     </td>
+                    <td style={{ padding: '12px 15px', fontWeight: '500' }}>
+                      {item.collectorName || "Not Assigned"}
+                    </td>
                   </tr>
                 ))
               ) : (
-                <tr><td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>No requests found.</td></tr>
+                <tr><td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>No requests found.</td></tr>
               )}
             </tbody>
           </table>
