@@ -52,7 +52,9 @@ function AdminDashboard() {
 
       await updateDoc(doc(db, "requests", reqId), {
         collectorName: collector.name,
-        collectorId: collector.id, 
+        collectorId: collector.id,
+        collectorPhone: collector.phone || "",
+        vehicle: collector.vehicle || "",
         status: "Assigned",
       });
 
