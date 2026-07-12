@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "buildCommand": "cd kunuLeft && npm install && npm run build",
+  "outputDirectory": "kunuLeft/build",
+  "installCommand": "cd kunuLeft && npm install",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

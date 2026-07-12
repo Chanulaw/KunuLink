@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, onSnapshot, query } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
 function AdminUsers() {
   const [usersList, setUsersList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const q = query(collection(db, 'users'));
@@ -17,11 +15,6 @@ function AdminUsers() {
     });
     return () => unsubscribe();
   }, []);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/', { replace: true });
-  };
 
   return (
     <div className="admin-page-container">
