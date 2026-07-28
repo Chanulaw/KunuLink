@@ -12,7 +12,7 @@ import AdminUsers from './pages/AdminUsers';
 import EcoGuide from "./pages/EcoGuide"; 
 import CollectorDashboard from './pages/CollectorDashboard';
 import CollectorProfile from './pages/CollectorProfile';
-import CollectorActivity from './pages/CollectorActivity'; // 1. අලුත් පිටුව Import කරන්න
+import CollectorActivity from './pages/CollectorActivity'; 
 import CollectorsPage from './pages/CollectorsPage';
 import './App.css';
 import Footer from './components/Footer';
@@ -44,13 +44,13 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        {/* පොදු පිටු */}
+        {}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/eco-guide" element={<EcoGuide />} />
 
-        {/* පරිශීලක පිටු */}
+        {}
         <Route path="/request" element={<UserProtectedRoute><UserDashboard /></UserProtectedRoute>} />
         <Route path="/activity" element={<UserProtectedRoute><Activity /></UserProtectedRoute>} />
         <Route path="/notifications" element={<UserProtectedRoute><SmartNotifications /></UserProtectedRoute>} />
