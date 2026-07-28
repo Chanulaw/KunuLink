@@ -17,26 +17,21 @@ function Login() {
     setLoading(true);
 
     try {
-      // 1. Firebase Auth හරහා ඇතුළත් කළ Email සහ Password සත්‍යාපනය කිරීම
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Firestore එකේ 'users' collection එකේ අදාළ User ID (UID) එකට අදාළ Document එක කියවීම
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        const role = userData.role; // මෙතනින් තමයි 'admin' ද 'user' ද කියලා හඳුනා ගන්නේ
+        const role = userData.role; 
 
-        // 3. Local Storage එකේ දත්ත තැන්පත් කිරීම 
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userRole', role || 'user');
         localStorage.setItem('activeUserName', userData.name || 'User');
 
-        // Keep a quick uid key for older code that expects it
         localStorage.setItem('uid', user.uid);
 
-        // CollectorDashboard එකට අවශ්‍ය user object එක
         localStorage.setItem(
           'user',
           JSON.stringify({

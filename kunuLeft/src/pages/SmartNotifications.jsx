@@ -15,7 +15,6 @@ function SmartNotifications() {
       const q = query(collection(db, "requests"), where("userId", "==", user.uid));
       const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
         let data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        // නවතම දේ උඩින් පෙන්වීමට sort කිරීම
         data.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
         setNotifications(data);
         setLoading(false);
