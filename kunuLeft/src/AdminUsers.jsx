@@ -8,7 +8,6 @@ function AdminUsers() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Firestore හි 'users' collection එකෙන් සජීවීව දත්ත ලබා ගැනීම
     const q = query(collection(db, 'users'));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -25,12 +24,12 @@ function AdminUsers() {
 
   return (
     <>
-      <Navbar /> {/* ගෝලීය Navbar එක */}
+      <Navbar /> {}
       
       <div className="tracking-page-container animate-fade-in">
         <div className="activity-card" style={{ maxWidth: '1000px' }}>
           
-          {/* Header Section - බොත්තම් ඉවත් කර පිරිසිදු කරන ලදී */}
+          {}
           <div style={{ marginBottom: '30px' }}>
             <h2 style={{ color: '#10b981', margin: '0 0 5px 0', fontSize: '24px', fontWeight: '800' }}>
               Registered Users Details
